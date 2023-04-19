@@ -1,10 +1,13 @@
 <template>
-  <div v-auto-animate>
+  <div v-auto-animate class="space-y-14">
     <home-banner v-if="showBanner" @close="toggleBanner()" />
+    <div v-else class="" />
     <home-products />
-    <!--    <home-categories />-->
-    <!--    <home-feature />-->
-    <!--    <home-blog />-->
+    <div class="space-y-24">
+      <home-categories />
+      <home-feature />
+      <home-blog />
+    </div>
   </div>
 </template>
 

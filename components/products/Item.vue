@@ -2,29 +2,34 @@
   <div class="shadow-default group relative overflow-hidden rounded-md">
     <div class="aspect-w-6 aspect-h-4 overflow-hidden bg-gray-100">
       <nuxt-img :src="product.avatar.path" class="object-cover object-center" provider="backend" />
-      <div class="flex items-end p-4 opacity-0 transition group-hover:opacity-100" aria-hidden="true">
-        <div class="bg-primary shadow-default shadow-primary-300 w-full rounded-md px-4 py-2 text-center text-sm font-medium text-white">
+      <div class="flex items-end p-4 opacity-0 transition group-hover:opacity-100">
+        <button class="bg-primary w-full rounded-md px-4 py-2 text-center text-sm font-medium text-white">
           View Product
-        </div>
+        </button>
       </div>
     </div>
 
-    <div class="px-4 py-3">
-      <div class="flex justify-between space-x-8 text-base font-medium text-gray-900">
-        <h3 class="mb-0">
-          <a href="#">
-            <span aria-hidden="true" class="absolute inset-0" />
-            {{ product.name }}
-          </a>
-        </h3>
-        <p class="shrink-0">
+    <div class="space-y-2 px-4 py-3 leading-5">
+      <h3 class="font-semibold">
+        <a href="#">
+          {{ product.name }}
+        </a>
+      </h3>
+
+      <div class="flex items-center justify-between">
+        <p class="font-semibold text-rose-500">
           $ {{ product.price }}
         </p>
+
+        <button class="from-primary-500 to-primary-600  shadow-primary-300 rounded-md bg-gradient-to-r px-3 py-1 text-sm font-semibold text-white shadow-md">
+          Buy Now
+        </button>
       </div>
-      <!--      <p class="mt-1 text-sm text-gray-500">-->
-      <!--        {{ product.category.name }}-->
-      <!--      </p>-->
     </div>
+
+    <span class="bg-primary shadow-default shadow-primary-300 absolute left-0 top-0 rounded-br-md px-3 py-1 text-sm text-white">
+      {{ product.category.name }}
+    </span>
   </div>
 </template>
 

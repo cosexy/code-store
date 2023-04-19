@@ -1,26 +1,29 @@
 <template>
-  <div class="py-16 xl:mx-auto xl:max-w-7xl xl:px-8">
-    <div class="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
+  <div class="section-spacing">
+    <div class="mb-4 px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
       <h2 class="text-2xl font-bold tracking-tight text-gray-900">
         Shop by Category
       </h2>
-      <a href="#" class="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block">
+      <a href="javascript:void(0)" class="hidden items-center text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:flex" @click="toggleShow()">
         Browse all categories
-        <span aria-hidden="true"> &rarr;</span>
+        <Icon size="20" name="material-symbols:add-rounded" />
       </a>
     </div>
 
-    <div class="mt-4 flow-root">
-      <div class="-my-2">
-        <div class="relative box-content h-80 overflow-x-auto py-2 xl:overflow-visible">
-          <div class="min-w-screen-xl absolute flex space-x-8 px-4 sm:px-6 lg:px-8 xl:relative xl:grid xl:grid-cols-5 xl:gap-x-8 xl:space-x-0 xl:px-0">
-            <a v-for="category in categories" :key="category.name" :href="category.href" class="relative flex h-80 w-56 flex-col overflow-hidden rounded-lg p-6 hover:opacity-75 xl:w-auto">
-                <span aria-hidden="true" class="absolute inset-0">
-                  <img :src="category.imageSrc" alt="" class="h-full w-full object-cover object-center">
-                </span>
-              <span aria-hidden="true" class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-50" />
-              <span class="relative mt-auto text-center text-xl font-bold text-white">{{ category.name }}</span>
-            </a>
+    <div class="-m-3">
+      <div
+        class="flex flex-wrap overflow-hidden"
+        :class="{
+          'show-default': !show
+        }"
+      >
+        <div v-for="(category, index) in categories" :key="index" class="w-1/5 p-3">
+          <div class="relative h-80 overflow-hidden rounded-md bg-white text-white">
+            <img class="relative z-[1]" :src="category.imageSrc" alt="">
+
+            <span aria-hidden="true" class="absolute inset-x-0 bottom-0 z-[2] h-2/3 bg-gradient-to-t from-gray-800 opacity-50" />
+
+            <span class="absolute bottom-5 z-[3] w-full text-center text-xl font-bold text-white">{{ category.name }}</span>
           </div>
         </div>
       </div>
@@ -57,6 +60,35 @@ const categories = [
     href: '#',
     imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-01-category-05.jpg'
   },
+  { name: 'Sale', href: '#', imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-01-category-03.jpg' },
+  {
+    name: 'New Arrivals',
+    href: '#',
+    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-01-category-01.jpg'
+  },
+  {
+    name: 'Productivity',
+    href: '#',
+    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-01-category-02.jpg'
+  },
+  {
+    name: 'Workspace',
+    href: '#',
+    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-01-category-04.jpg'
+  },
+  {
+    name: 'Accessories',
+    href: '#',
+    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-01-category-05.jpg'
+  },
   { name: 'Sale', href: '#', imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-01-category-03.jpg' }
 ]
+
+const [show, toggleShow] = useToggle(false)
 </script>
+
+<style>
+.show-default {
+    height: calc(20rem + 0.75rem + 0.75rem);
+}
+</style>

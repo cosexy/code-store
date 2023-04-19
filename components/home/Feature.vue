@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+  <div class="section-spacing">
     <div class="mx-auto max-w-2xl lg:text-center">
       <h2 class="text-base font-semibold leading-7 text-indigo-600">
         Deploy faster
@@ -15,7 +15,7 @@
       <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
         <div v-for="feature in features" :key="feature.name" class="flex flex-col">
           <dt class="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
-            <component :is="feature.icon" class="h-5 w-5 flex-none text-indigo-600" aria-hidden="true" />
+            <Icon :name="feature.icon" class="h-5 w-5 flex-none text-indigo-600" aria-hidden="true" />
             {{ feature.name }}
           </dt>
           <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
@@ -33,29 +33,27 @@
 </template>
 
 <script setup>
-// import { ArrowPathIcon, CloudArrowUpIcon, LockClosedIcon } from '@heroicons/vue/20/solid'
-
 const features = [
   {
     name: 'Push to deploy',
     description:
       'Commodo nec sagittis tortor mauris sed. Turpis tortor quis scelerisque diam id accumsan nullam tempus. Pulvinar etiam lacus volutpat eu. Phasellus praesent ligula sit faucibus.',
     href: '#',
-    icon: 'CloudArrowUpIcon'
+    icon: 'mdi:cloud-arrow-down'
   },
   {
     name: 'SSL certificates',
     description:
       'Pellentesque enim a commodo malesuada turpis eleifend risus. Facilisis donec placerat sapien consequat tempor fermentum nibh.',
     href: '#',
-    icon: 'LockClosedIcon'
+    icon: 'heroicons:lock-closed'
   },
   {
     name: 'Simple queues',
     description:
       'Pellentesque sit elit congue ante nec amet. Dolor aenean curabitur viverra suspendisse iaculis eget. Nec mollis placerat ultricies euismod ut condimentum.',
     href: '#',
-    icon: 'ArrowPathIcon'
+    icon: 'heroicons:arrow-path-rounded-square-20-solid'
   }
 ]
 </script>

@@ -1,18 +1,11 @@
 import { gql } from '#imports'
 
-export const GET_PRODUCTS = gql`
-    query GetProducts($filter: GetProductsFilter!) {
-        products(filter: $filter) {
+export const GET_POSTS = gql`
+    query HomePosts ($filter: PostsFilter!) {
+        posts(filter: $filter) {
             id
             name
-            category {
-                id
-                name
-                slug
-            }
-            slug
-            price
-            sale
+            description
             avatar {
                 id
                 path
@@ -20,11 +13,14 @@ export const GET_PRODUCTS = gql`
             user {
                 id
                 slug
+                role
+                name
                 avatar {
                     id
                     path
                 }
             }
+            createdAt
         }
     }
 `

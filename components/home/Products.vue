@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+  <div class="section-spacing">
     <div class="flex items-center justify-between space-x-4">
       <h2 class="text-3xl font-bold tracking-tight text-gray-900">
         Products
