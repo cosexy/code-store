@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "@nuxtjs/eslint-config-typescript",
+    "plugin:tailwindcss/recommended"
+  ],
+  "rules": {
+    "require-await": "off",
+    "no-return-assign": "off",
+    "tailwindcss/no-custom-classname": "off",
+    "vue/multi-word-component-names": "off",
+    "arrow-parens": "off",
+    "tailwindcss/no-contradicting-classname": "off",
+    "func-call-spacing": "off",
+    "camelcase": "off",
+    "no-console": "off",
+    "import/no-named-as-default-member": "off"
+  }
+}
