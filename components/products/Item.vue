@@ -11,9 +11,9 @@
 
     <div class="space-y-2 px-4 py-3 leading-5">
       <h3 class="font-semibold">
-        <a href="#">
+        <nuxt-link :to="{ name: 'products-id', params: { id: product.slug } }">
           {{ product.name }}
-        </a>
+        </nuxt-link>
       </h3>
 
       <div class="flex items-center justify-between">

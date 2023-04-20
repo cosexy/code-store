@@ -6,7 +6,6 @@
     <div class="space-y-24">
       <home-categories />
       <home-feature />
-      <home-blog />
     </div>
   </div>
 </template>

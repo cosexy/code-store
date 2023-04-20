@@ -28,3 +28,20 @@ export const GET_PRODUCTS = gql`
         }
     }
 `
+
+export const GET_PRODUCT = gql`
+    query GetProduct($filter: GetProductFilter!) {
+        product(filter: $filter) {
+            id
+            name
+            description
+            price
+            sale
+            avatar {
+                id
+                path
+            }
+            createdAt
+        }
+    }
+`
