@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+// @ts-ignore
 import { Me_me } from '~/apollo/queries/__generated__/Me'
 
 interface State {

@@ -12,6 +12,7 @@
         <product-tabs />
       </div>
     </div>
+    <modal-order-preview />
   </div>
 </template>
 

@@ -1,12 +1,12 @@
 <template>
   <div>
-    <header class="shadow-default fixed left-0 top-0 z-50 w-full bg-white">
+    <header class="shadow-default fixed left-0 top-0 z-40 w-full bg-white">
       <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div class="flex lg:flex-1">
-          <a href="#" class="-m-1.5 p-1.5">
+          <NuxtLink to="/" class="-m-1.5 p-1.5">
             <span class="sr-only">Your Company</span>
-            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
-          </a>
+            <NuxtImg class="h-8 w-auto" src="/images/logo.png" alt="" />
+          </NuxtLink>
         </div>
         <div class="flex lg:hidden">
           <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = true">

@@ -13,6 +13,7 @@
     "func-call-spacing": "off",
     "camelcase": "off",
     "no-console": "off",
-    "import/no-named-as-default-member": "off"
+    "import/no-named-as-default-member": "off",
+    "vue/no-v-html": "off"
   }
 }
