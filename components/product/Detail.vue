@@ -35,7 +35,11 @@
     </p>
 
     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-      <button type="button" class="bg-primary-600 flex w-full items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50" @click="open">
+      <button
+        type="button"
+        class="bg-primary-600 flex w-full items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+        @click="open(product)"
+      >
         Pay ${{ product.price }}
       </button>
       <button type="button" class="bg-primary-50 text-primary-700 hover:bg-primary-100 flex w-full items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">
@@ -108,7 +112,7 @@ defineProps<{
   product: Pick<GetProduct_product, 'id' | 'name' | 'description' | 'price' | 'createdAt'>
 }>()
 
-const { open } = useDialog('over-overview')
+const { open } = useDialog<Pick<GetProduct_product, 'id' | 'name' | 'price'>>('over-overview')
 
 const highlights = [
   '200+ SVG icons in 3 unique styles',

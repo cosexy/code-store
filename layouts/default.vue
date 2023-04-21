@@ -1,6 +1,6 @@
 <template>
   <div>
-    <includes-header />
+    <nav-main />
     <nuxt-page />
     <includes-footer />
     <modal-auth />

@@ -3,6 +3,7 @@ import { DialogEntity } from '~/entities/dialog.entity'
 interface IOptions<T = any> {
   actived?: boolean
   data?: T
+  watch?: boolean
 }
 
 export const useDialogStore = createGlobalState(
@@ -21,8 +22,6 @@ export const useDialog = <T = any>(name: string, options?: IOptions<T>) => {
 
   const modalIndex = useArrayFindIndex(store.modals, (modal) => modal.name === name)
   if (modalIndex.value === -1) {
-    console.log('create modal', name, options)
-
     store.modals.value.push({
       name,
       actived: false,
@@ -36,19 +35,27 @@ export const useDialog = <T = any>(name: string, options?: IOptions<T>) => {
     }
   })
 
+  const onReceive = createEventHook<T|undefined>()
+  const onClosed = createEventHook()
+
+  if (options?.watch) {
+    watch(() => modal.value.actived, (value) => {
+      if (value) {
+        onReceive.trigger(modal.value.data)
+      } else {
+        onClosed.trigger(undefined)
+      }
+    })
+  }
+
   const open = (data?: T) => {
     modal.value.data = data
     modal.value.actived = true
-    onReceive.trigger(data)
   }
   const close = () => {
-    onClosed.trigger(modal.value.data)
     modal.value.actived = false
     modal.value.data = undefined
   }
-
-  const onReceive = createEventHook<T|undefined>()
-  const onClosed = createEventHook<T|undefined>()
 
   const toggle = (data?: T) => {
     if (modal.value.actived) {

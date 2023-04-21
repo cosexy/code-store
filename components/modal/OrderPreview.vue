@@ -81,8 +81,15 @@
 
 <script setup lang="ts">
 
+import { GetProduct_product } from '~/apollo/queries/__generated__/GetProduct'
 const { addToCart } = useCart()
 
+const { onReceive } = useDialog<Pick<GetProduct_product, 'id' | 'name' | 'price'>>('over-overview', {
+  watch: true
+})
+onReceive((product) => {
+  console.log(product)
+})
 const product = {
   name: 'Madara - Wordpress theme for Manga',
   price: '$220',

@@ -15,15 +15,13 @@
           </button>
         </div>
 
-        <includes-menu :products="products" :calls-to-action="callsToAction" />
+        <nav-menu :products="products" :calls-to-action="callsToAction" />
 
-        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="javascript:void(0)" class="text-sm font-semibold leading-6 text-gray-900" @click.prevent="openAuth()">Log in <span aria-hidden="true">&rarr;</span></a>
-        </div>
+        <nav-user />
       </nav>
 
       <!-- Mobile menu, show/hide based on mobile menu state. -->
-      <includes-mobile-menu v-model:open="mobileMenuOpen" :menu="[...products, ...callsToAction]" />
+      <nav-mobile-menu v-model:open="mobileMenuOpen" :menu="[...products, ...callsToAction]" />
     </header>
 
     <div style="height: 80px" />
@@ -44,7 +42,4 @@ const callsToAction = [
 ]
 
 const [mobileMenuOpen] = useToggle(false)
-
-const authStore = useAuth()
-const { open: openAuth } = useDialog('auth')
 </script>
