@@ -25,15 +25,28 @@
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95"
           >
-            <HeadlessDialogPanel class="flex w-full text-left text-base transition md:my-8 md:max-w-lg md:px-4">
-              <div class="relative flex w-full items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
-                <button type="button" class="absolute right-4 top-4 text-gray-400 outline-0 hover:text-gray-500 sm:right-6 sm:top-8 md:right-6 md:top-6 lg:right-8 lg:top-8" @click="close">
-                  <span class="sr-only">Close</span>
-                  <Icon name="heroicons-solid:x-mark" class="h-6 w-6" aria-hidden="true" />
-                </button>
+            <HeadlessDialogPanel class="border-primary relative w-full max-w-md overflow-hidden border-t-4 bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <HeadlessDialogTitle
+                v-if="title"
+                as="h3"
+                class="mb-3 text-xl font-semibold leading-6 text-gray-900"
+              >
+                {{ title }}
+              </HeadlessDialogTitle>
 
-                <slot :data="modal.data" :actived="modal.actived" />
-              </div>
+              <HeadlessDialogTitle
+                v-if="$slots['title']"
+                as="h3"
+              >
+                <slot name="title" />
+              </HeadlessDialogTitle>
+
+              <button type="button" class="absolute right-4 top-4 text-gray-400 outline-0 hover:text-gray-500 sm:right-5 sm:top-5" @click="close">
+                <span class="sr-only">Close</span>
+                <Icon name="heroicons-solid:x-mark" class="h-5 w-5" aria-hidden="true" />
+              </button>
+
+              <slot :data="modal.data" :actived="modal.actived" />
             </HeadlessDialogPanel>
           </HeadlessTransitionChild>
         </div>
@@ -44,9 +57,10 @@
 
 <script setup lang="ts">
 const props = defineProps<{
+  title?: string
   name: string
   actived?: boolean
   data?: any
 }>()
-const { modal, close, modals } = useDialog(props.name, { actived: props.actived, data: props.data })
+const { modal, close } = useDialog(props.name, { actived: props.actived, data: props.data })
 </script>

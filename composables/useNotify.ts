@@ -1,9 +1,11 @@
+import { NotifyEntity } from '~/entities/notify.entity'
+
 interface IProps<T> {
     chanel?: string
     onReceive?: (data: T) => void
 }
 
-export const useNotify = <T>(props?: IProps<T>) => {
+export const useNotify = <T = NotifyEntity>(props?: IProps<T>) => {
   const {
     isSupported,
     data,

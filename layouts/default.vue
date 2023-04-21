@@ -4,6 +4,9 @@
     <nuxt-page />
     <includes-footer />
     <modal-auth />
+    <client-only>
+      <includes-notify />
+    </client-only>
   </div>
 </template>
 
