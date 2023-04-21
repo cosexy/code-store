@@ -12,18 +12,20 @@ export const useDialogStore = createGlobalState(
   }
 )
 
-export const useDialog = <T = any>(chanel: string, options?: IOptions<T>) => {
-  if (!chanel) {
-    throw new Error('chanel is required')
+export const useDialog = <T = any>(name: string, options?: IOptions<T>) => {
+  if (!name) {
+    throw new Error('name is required')
   }
 
   const store = useDialogStore()
 
-  const modalIndex = useArrayFindIndex(store.modals, (modal) => modal.id === chanel)
+  const modalIndex = useArrayFindIndex(store.modals, (modal) => modal.name === name)
   if (modalIndex.value === -1) {
+    console.log('create modal', name, options)
+
     store.modals.value.push({
-      id: chanel,
-      actived: options?.actived || false,
+      name,
+      actived: false,
       data: options?.data
     })
   }
@@ -54,6 +56,14 @@ export const useDialog = <T = any>(chanel: string, options?: IOptions<T>) => {
     } else {
       open(data)
     }
+  }
+
+  if (options?.actived && modal.value) {
+    onMounted(() => nextTick(() => {
+      setTimeout(() => {
+        modal.value.actived = true
+      }, 300)
+    }))
   }
 
   return {

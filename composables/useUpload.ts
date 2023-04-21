@@ -1,8 +1,9 @@
+// @ts-ignore
 import { ImageEntity } from '~/apollo/queries/__generated__/ImageEntity'
 
 export const useUpload = () => {
   const runtimeConfig = useRuntimeConfig()
-  const authStore = useAuthStore()
+  const authStore = useAuth()
 
   const fetchResult = createEventHook<ImageEntity[]>()
   const fetchError = createEventHook<any>()

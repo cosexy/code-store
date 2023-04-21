@@ -28,7 +28,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   })
 
   const authLink = setContext((_, { headers }) => {
-    const authStore = useAuthStore()
+    const authStore = useAuth()
     return {
       headers: {
         ...headers,

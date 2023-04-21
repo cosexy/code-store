@@ -3,6 +3,7 @@
     <includes-header />
     <nuxt-page />
     <includes-footer />
+    <modal-auth />
   </div>
 </template>
 

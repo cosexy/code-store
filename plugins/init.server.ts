@@ -1,7 +1,7 @@
 import { getCookie } from 'h3'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  const authStore = useAuthStore()
+  const authStore = useAuth()
 
   const token = getCookie(useRequestEvent(), '_token')
 

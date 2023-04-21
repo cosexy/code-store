@@ -45,6 +45,8 @@
 <script setup lang="ts">
 const props = defineProps<{
   name: string
+  actived?: boolean
+  data?: any
 }>()
-const { modal, close } = useDialog(props.name)
+const { modal, close, modals } = useDialog(props.name, { actived: props.actived, data: props.data })
 </script>

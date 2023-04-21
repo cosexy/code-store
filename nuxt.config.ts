@@ -2,7 +2,7 @@
 import GraphqlGenerator from './vite/plugins/vite-graphql-generator'
 export default defineNuxtConfig({
   modules: [
-    '@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/apollo',
     '@pinia/nuxt',

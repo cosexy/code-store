@@ -7,7 +7,7 @@ interface State {
     user?: Me_me
 }
 
-export const useAuthStore = defineStore<string, State>({
+export const useAuth = defineStore<string, State>({
   id: 'auth',
   state: () => ({
     user: undefined,

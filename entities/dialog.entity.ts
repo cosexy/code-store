@@ -1,5 +1,5 @@
 export interface DialogEntity<T = any> {
-    id: string
+    name: string
     actived: boolean
     data?: T
 }

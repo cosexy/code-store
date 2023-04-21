@@ -60,7 +60,7 @@
             </a>
           </div>
           <div class="mt-6 flex space-x-3">
-            <button class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">
+            <button class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50" @click="addToCart(product)">
               Add to cart
             </button>
             <button class="bg-primary-50 text-primary-700 hover:bg-primary-100 flex w-full items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">
@@ -80,6 +80,9 @@
 </template>
 
 <script setup lang="ts">
+
+const { addToCart } = useCart()
+
 const product = {
   name: 'Madara - Wordpress theme for Manga',
   price: '$220',
