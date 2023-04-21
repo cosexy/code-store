@@ -36,7 +36,6 @@
 
     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
       <button
-        type="button"
         class="bg-primary-600 flex w-full items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
         @click="open(product)"
       >
@@ -107,6 +106,8 @@
 <script lang="ts" setup>
 
 import { GetProduct_product } from '~/apollo/queries/__generated__/GetProduct'
+import { ADD_TO_CART } from '~/apollo/mutations/cart.mutation'
+import { AddToCart, AddToCartVariables } from '~/apollo/mutations/__generated__/AddToCart'
 
 defineProps<{
   product: Pick<GetProduct_product, 'id' | 'name' | 'description' | 'price' | 'createdAt'>

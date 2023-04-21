@@ -5,5 +5,5 @@ export const useAnime = (): typeof anime => {
   if (!$anime) {
     throw new Error('Anime is not provided')
   }
-  return $anime
+  return $anime as typeof anime
 }
