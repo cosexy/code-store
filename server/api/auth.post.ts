@@ -11,9 +11,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    setCookie(event, '_token', token, {
-      httpOnly: true
-    })
+    setCookie(event, 'apollo:codestore.token', token)
 
     return {
       token

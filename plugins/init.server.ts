@@ -3,7 +3,7 @@ import { getCookie } from 'h3'
 export default defineNuxtPlugin(async (nuxtApp) => {
   const authStore = useAuth()
 
-  const token = getCookie(useRequestEvent(), '_token')
+  const token = getCookie(useRequestEvent(), 'apollo:codestore.token')
 
   if (token && process.server) {
     try {

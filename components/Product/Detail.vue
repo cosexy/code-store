@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <p class="mt-6 text-gray-500">
+    <p class="mt-6 line-clamp-3 text-gray-500">
       {{ product.description }}
     </p>
 

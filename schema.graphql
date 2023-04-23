@@ -291,6 +291,7 @@ input SignUpInput {
 }
 
 type Subscription {
+  addedToCart: Cart!
   notifyFired: Notify!
 }
 

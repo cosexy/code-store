@@ -26,11 +26,11 @@
                   'group flex w-full items-center rounded-md p-2 text-sm',
                 ]"
               >
-                <EditIcon
-                  :active="active"
-                  class="mr-2 h-5 w-5 text-violet-400"
-                  aria-hidden="true"
-                />
+                <!--                <EditIcon-->
+                <!--                  :active="active"-->
+                <!--                  class="mr-2 h-5 w-5 text-violet-400"-->
+                <!--                  aria-hidden="true"-->
+                <!--                />-->
                 Edit
               </button>
             </headless-menu-item>

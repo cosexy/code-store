@@ -9,9 +9,11 @@
           </NuxtLink>
         </div>
 
-        <nav-menu class="ml-12 mr-auto hidden lg:flex lg:gap-x-12" :products="products" :calls-to-action="callsToAction" />
+        <nav-menu class="ml-12 hidden lg:flex lg:gap-x-12" :products="products" :calls-to-action="callsToAction" />
 
-        <nav-cart class="mr-10" />
+        <client-only>
+          <nav-cart class="ml-auto mr-10" />
+        </client-only>
 
         <div class="flex lg:hidden">
           <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = true">
