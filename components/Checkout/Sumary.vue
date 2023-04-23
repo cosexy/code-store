@@ -27,7 +27,7 @@
         <div class="flex items-center justify-between">
           <dt>Discount</dt>
           <del>
-            ${{ original - discount }}
+            ${{ savings }}
           </del>
         </div>
 
@@ -56,7 +56,7 @@ const props = defineProps<{
   cart: GetCart_cart[]
 }>()
 
-const { original, discount, fee, final } = usecart(props.cart)
+const { original, discount, fee, final, savings } = useCart(props.cart)
 </script>
 
 <style scoped></style>

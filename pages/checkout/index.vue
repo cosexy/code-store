@@ -66,10 +66,8 @@
               </div>
             </div>
 
-            <div class="mt-10 flex justify-end border-t border-gray-200 pt-6">
-              <client-only>
-                <lazy-google-pay-checkout />
-              </client-only>
+            <div ref="googlePayRef" class="mt-10 border-t border-gray-200 pt-6">
+              <div ref="googlePayRef" class="w-full" />
             </div>
           </div>
         </form>
@@ -81,6 +79,7 @@
 <script setup async lang="ts">
 import { GET_CART } from '~/apollo/queries/cart.query'
 import { GetCart } from '~/apollo/queries/__generated__/GetCart'
+import PaymentData = google.payments.api.PaymentData
 
 const products = [
   {
@@ -97,5 +96,55 @@ const products = [
 
 const { data } = await useAsyncQuery<GetCart>(GET_CART)
 const cart = computed(() => data?.value?.cart || [])
-const { original, discount, fee, final } = usecart(cart)
+
+const { discount, final, fee } = useCart(cart)
+
+const googlePayRef = ref()
+
+const { onCreate, toDataRequest, onApproved } = useGooglePay()
+onCreate((client) => {
+  const btn = client.createButton({
+    buttonColor: 'default',
+    buttonSizeMode: 'fill',
+    onClick: () => {
+      const data = toDataRequest({
+        merchantInfo: {
+          // @todo a merchant ID is available for a production environment after approval by Google
+          // See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
+          merchantId: 'BCR2DN4TZKH5LQI5',
+          merchantName: 'Guen Chan'
+        },
+        transactionInfo: {
+          displayItems: [
+            {
+              label: 'Subtotal',
+              type: 'SUBTOTAL',
+              price: `${discount.value}`
+            },
+            {
+              label: 'Fee',
+              type: 'TAX',
+              price: `${fee.value}`
+            }
+          ],
+          countryCode: 'US',
+          currencyCode: 'USD',
+          totalPriceStatus: 'FINAL',
+          totalPrice: `${final.value}`,
+          totalPriceLabel: 'Total'
+        }
+      })
+      client.loadPaymentData(data)
+    }
+  })
+
+  googlePayRef.value.appendChild(btn)
+})
+
+const afterPurhasing = (paymentData: PaymentData) => {
+  // @todo send payment data to backend
+  console.log(paymentData)
+}
+
+onApproved((paymentData) => afterPurhasing(paymentData))
 </script>
