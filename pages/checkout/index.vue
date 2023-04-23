@@ -9,70 +9,12 @@
         Checkout
       </h1>
 
-      <section aria-labelledby="summary-heading" class="bg-indigo-900 py-12 text-indigo-300 md:px-10 lg:col-start-2 lg:row-start-1 lg:mx-auto lg:w-full lg:max-w-lg lg:bg-transparent lg:px-0 lg:pb-24 lg:pt-0">
-        <div class="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
-          <h2 id="summary-heading" class="sr-only">
-            Order summary
-          </h2>
-
-          <dl>
-            <dt class="text-sm font-medium">
-              Amount due
-            </dt>
-            <dd class="mt-1 text-3xl font-bold tracking-tight text-white">
-              $232.00
-            </dd>
-          </dl>
-
-          <ul role="list" class="divide-y divide-white divide-opacity-10 text-sm font-medium">
-            <li v-for="product in products" :key="product.id" class="flex items-start space-x-4 py-6">
-              <img :src="product.imageSrc" :alt="product.imageAlt" class="h-20 w-20 flex-none rounded-md object-cover object-center">
-              <div class="flex-auto space-y-1">
-                <h3 class="text-white">
-                  {{ product.name }}
-                </h3>
-                <p>{{ product.color }}</p>
-                <p>{{ product.size }}</p>
-              </div>
-              <p class="flex-none text-base font-medium text-white">
-                {{ product.price }}
-              </p>
-            </li>
-          </ul>
-
-          <dl class="space-y-6 border-t border-white border-opacity-10 pt-6 text-sm font-medium">
-            <div class="flex items-center justify-between">
-              <dt>Subtotal</dt>
-              <dd>$570.00</dd>
-            </div>
-
-            <div class="flex items-center justify-between">
-              <dt>Shipping</dt>
-              <dd>$25.00</dd>
-            </div>
-
-            <div class="flex items-center justify-between">
-              <dt>Taxes</dt>
-              <dd>$47.60</dd>
-            </div>
-
-            <div class="flex items-center justify-between border-t border-white border-opacity-10 pt-6 text-white">
-              <dt class="text-base">
-                Total
-              </dt>
-              <dd class="text-base">
-                $642.60
-              </dd>
-            </div>
-          </dl>
-        </div>
-      </section>
+      <checkout-sumary :cart="cart" />
 
       <section aria-labelledby="payment-and-shipping-heading" class="py-16 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:w-full lg:max-w-lg lg:pb-24 lg:pt-0">
         <h2 id="payment-and-shipping-heading" class="sr-only">
           Payment and shipping details
         </h2>
-
         <form>
           <div class="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
             <div>
@@ -136,7 +78,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup async lang="ts">
+import { GET_CART } from '~/apollo/queries/cart.query'
+import { GetCart } from '~/apollo/queries/__generated__/GetCart'
+
 const products = [
   {
     id: 1,
@@ -149,4 +94,8 @@ const products = [
     imageAlt: 'Front of zip tote bag with white canvas, white handles, and black drawstring top.'
   }
 ]
+
+const { data } = await useAsyncQuery<GetCart>(GET_CART)
+const cart = computed(() => data?.value?.cart || [])
+const { original, discount, fee, final } = usecart(cart)
 </script>

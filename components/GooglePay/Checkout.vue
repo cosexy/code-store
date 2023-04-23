@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-const { onCreate, toDataRequest } = useGooglePay()
+const { onCreate, toDataRequest, onApproved } = useGooglePay()
 
 const el = useCurrentElement()
 const btn = ref()
@@ -49,6 +49,10 @@ onCreate((client) => {
       client.loadPaymentData(data)
     }
   })
+})
+
+onApproved((paymentData) => {
+  console.log(paymentData)
 })
 </script>
 

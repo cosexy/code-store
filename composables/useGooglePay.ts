@@ -11,16 +11,17 @@ export const useGooglePayState = createGlobalState(
   () => {
     const GOOGLE_PAY = ref(false)
     let googlePayClient: PaymentsClient | undefined
-    const googlePayToken = ref()
 
     return {
       GOOGLE_PAY,
-      googlePayClient,
-      googlePayToken
+      googlePayClient
     }
   }
 )
 
+/**
+ * @see {@link https://developers.google.com/pay/api/web/guides/resources/demos | Google Pay brand guidelines}
+ */
 export const useGooglePay = () => {
   const store = useGooglePayState()
 
@@ -108,18 +109,10 @@ export const useGooglePay = () => {
     return store.googlePayClient
   }
 
+  const onApproved = createEventHook<PaymentData>()
   const processPayment = (paymentData: PaymentData) => {
-    return new Promise(function (resolve, reject) {
-      setTimeout(function () {
-        // @todo pass payment token to your gateway to process payment
-        store.googlePayToken.value = paymentData.paymentMethodData.tokenizationData.token
-
-        if (attempts++ % 2 === 0) {
-          reject(new Error('Every other attempt fails, next one should succeed'))
-        } else {
-          resolve({})
-        }
-      }, 500)
+    onApproved.trigger(paymentData).catch((e) => {
+      console.error(e)
     })
   }
 
@@ -193,6 +186,7 @@ export const useGooglePay = () => {
 
   return {
     onCreate: onCreate.on,
+    onApproved: onApproved.on,
     getGooglePaymentsClient,
     toDataRequest
   }

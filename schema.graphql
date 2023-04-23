@@ -41,6 +41,7 @@ directive @connection(
 input AddToCartInput {
   license: LISENCE_TYPE!
   project: ID!
+  quantity: Float
 }
 
 type Cart {
@@ -48,6 +49,7 @@ type Cart {
   id: ID!
   license: LISENCE_TYPE!
   product: Product!
+  quantity: Float!
   updatedAt: Float!
   user: User!
 }
@@ -64,6 +66,16 @@ type Category {
 input CreateCategoryInput {
   description: String = ""
   name: String!
+}
+
+input CreateLisenceInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateOrderInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
 }
 
 input CreatePostInput {
@@ -138,6 +150,11 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 """
 scalar JSON
 
+type Lisence {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 enum LISENCE_TYPE {
   EXTENDED
   REGULAR
@@ -147,18 +164,34 @@ enum MEDIA_STORAGE_ENUM {
   LOCAL
 }
 
+input ModifyQuantityCartInput {
+  id: ID!
+  license: LISENCE_TYPE
+  project: ID
+  quantity: Float
+}
+
 type Mutation {
   addToCart(input: AddToCartInput!): Cart!
+  clearCart: [Cart!]!
   createCategory(input: CreateCategoryInput!): Category!
+  createLisence(createLisenceInput: CreateLisenceInput!): Lisence!
+  createOrder(createOrderInput: CreateOrderInput!): Order!
   createPost(input: CreatePostInput!): Post!
   createProduct(input: CreateProductInput!): Product!
   createTag(input: CreateTagInput!): Tag!
   deleteProduct(input: UpdateProductInput!): Product!
+  modifyQuantityCart(input: ModifyQuantityCartInput!): Cart!
+  remoreFromCart(input: RemoreFromCartInput!): Cart!
   removeCategory(input: RemoveCategoryInput!): Category!
+  removeLisence(id: Int!): Lisence!
+  removeOrder(id: Int!): Order!
   removePost(input: RemovePostInput!): Post!
   signIn(input: SignInInput!): String!
   signUp(input: SignUpInput!): String!
   updateCategory(input: UpdateCategoryInput!): Category!
+  updateLisence(updateLisenceInput: UpdateLisenceInput!): Lisence!
+  updateOrder(updateOrderInput: UpdateOrderInput!): Order!
   updatePost(input: UpdatePostInput!): Post!
   updateProduct(input: UpdateProductInput!): Product!
 }
@@ -167,6 +200,13 @@ type Notify {
   id: String!
   message: String!
   success: Boolean
+  user: User!
+}
+
+type Order {
+  createdAt: Float!
+  id: ID!
+  updatedAt: Float!
   user: User!
 }
 
@@ -211,15 +251,24 @@ type Product {
 }
 
 type Query {
+  cart: [Cart!]!
   categories(filter: GetCategoriesFilter!): [Category!]!
   categoriesCount(filter: GetCountCategoriesFilter!): Float!
+  lisence(id: Int!): Lisence!
+  lisences: [Lisence!]!
   me: User!
+  order(id: Int!): Order!
+  orders: [Order!]!
   post(filter: PostFilter!): Post!
   posts(filter: PostsFilter!): [Post!]!
   product(filter: GetProductFilter!): Product!
   products(filter: GetProductsFilter!): [Product!]!
   productsCount(filter: GetCountProductsFilter!): Float!
   tags(filter: GetCategoriesFilter!): [Tag!]!
+}
+
+input RemoreFromCartInput {
+  id: ID!
 }
 
 input RemoveCategoryInput {
@@ -258,6 +307,18 @@ input UpdateCategoryInput {
   description: String = ""
   id: ID!
   name: String
+}
+
+input UpdateLisenceInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input UpdateOrderInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 input UpdatePostInput {
