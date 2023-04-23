@@ -4,7 +4,7 @@
 
     <headless-menu as="div" class="relative inline-block text-left">
       <headless-menu-button>
-        <nuxt-img class="h-8 w-auto" src="/images/logo.png" alt="" />
+        <nuxt-img class="shadow-default box-content h-8 w-8 overflow-hidden rounded-full border-2 border-white" src="/images/user.png" alt="" />
       </headless-menu-button>
 
       <transition
