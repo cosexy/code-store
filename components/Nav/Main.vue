@@ -1,25 +1,26 @@
 <template>
   <div>
     <header class="shadow-default fixed left-0 top-0 z-40 w-full bg-white">
-      <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-        <div class="flex lg:flex-1">
+      <nav class="mx-auto flex h-[80px] max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+        <div class="flex">
           <NuxtLink to="/" class="-m-1.5 p-1.5">
             <span class="sr-only">Your Company</span>
             <NuxtImg class="h-8 w-auto" src="/images/logo.png" alt="" />
           </NuxtLink>
         </div>
+
+        <nav-menu class="ml-12 mr-auto hidden lg:flex lg:gap-x-12" :products="products" :calls-to-action="callsToAction" />
+
+        <nav-cart class="mr-10" />
+
         <div class="flex lg:hidden">
           <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = true">
             <span class="sr-only">Open main menu</span>
             <Icon name="heroicons-solid:bars-3" class="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-
-        <nav-menu :products="products" :calls-to-action="callsToAction" />
-
-        <nav-user />
+        <nav-user class="hidden lg:flex" />
       </nav>
-
       <!-- Mobile menu, show/hide based on mobile menu state. -->
       <nav-mobile-menu v-model:open="mobileMenuOpen" :menu="[...products, ...callsToAction]" />
     </header>

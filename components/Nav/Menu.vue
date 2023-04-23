@@ -1,5 +1,5 @@
 <template>
-  <headless-popover-group class="hidden lg:flex lg:gap-x-12">
+  <headless-popover-group>
     <headless-popover class="relative">
       <headless-popover-button class="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 focus:outline-0">
         Product
