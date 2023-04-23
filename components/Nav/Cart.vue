@@ -1,5 +1,5 @@
 <template>
-  <div class="relative text-gray-500">
+  <nuxt-link to="/checkout" class="relative text-gray-500">
     <Icon class="h-6 w-6" name="solar:bag-4-bold-duotone" />
 
     <!-- cart badge -->
@@ -8,7 +8,7 @@
     >
       {{ count <= 99 ? count : '99+' }}
     </span>
-  </div>
+  </nuxt-link>
 </template>
 
 <script lang="ts" setup>
