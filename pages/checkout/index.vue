@@ -81,8 +81,8 @@ import { GET_CART } from '~/apollo/queries/cart.query'
 import { GetCart } from '~/apollo/queries/__generated__/GetCart'
 import PaymentData = google.payments.api.PaymentData
 
-const { data } = await useAsyncQuery<GetCart>(GET_CART)
-const cart = computed(() => data?.value?.cart || [])
+const { result } = await useQuery<GetCart>(GET_CART)
+const cart = computed(() => result?.value?.cart || [])
 
 const { discount, final, fee } = useCart(cart)
 
