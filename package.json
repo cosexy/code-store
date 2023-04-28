@@ -10,6 +10,7 @@
     "apollo:pull": "npx apollo client:download-schema --endpoint=http://localhost:3002/graphql schema.graphql",
     "apollo:codegen": "npx apollo codegen:generate --localSchemaFile=schema.graphql --target=typescript --tagName=gql --includes=./apollo/**/*.ts --globalTypesFile=./apollo/__generated__/serverTypes.ts"
   },
+  "web-types": "./web-types.json",
   "overrides": {
     "vue": "latest"
   },
