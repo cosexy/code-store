@@ -1,360 +1,326 @@
-"""Exposes a URL that specifies the behavior of this scalar."""
-directive @specifiedBy(
-  """The URL that specifies the behavior of this scalar."""
-  url: String!
-) on SCALAR
+# This file was generated. Do not edit manually.
 
-"""
-Direct the client to resolve this field locally, either from the cache or local resolvers.
-"""
-directive @client(
-  """
-  When true, the client will never use the cache for this value. See
-  https://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true
-  """
-  always: Boolean
-) on FIELD | FRAGMENT_DEFINITION | INLINE_FRAGMENT
-
-"""
-Export this locally resolved field as a variable to be used in the remainder of this query. See
-https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
-"""
-directive @export(
-  """The variable name to export this field as."""
-  as: String!
-) on FIELD
-
-"""
-Specify a custom store key for this result. See
-https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
-"""
-directive @connection(
-  """Specify the store key."""
-  key: String!
-
-  """
-  An array of query argument names to include in the generated custom store key.
-  """
-  filter: [String!]
-) on FIELD
-
-input AddToCartInput {
-  license: LISENCE_TYPE!
-  project: ID!
-  quantity: Float
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
 }
 
 type Cart {
-  createdAt: Float!
-  id: ID!
-  license: LISENCE_TYPE!
-  product: Product!
-  quantity: Float!
-  updatedAt: Float!
-  user: User!
+    createdAt: Float!
+    id: ID!
+    license: LISENCE_TYPE!
+    product: Product!
+    quantity: Float!
+    updatedAt: Float!
+    user: User!
 }
 
 type Category {
-  createdAt: Float!
-  description: String!
-  id: ID!
-  name: String!
-  slug: String!
-  updatedAt: Float!
-}
-
-input CreateCategoryInput {
-  description: String = ""
-  name: String!
-}
-
-input CreateLisenceInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input CreateOrderInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input CreatePostInput {
-  avatar: ID!
-  content: JSON!
-  description: String!
-  name: String!
-}
-
-input CreateProductInput {
-  avatar: ID!
-  category: ID!
-  content: JSON!
-  description: String!
-  name: String!
-  price: Int!
-  sale: Int
-  tags: [String!]!
-}
-
-input CreateTagInput {
-  description: String = ""
-  name: String!
-}
-
-"""Return all categories"""
-input GetCategoriesFilter {
-  limit: Int!
-  name: String
-  offset: Int!
-  sort: String!
-}
-
-"""Return all categories"""
-input GetCountCategoriesFilter {
-  name: String
-}
-
-input GetCountProductsFilter {
-  category: ID
-  name: String
-  tags: [ID!]
-}
-
-input GetProductFilter {
-  slug: String!
-}
-
-input GetProductsFilter {
-  category: ID
-  limit: Int!
-  name: String
-  offset: Int!
-  sort: String!
-  tags: [ID!]
+    createdAt: Float!
+    description: String!
+    id: ID!
+    name: String!
+    slug: String!
+    updatedAt: Float!
 }
 
 type Image {
-  createdAt: Float!
-  height: Float!
-  id: ID!
-  mimetype: String!
-  path: String!
-  size: Float!
-  storage: MEDIA_STORAGE_ENUM!
-  updatedAt: Float!
-  width: Float!
+    createdAt: Float!
+    height: Float!
+    id: ID!
+    mimetype: String!
+    path: String!
+    size: Float!
+    storage: MEDIA_STORAGE_ENUM!
+    updatedAt: Float!
+    width: Float!
 }
-
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON
 
 type Lisence {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-enum LISENCE_TYPE {
-  EXTENDED
-  REGULAR
-}
-
-enum MEDIA_STORAGE_ENUM {
-  LOCAL
-}
-
-input ModifyQuantityCartInput {
-  id: ID!
-  license: LISENCE_TYPE
-  project: ID
-  quantity: Float
+    "Example field (placeholder)"
+    exampleField: Int!
 }
 
 type Mutation {
-  addToCart(input: AddToCartInput!): Cart!
-  clearCart: [Cart!]!
-  createCategory(input: CreateCategoryInput!): Category!
-  createLisence(createLisenceInput: CreateLisenceInput!): Lisence!
-  createOrder(createOrderInput: CreateOrderInput!): Order!
-  createPost(input: CreatePostInput!): Post!
-  createProduct(input: CreateProductInput!): Product!
-  createTag(input: CreateTagInput!): Tag!
-  deleteProduct(input: UpdateProductInput!): Product!
-  modifyQuantityCart(input: ModifyQuantityCartInput!): Cart!
-  remoreFromCart(input: RemoreFromCartInput!): Cart!
-  removeCategory(input: RemoveCategoryInput!): Category!
-  removeLisence(id: Int!): Lisence!
-  removeOrder(id: Int!): Order!
-  removePost(input: RemovePostInput!): Post!
-  signIn(input: SignInInput!): String!
-  signUp(input: SignUpInput!): String!
-  updateCategory(input: UpdateCategoryInput!): Category!
-  updateLisence(updateLisenceInput: UpdateLisenceInput!): Lisence!
-  updateOrder(updateOrderInput: UpdateOrderInput!): Order!
-  updatePost(input: UpdatePostInput!): Post!
-  updateProduct(input: UpdateProductInput!): Product!
+    addToCart(input: AddToCartInput!): Cart!
+    clearCart: [Cart!]!
+    createCategory(input: CreateCategoryInput!): Category!
+    createLisence(createLisenceInput: CreateLisenceInput!): Lisence!
+    createOrder(createOrderInput: CreateOrderInput!): Order!
+    createPost(input: CreatePostInput!): Post!
+    createProduct(input: CreateProductInput!): Product!
+    createTag(input: CreateTagInput!): Tag!
+    deleteProduct(input: UpdateProductInput!): Product!
+    modifyQuantityCart(input: ModifyQuantityCartInput!): Cart!
+    remoreFromCart(input: RemoreFromCartInput!): Cart!
+    removeCategory(input: RemoveCategoryInput!): Category!
+    removeLisence(id: Int!): Lisence!
+    removeOrder(id: Int!): Order!
+    removePost(input: RemovePostInput!): Post!
+    signIn(input: SignInInput!): String!
+    signUp(input: SignUpInput!): String!
+    updateCategory(input: UpdateCategoryInput!): Category!
+    updateLisence(updateLisenceInput: UpdateLisenceInput!): Lisence!
+    updateOrder(updateOrderInput: UpdateOrderInput!): Order!
+    updatePost(input: UpdatePostInput!): Post!
+    updateProduct(input: UpdateProductInput!): Product!
 }
 
 type Notify {
-  id: String!
-  message: String!
-  success: Boolean
-  user: User!
+    id: String!
+    message: String!
+    success: Boolean
+    user: User!
 }
 
 type Order {
-  createdAt: Float!
-  id: ID!
-  updatedAt: Float!
-  user: User!
+    createdAt: Float!
+    id: ID!
+    updatedAt: Float!
+    user: User!
 }
 
 type Post {
-  avatar: Image!
-  content: JSON!
-  createdAt: Float!
-  description: String!
-  id: ID!
-  name: String!
-  slug: String!
-  updatedAt: Float!
-  user: User!
-}
-
-input PostFilter {
-  slug: String!
-}
-
-input PostsFilter {
-  limit: Int!
-  name: String
-  offset: Int!
-  sort: String!
-  user: String
+    avatar: Image!
+    content: JSON!
+    createdAt: Float!
+    description: String!
+    id: ID!
+    name: String!
+    slug: String!
+    updatedAt: Float!
+    user: User!
 }
 
 type Product {
-  avatar: Image!
-  category: Category!
-  content: JSON!
-  createdAt: Float!
-  description: String!
-  id: ID!
-  name: String!
-  price: Float!
-  sale: Float
-  slug: String!
-  tags: [Tag!]!
-  updatedAt: Float!
-  user: User!
+    avatar: Image!
+    category: Category!
+    content: JSON!
+    createdAt: Float!
+    description: String!
+    id: ID!
+    name: String!
+    price: Float!
+    sale: Float
+    slug: String!
+    tags: [Tag!]!
+    updatedAt: Float!
+    user: User!
 }
 
 type Query {
-  cart: [Cart!]!
-  categories(filter: GetCategoriesFilter!): [Category!]!
-  categoriesCount(filter: GetCountCategoriesFilter!): Float!
-  lisence(id: Int!): Lisence!
-  lisences: [Lisence!]!
-  me: User!
-  order(id: Int!): Order!
-  orders: [Order!]!
-  post(filter: PostFilter!): Post!
-  posts(filter: PostsFilter!): [Post!]!
-  product(filter: GetProductFilter!): Product!
-  products(filter: GetProductsFilter!): [Product!]!
-  productsCount(filter: GetCountProductsFilter!): Float!
-  tags(filter: GetCategoriesFilter!): [Tag!]!
-}
-
-input RemoreFromCartInput {
-  id: ID!
-}
-
-input RemoveCategoryInput {
-  id: ID!
-}
-
-input RemovePostInput {
-  id: ID!
-}
-
-input SignInInput {
-  email: String!
-  password: String!
-}
-
-input SignUpInput {
-  email: String!
-  name: String!
-  password: String!
+    cart: [Cart!]!
+    categories(filter: GetCategoriesFilter!): [Category!]!
+    categoriesCount(filter: GetCountCategoriesFilter!): Float!
+    lisence(id: Int!): Lisence!
+    lisences: [Lisence!]!
+    me: User!
+    order(id: Int!): Order!
+    orders: [Order!]!
+    post(filter: PostFilter!): Post!
+    posts(filter: PostsFilter!): [Post!]!
+    product(filter: GetProductFilter!): Product!
+    products(filter: GetProductsFilter!): [Product!]!
+    productsCount(filter: GetCountProductsFilter!): Float!
+    tags(filter: GetCategoriesFilter!): [Tag!]!
 }
 
 type Subscription {
-  addedToCart: Cart!
-  notifyFired: Notify!
+    addedToCart: Cart!
+    notifyFired: Notify!
 }
 
 type Tag {
-  createdAt: Float!
-  description: String
-  id: ID!
-  name: String!
-  slug: String!
-  updatedAt: Float!
-}
-
-input UpdateCategoryInput {
-  description: String = ""
-  id: ID!
-  name: String
-}
-
-input UpdateLisenceInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input UpdateOrderInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input UpdatePostInput {
-  avatar: ID
-  content: JSON
-  description: String
-  id: ID!
-  name: String
-}
-
-input UpdateProductInput {
-  avatar: ID
-  category: ID
-  content: JSON
-  description: String
-  id: ID!
-  name: String
-  price: Int
-  sale: Int
-  tags: [String!]
+    createdAt: Float!
+    description: String
+    id: ID!
+    name: String!
+    slug: String!
+    updatedAt: Float!
 }
 
 type User {
-  avatar: Image
-  createdAt: Float!
-  email: String!
-  id: ID!
-  name: String!
-  role: USER_ROLE_ENUM!
-  slug: String!
-  updatedAt: Float!
+    avatar: Image
+    createdAt: Float!
+    email: String!
+    id: ID!
+    name: String!
+    role: USER_ROLE_ENUM!
+    slug: String!
+    updatedAt: Float!
+}
+
+enum LISENCE_TYPE {
+    EXTENDED
+    REGULAR
+}
+
+enum MEDIA_STORAGE_ENUM {
+    LOCAL
 }
 
 enum USER_ROLE_ENUM {
-  ADMIN
-  SUPER_ADMIN
-  USER
+    ADMIN
+    SUPER_ADMIN
+    USER
+}
+
+"The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."
+scalar JSON
+
+input AddToCartInput {
+    license: LISENCE_TYPE!
+    project: ID!
+    quantity: Float
+}
+
+input CreateCategoryInput {
+    description: String = ""
+    name: String!
+}
+
+input CreateLisenceInput {
+    "Example field (placeholder)"
+    exampleField: Int!
+}
+
+input CreateOrderInput {
+    "Example field (placeholder)"
+    exampleField: Int!
+}
+
+input CreatePostInput {
+    avatar: ID!
+    content: JSON!
+    description: String!
+    name: String!
+}
+
+input CreateProductInput {
+    avatar: ID!
+    category: ID!
+    content: JSON!
+    description: String!
+    name: String!
+    price: Int!
+    sale: Int
+    tags: [String!]!
+}
+
+input CreateTagInput {
+    description: String = ""
+    name: String!
+}
+
+"Return all categories"
+input GetCategoriesFilter {
+    limit: Int!
+    name: String
+    offset: Int!
+    sort: String!
+}
+
+"Return all categories"
+input GetCountCategoriesFilter {
+    name: String
+}
+
+input GetCountProductsFilter {
+    category: ID
+    name: String
+    tags: [ID!]
+}
+
+input GetProductFilter {
+    slug: String!
+}
+
+input GetProductsFilter {
+    category: ID
+    limit: Int!
+    name: String
+    offset: Int!
+    sort: String!
+    tags: [ID!]
+}
+
+input ModifyQuantityCartInput {
+    id: ID!
+    license: LISENCE_TYPE
+    project: ID
+    quantity: Float
+}
+
+input PostFilter {
+    slug: String!
+}
+
+input PostsFilter {
+    limit: Int!
+    name: String
+    offset: Int!
+    sort: String!
+    user: String
+}
+
+input RemoreFromCartInput {
+    id: ID!
+}
+
+input RemoveCategoryInput {
+    id: ID!
+}
+
+input RemovePostInput {
+    id: ID!
+}
+
+input SignInInput {
+    email: String!
+    password: String!
+}
+
+input SignUpInput {
+    email: String!
+    name: String!
+    password: String!
+}
+
+input UpdateCategoryInput {
+    description: String = ""
+    id: ID!
+    name: String
+}
+
+input UpdateLisenceInput {
+    "Example field (placeholder)"
+    exampleField: Int
+    id: Int!
+}
+
+input UpdateOrderInput {
+    "Example field (placeholder)"
+    exampleField: Int
+    id: Int!
+}
+
+input UpdatePostInput {
+    avatar: ID
+    content: JSON
+    description: String
+    id: ID!
+    name: String
+}
+
+input UpdateProductInput {
+    avatar: ID
+    category: ID
+    content: JSON
+    description: String
+    id: ID!
+    name: String
+    price: Int
+    sale: Int
+    tags: [String!]
 }

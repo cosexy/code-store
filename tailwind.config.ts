@@ -37,7 +37,6 @@ export default <Partial<Config>>{
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/typography'),
     require('tailwind-scrollbar-hide'),
-    require('@tailwindcss/line-clamp'),
     require('@tailwindcss/forms')
   ]
 }
