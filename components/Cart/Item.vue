@@ -36,10 +36,8 @@
 </template>
 
 <script lang="ts" setup>
-import { GetCart_cart } from '~/apollo/queries/__generated__/GetCart'
-
 defineProps<{
-  item: GetCart_cart
+  item: any
 }>()
 </script>
 

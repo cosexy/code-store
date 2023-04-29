@@ -1,0 +1,16 @@
+fragment MeItem on User {
+    id
+    name
+    email
+    role
+    avatar {
+        id
+        path
+    }
+}
+
+query Me {
+    me {
+        ...MeItem
+    }
+}

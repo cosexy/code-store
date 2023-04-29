@@ -17,11 +17,10 @@
 </template>
 
 <script setup async lang="ts">
-import { GET_PRODUCT } from '~/apollo/queries/projects.query'
-import { GetProduct } from '~/apollo/queries/__generated__/GetProduct'
+import { GetProductDocument } from '~/apollo/__generated__/graphql'
 
 const route = useRoute()
-const { data } = await useAsyncQuery<GetProduct>(GET_PRODUCT, {
+const { data } = await useAsyncQuery(GetProductDocument, {
   filter: {
     slug: route.params.id
   }

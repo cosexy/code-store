@@ -34,10 +34,8 @@
 </template>
 
 <script lang="ts" setup>
-import { GetProducts_products } from '~/apollo/queries/__generated__/GetProducts'
-
 defineProps<{
-  product: GetProducts_products
+  product: any
 }>()
 </script>
 

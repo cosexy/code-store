@@ -7,14 +7,15 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "apollo:pull": "npx apollo client:download-schema --endpoint=http://localhost:3002/graphql schema.graphql",
-    "apollo:codegen": "npx apollo codegen:generate --localSchemaFile=schema.graphql --target=typescript --tagName=gql --includes=./apollo/**/*.ts --globalTypesFile=./apollo/__generated__/serverTypes.ts"
+    "codegen": "graphql-codegen -w"
   },
   "web-types": "./web-types.json",
   "overrides": {
     "vue": "latest"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "3.3.1",
+    "@graphql-codegen/client-preset": "3.0.1",
     "@nuxt/image-edge": "^1.0.0-28020728.5df24eb",
     "@nuxtjs/apollo": "^5.0.0-alpha.6",
     "@nuxtjs/device": "^3.1.0",

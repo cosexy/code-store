@@ -12,7 +12,7 @@
         </p>
       </div>
 
-      <p>{{ item.license === LISENCE_TYPE.EXTENDED ? 'Extended' : 'Regular' }} Lisence</p>
+      <p>{{ item.license === 'EXTENDED' ? 'Extended' : 'Regular' }} Lisence</p>
 
       <div class="flex justify-between space-x-4">
         <p v-if="!item.product.sale">
@@ -32,16 +32,13 @@
 </template>
 
 <script lang="ts" setup>
-import { GetCart_cart } from '~/apollo/queries/__generated__/GetCart'
-import { LISENCE_TYPE } from '~/apollo/__generated__/serverTypes'
-
 const props = defineProps<{
-  item: GetCart_cart
+  item: any
 }>()
 
 const { regular, extended } = usePrice(props.item.product)
 const finalPrice = computed(() => {
-  return (props.item.license === LISENCE_TYPE.EXTENDED ? extended.value : regular.value) * props.item.quantity
+  return (props.item.license === 'EXTENDED' ? extended.value : regular.value) * props.item.quantity
 })
 </script>
 

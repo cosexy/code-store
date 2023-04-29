@@ -140,15 +140,12 @@
 </template>
 
 <script lang="ts" setup>
-import { SignUpInput } from '~/apollo/__generated__/serverTypes'
-import { SIGN_IN, SIGN_UP } from '~/apollo/mutations/user.mutation'
-import { SignIn, SignInVariables } from '~/apollo/mutations/__generated__/SignIn'
-import { SignUp, SignUpVariables } from '~/apollo/mutations/__generated__/SignUp'
 import { NotifyType } from '~/entities/notify.entity'
+import { SignInDocument, SignUpDocument } from '~/apollo/__generated__/graphql'
 
 const [isLogin, toggleLogin] = useToggle(true)
 
-const form = ref<SignUpInput>({
+const form = ref({
   name: '',
   email: 'heloo@guen.dev',
   password: 'Guen@2508'
@@ -183,11 +180,11 @@ const writeToken = async (token: string) => {
   }
 }
 
-const { mutate: login, onError: afterLoginError, onDone: afterLogin } = useMutation<SignIn, SignInVariables>(SIGN_IN)
+const { mutate: login, onError: afterLoginError, onDone: afterLogin } = useMutation(SignInDocument)
 afterLoginError((error) => {
   message.value = error.message
 })
-afterLogin((res) => {
+afterLogin((res: any) => {
   if (res.data?.signIn) {
     notify.fire({
       message: 'Login successfully',
@@ -197,11 +194,11 @@ afterLogin((res) => {
   }
 })
 
-const { mutate: signup, onError: afterSignUpError, onDone: afterSignUp } = useMutation<SignUp, SignUpVariables>(SIGN_UP)
+const { mutate: signup, onError: afterSignUpError, onDone: afterSignUp } = useMutation(SignUpDocument)
 afterSignUpError((error) => {
   message.value = error.message
 })
-afterSignUp((res) => {
+afterSignUp((res: any) => {
   if (res.data?.signUp) {
     notify.fire({
       message: 'Sign up successfully',

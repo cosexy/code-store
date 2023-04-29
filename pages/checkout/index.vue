@@ -77,11 +77,10 @@
 </template>
 
 <script setup async lang="ts">
-import { GET_CART } from '~/apollo/queries/cart.query'
-import { GetCart } from '~/apollo/queries/__generated__/GetCart'
 import PaymentData = google.payments.api.PaymentData
+import { GetCartDocument } from '~/apollo/__generated__/graphql'
 
-const { result } = await useQuery<GetCart>(GET_CART)
+const { result } = await useQuery(GetCartDocument)
 const cart = computed(() => result?.value?.cart || [])
 
 const { discount, final, fee } = useCart(cart)

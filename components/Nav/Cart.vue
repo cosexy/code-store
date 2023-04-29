@@ -10,29 +10,26 @@
       </span>
     </button>
 
-    <cart-main v-model:open="show" :cart="cart as GetCart_cart[]" />
+    <cart-main v-model:open="show" :cart="cart" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { GetCart, GetCart_cart } from '~/apollo/queries/__generated__/GetCart'
-import { GET_CART } from '~/apollo/queries/cart.query'
-import { ADDED_CART } from '~/apollo/subscriptions/cart.subscription'
-import { AddedToCart } from '~/apollo/subscriptions/__generated__/AddedToCart'
+import { AddToCartDocument, GetCartDocument } from '~/apollo/__generated__/graphql'
 
-const cart = ref<GetCart_cart[]>([])
+const cart = ref<[]>([])
 
 const authStore = useAuth()
 if (authStore.user) {
-  const { result } = useQuery<GetCart>(GET_CART, {})
+  const { result } = useQuery(GetCartDocument, {})
 
   const products = computed(() => result.value?.cart || [])
   syncRef(products, cart, { direction: 'ltr' })
 
   const { client } = useApolloClient()
   // real time support
-  const { onResult: addedToCart } = useSubscription<AddedToCart>(ADDED_CART)
-  addedToCart((res) => {
+  const { onResult: addedToCart } = useSubscription(AddToCartDocument)
+  addedToCart((res: any) => {
     const item = res.data?.addedToCart
     if (item) {
       // check if item already exists

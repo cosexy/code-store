@@ -1,10 +1,8 @@
 import { defineStore } from 'pinia'
-// @ts-ignore
-import { Me_me } from '~/apollo/queries/__generated__/Me'
-
+import { MeItemFragment } from '~/apollo/__generated__/graphql'
 interface State {
     token?: string
-    user?: Me_me
+    user?: MeItemFragment
 }
 
 export const useAuth = defineStore<string, State>({

@@ -16,12 +16,11 @@
 </template>
 
 <script setup lang="ts">
-import { GET_PRODUCTS } from '~/apollo/queries/projects.query'
-import { GetProducts, GetProductsVariables } from '~/apollo/queries/__generated__/GetProducts'
+import { GetProductsDocument } from '~/apollo/__generated__/graphql'
 
 const {
   result
-} = useQuery<GetProducts, GetProductsVariables>(GET_PRODUCTS, {
+} = useQuery(GetProductsDocument, {
   filter: {
     limit: 8,
     offset: 0,

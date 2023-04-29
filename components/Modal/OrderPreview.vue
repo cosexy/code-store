@@ -11,7 +11,7 @@
 
       <div class="flex items-center">
         <p class="text-lg text-gray-900 sm:text-xl">
-          $ {{ selectedSelence === LISENCE_TYPE.REGULAR ? regular : extended }}
+          $ {{ selectedSelence === 'REGULAR' ? regular : extended }}
         </p>
 
         <div class="ml-4 border-l border-gray-300 pl-4">
@@ -83,12 +83,9 @@
 </template>
 
 <script setup lang="ts">
-import { GetProduct_product } from '~/apollo/queries/__generated__/GetProduct'
-import { LISENCE_TYPE } from '~/apollo/__generated__/serverTypes'
-import { AddToCart, AddToCartVariables } from '~/apollo/mutations/__generated__/AddToCart'
-import { ADD_TO_CART } from '~/apollo/mutations/cart.mutation'
+import { AddToCartDocument } from '~/apollo/__generated__/graphql'
 
-type Product = Pick<GetProduct_product, 'id' | 'name' | 'price' | 'sale'>
+type Product = any
 const product = ref<Product>({
   id: '',
   name: '',
@@ -114,19 +111,19 @@ onReceive((_product) => {
 const lisences = computed(() => [
   {
     name: 'Regular License',
-    value: LISENCE_TYPE.REGULAR,
+    value: 'REGULAR',
     description: 'A regular license grants you limited usage rights for a product, often for a single project or client.'
   },
   {
     name: 'Extended License',
-    value: LISENCE_TYPE.EXTENDED,
+    value: 'EXTENDED',
     description: 'An extended license grants you broader usage rights for a product, often allowing for multiple projects or clients.'
   }
 ])
 
 const selectedSelence = ref(lisences.value[0].value)
 
-const { mutate: add } = useMutation<AddToCart, AddToCartVariables>(ADD_TO_CART)
+const { mutate: add } = useMutation(AddToCartDocument)
 
 const addToCart = () => {
   close()

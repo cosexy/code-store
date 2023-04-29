@@ -105,15 +105,11 @@
 
 <script lang="ts" setup>
 
-import { GetProduct_product } from '~/apollo/queries/__generated__/GetProduct'
-import { ADD_TO_CART } from '~/apollo/mutations/cart.mutation'
-import { AddToCart, AddToCartVariables } from '~/apollo/mutations/__generated__/AddToCart'
-
 defineProps<{
-  product: Pick<GetProduct_product, 'id' | 'name' | 'description' | 'price' | 'createdAt'>
+  product: any
 }>()
 
-const { open } = useDialog<Pick<GetProduct_product, 'id' | 'name' | 'price'>>('over-overview')
+const { open } = useDialog('over-overview')
 
 const highlights = [
   '200+ SVG icons in 3 unique styles',

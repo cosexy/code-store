@@ -81,11 +81,9 @@
 </template>
 
 <script setup lang="ts">
-import { GetCart_cart } from '~/apollo/queries/__generated__/GetCart'
-
 const props = defineProps<{
   open: boolean
-  cart: GetCart_cart[]
+  cart: any[]
 }>()
 const emits = defineEmits<{
   (e: 'update:open'): void

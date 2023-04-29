@@ -1,0 +1,10 @@
+mutation AddToCart($input: AddToCartInput!) {
+    addToCart(input: $input) {
+        id
+        product {
+            id
+        }
+        license
+        createdAt
+    }
+}

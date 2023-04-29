@@ -50,10 +50,8 @@
 </template>
 
 <script lang="ts" setup>
-import { GetCart_cart } from '~/apollo/queries/__generated__/GetCart'
-
 const props = defineProps<{
-  cart: GetCart_cart[]
+  cart: any
 }>()
 
 const { original, discount, fee, final, savings } = useCart(props.cart)

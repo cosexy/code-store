@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import GraphqlGenerator from './vite/plugins/vite-graphql-generator'
+import { defineNuxtConfig } from 'nuxt/config'
+
 export default defineNuxtConfig({
   modules: [
     // '@nuxtjs/eslint-module',
@@ -15,7 +16,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-headlessui'
   ],
-  // @ts-ignore
   googleFonts: {
     families: {
       Caveat: true,
@@ -23,7 +23,6 @@ export default defineNuxtConfig({
       'Nunito+Sans': [400, 500, 600, 700, 800]
     }
   },
-  // @ts-ignore
   runtimeConfig: {
     // Private config that is only available on the server
     apiSecret: process.env.NUXT_API_SECRET,
@@ -35,19 +34,13 @@ export default defineNuxtConfig({
       apiBackend: process.env.NUXT_PUBLIC_BACKEND_ENDPOIT
     }
   },
-  vite: {
-    css: {
-      preprocessorOptions: {
-        less: {
-          javascriptEnabled: true
-        }
-      }
-    },
-    plugins: [GraphqlGenerator()]
-  },
   apollo: {
     clients: {
-      default: './apollo/clients/default.ts'
+      default: {
+        httpEndpoint: process.env.NUXT_PUBLIC_APOLLO_ENDPOIT!,
+        wsEndpoint: process.env.NUXT_PUBLIC_APOLLO_WS_ENDPOIT,
+        tokenName: 'apollo:codestore.token'
+      }
     }
   },
   image: {
@@ -62,7 +55,6 @@ export default defineNuxtConfig({
     }
   },
   imports: {
-    dirs: ['stores']
-  },
-  hooks: {}
+    dirs: ['stores', 'apollo/__generated__']
+  }
 })

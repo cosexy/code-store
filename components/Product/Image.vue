@@ -7,10 +7,9 @@
 </template>
 
 <script lang="ts" setup>
-import { GetProduct_product } from '~/apollo/queries/__generated__/GetProduct'
 
 defineProps<{
-  product: Pick<GetProduct_product, 'id' | 'avatar' | 'name'>
+  product: any
 }>()
 </script>
 
