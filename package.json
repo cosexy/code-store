@@ -6,7 +6,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "postinstall": "npx patch-package & nuxt prepare",
     "codegen": "graphql-codegen -w"
   },
   "web-types": "./web-types.json",
@@ -36,6 +36,7 @@
     "nuxt-headlessui": "^1.1.4",
     "nuxt-icon": "^0.4.0",
     "nuxt-purgecss": "^2.0.0",
+    "patch-package": "^7.0.0",
     "sass": "^1.62.0",
     "tailwind-scrollbar-hide": "^1.1.7"
   },

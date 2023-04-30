@@ -1,0 +1,15 @@
+diff --git a/node_modules/@nuxtjs/apollo/dist/module.mjs b/node_modules/@nuxtjs/apollo/dist/module.mjs
+index 14ecd7b..8482a62 100644
+--- a/node_modules/@nuxtjs/apollo/dist/module.mjs
++++ b/node_modules/@nuxtjs/apollo/dist/module.mjs
+@@ -103,8 +103,8 @@ const module = defineNuxtModule({
+       { name: "gql", from: "graphql-tag" },
+       ...[
+         "useApollo",
+-        "useAsyncQuery",
+-        "useLazyAsyncQuery"
++        // "useAsyncQuery",
++        // "useLazyAsyncQuery"
+       ].map((n) => ({ name: n, from: resolve("runtime/composables") })),
+       ...!options?.autoImports ? [] : [
+         "useQuery",
