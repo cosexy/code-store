@@ -1,19 +1,22 @@
+fragment CartItem on Cart {
+    id
+    product {
+        id
+        name
+        slug
+        avatar {
+            id
+            path
+        }
+        price
+        sale
+    }
+    license
+    quantity
+}
+
 query GetCart {
     cart {
-        id
-        product {
-            id
-            name
-            slug
-            avatar {
-                id
-                path
-            }
-            price
-            sale
-
-        }
-        license
-        quantity
+        ...CartItem
     }
 }

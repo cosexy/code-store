@@ -81,9 +81,11 @@
 </template>
 
 <script setup lang="ts">
+import { CartItemFragment } from '~/apollo/__generated__/graphql'
+
 const props = defineProps<{
   open: boolean
-  cart: any[]
+  cart: CartItemFragment[]
 }>()
 const emits = defineEmits<{
   (e: 'update:open'): void

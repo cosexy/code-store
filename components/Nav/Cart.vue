@@ -16,9 +16,9 @@
 
 <script lang="ts" setup>
 import { SingleExecutionResult } from '@apollo/client'
-import { AddedToCartSubscription } from '~/apollo/__generated__/graphql'
+import { AddedToCartSubscription, CartItemFragment } from '~/apollo/__generated__/graphql'
 
-const cart = ref<[]>([])
+const cart = ref<CartItemFragment[]>([])
 
 const authStore = useAuth()
 if (authStore.user) {
@@ -50,7 +50,6 @@ if (authStore.user) {
           }
         })
       }
-      console.log('cart', client.cache)
     }
   })
 } else {
