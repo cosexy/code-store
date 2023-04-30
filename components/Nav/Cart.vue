@@ -57,7 +57,7 @@ if (authStore.user) {
 }
 const count = useArrayReduce(cart, (a, b) => a + b.quantity, 0)
 
-const [show, toogleShow] = useToggle(false)
+const [show, toogleShow] = useToggle(true)
 </script>
 
 <style scoped></style>

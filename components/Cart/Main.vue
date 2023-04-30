@@ -42,7 +42,7 @@
 
                     <div class="mt-8">
                       <div class="flow-root">
-                        <ul role="list" class="-my-6 divide-y divide-gray-200">
+                        <ul role="list" class="-my-6 divide-y divide-gray-200 text-sm">
                           <cart-item v-for="item in cart" :key="item.id" :item="item" class="flex py-6" />
                         </ul>
                       </div>
@@ -92,3 +92,13 @@ const emits = defineEmits<{
 }>()
 const _open = useVModel(props, 'open', emits)
 </script>
+
+<style scoped>
+ul:deep(._price) {
+  @apply text-gray-900;
+}
+
+ul:deep(h3) {
+  @apply text-gray-900 font-semibold;
+}
+</style>
