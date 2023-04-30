@@ -1,13 +1,11 @@
 import type { MaybeRefOrGetter } from '@vueuse/core'
 import { toRef } from '@vueuse/core'
-import { GetProduct_product } from '~/apollo/queries/__generated__/GetProduct'
-import { GetCart_cart } from '~/apollo/queries/__generated__/GetCart'
-import { LISENCE_TYPE } from '~/apollo/__generated__/serverTypes'
+import { Product } from '~/apollo/__generated__/graphql'
 
-type Product = Pick<GetProduct_product, 'price' | 'sale'>
+type ProductItem = Pick<Product, 'price' | 'sale'>
 
-type Item = Pick<GetCart_cart, 'quantity' | 'license'> & {
-  product: Product
+type Item = Pick<any, 'quantity' | 'license'> & {
+  product: ProductItem
 }
 
 export const useCart = (_products: MaybeRefOrGetter<Item[]>) => {
@@ -15,13 +13,13 @@ export const useCart = (_products: MaybeRefOrGetter<Item[]>) => {
 
   const getPrice = (item: Item) => {
     const regular = item.product.price
-    const each = item.license === LISENCE_TYPE.REGULAR ? regular : (regular * 75)
+    const each = item.license === 'REGULAR' ? regular : (regular * 75)
     return each * item.quantity
   }
 
   const getDiscountPrice = (item: Item) => {
     const regular = item.product.sale || item.product.price
-    const each = item.license === LISENCE_TYPE.REGULAR ? regular : (regular * 75)
+    const each = item.license === 'REGULAR' ? regular : (regular * 75)
     return each * item.quantity
   }
 

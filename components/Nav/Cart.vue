@@ -15,7 +15,8 @@
 </template>
 
 <script lang="ts" setup>
-import { AddToCartDocument, GetCartDocument } from '~/apollo/__generated__/graphql'
+import { SingleExecutionResult } from '@apollo/client'
+import { AddedToCartSubscription } from '~/apollo/__generated__/graphql'
 
 const cart = ref<[]>([])
 
@@ -28,8 +29,8 @@ if (authStore.user) {
 
   const { client } = useApolloClient()
   // real time support
-  const { onResult: addedToCart } = useSubscription(AddToCartDocument)
-  addedToCart((res: any) => {
+  const { onResult: addedToCart, result: data } = useSubscription(AddedToCartDocument)
+  addedToCart((res: SingleExecutionResult<AddedToCartSubscription>) => {
     const item = res.data?.addedToCart
     if (item) {
       // check if item already exists

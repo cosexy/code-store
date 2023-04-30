@@ -36,11 +36,7 @@ export default defineNuxtConfig({
   },
   apollo: {
     clients: {
-      default: {
-        httpEndpoint: process.env.NUXT_PUBLIC_APOLLO_ENDPOIT!,
-        wsEndpoint: process.env.NUXT_PUBLIC_APOLLO_WS_ENDPOIT,
-        tokenName: 'apollo:codestore.token'
-      }
+      default: './apollo/clients/default.ts'
     }
   },
   image: {
