@@ -95,10 +95,14 @@ const _open = useVModel(props, 'open', emits)
 
 <style scoped>
 ul:deep(._price) {
-  @apply text-gray-900;
+  @apply text-gray-900 text-sm;
 }
 
 ul:deep(h3) {
   @apply text-gray-900 font-semibold;
+}
+
+ul:deep(._lisence) {
+  @apply text-gray-500;
 }
 </style>

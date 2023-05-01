@@ -14,7 +14,9 @@
         </p>
       </div>
 
-      <p>{{ item.license === 'EXTENDED' ? 'Extended' : 'Regular' }} Lisence</p>
+      <p class="_lisence">
+        {{ item.license === Lisence_Type.Extended ? 'Extended' : 'Regular' }} Lisence
+      </p>
 
       <div class="flex justify-between space-x-4">
         <p v-if="!item.product.sale">
@@ -34,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import { CartItemFragment } from '~/apollo/__generated__/graphql'
+import { CartItemFragment, Lisence_Type } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
   item: CartItemFragment
