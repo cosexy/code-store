@@ -15,3 +15,10 @@ mutation RemoveFromCart($input: RemoreFromCartInput!) {
         id
     }
 }
+
+mutation ModifyQuantityCart($input: ModifyQuantityCartInput!) {
+    modifyQuantityCart(input: $input) {
+        id
+        quantity
+    }
+}

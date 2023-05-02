@@ -37,8 +37,9 @@
             :id="`quantity-${item.id}`"
             :name="`quantity-${item.id}`"
             class="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+            @change="onChangeQuantity"
           >
-            <option v-for="index in 10" :key="index" :value="index">
+            <option v-for="index in 10" :key="index" :value="index" :selected="index === item.quantity">
               {{ index }}
             </option>
           </select>
@@ -87,6 +88,27 @@ afterRemoved((result: SingleExecutionResult<RemoveFromCartMutation>) => {
     })
   }
 })
+
+const { mutate: changeQuantity } = useMutation(ModifyQuantityCartDocument)
+
+/**
+ * Change quantity
+ * @param event event
+ */
+const onChangeQuantity = (event: Event) => {
+  // event of select changed
+  // get selcted value
+  const target = event.target as HTMLSelectElement
+  const quantity = parseInt(target.value, 10)
+
+  // call mutation
+  changeQuantity({
+    input: {
+      id: props.item.id,
+      quantity
+    }
+  })
+}
 </script>
 
 <style scoped>
