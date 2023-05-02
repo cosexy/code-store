@@ -2,10 +2,8 @@ import type { MaybeRefOrGetter } from '@vueuse/core'
 import { toRef } from '@vueuse/core'
 import { CartItemFragment, Product } from '~/apollo/__generated__/graphql'
 
-type ProductItem = Pick<Product, 'price' | 'sale'>
-
 type Item = Pick<CartItemFragment, 'quantity' | 'license'> & {
-  product: ProductItem
+  product: Pick<Product, 'price' | 'sale'>
 }
 
 export const useCart = (_products: MaybeRefOrGetter<Item[]>) => {

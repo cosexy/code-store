@@ -10,19 +10,15 @@
           Subtotal
         </dt>
         <dd class="text-sm font-medium text-gray-900">
-          $99.00
+          ${{ original }}
         </dd>
       </div>
       <div class="flex items-center justify-between border-t border-gray-200 pt-4">
         <dt class="flex items-center text-sm text-gray-600">
-          <span>Shipping estimate</span>
-          <a href="#" class="ml-2 shrink-0 text-gray-400 hover:text-gray-500">
-            <span class="sr-only">Learn more about how shipping is calculated</span>
-            <QuestionMarkCircleIcon class="h-5 w-5" aria-hidden="true" />
-          </a>
+          <span>Discount</span>
         </dt>
         <dd class="text-sm font-medium text-gray-900">
-          $5.00
+          ${{ savings }}
         </dd>
       </div>
       <div class="flex items-center justify-between border-t border-gray-200 pt-4">
@@ -34,7 +30,7 @@
           </a>
         </dt>
         <dd class="text-sm font-medium text-gray-900">
-          $8.32
+          ${{ fee }}
         </dd>
       </div>
       <div class="flex items-center justify-between border-t border-gray-200 pt-4">
@@ -42,13 +38,13 @@
           Order total
         </dt>
         <dd class="text-base font-medium text-gray-900">
-          $112.32
+          ${{ final }}
         </dd>
       </div>
     </dl>
 
     <div class="mt-6">
-      <button type="submit" class="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">
+      <button class="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">
         Checkout
       </button>
     </div>
@@ -56,7 +52,18 @@
 </template>
 
 <script setup lang="ts">
+import { CartItemFragment } from '~/apollo/__generated__/graphql'
 
+const props = defineProps<{
+  products: CartItemFragment[]
+}>()
+
+const cart = ref(props.products)
+watch(() => props.products, (products) => {
+  cart.value = products
+})
+
+const { original, fee, final, savings } = useCart(cart)
 </script>
 
 <style scoped>

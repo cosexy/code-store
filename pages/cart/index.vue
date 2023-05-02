@@ -4,13 +4,13 @@
       <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
         Shopping Cart
       </h1>
-      <form class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+      <div class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
         <!-- Cart items -->
         <cart-products :products="products" />
 
         <!-- Order summary -->
-        <cart-summary />
-      </form>
+        <cart-summary :products="products" />
+      </div>
     </div>
   </div>
 </template>
