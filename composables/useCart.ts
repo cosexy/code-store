@@ -1,10 +1,10 @@
 import type { MaybeRefOrGetter } from '@vueuse/core'
 import { toRef } from '@vueuse/core'
-import { Product } from '~/apollo/__generated__/graphql'
+import { CartItemFragment, Product } from '~/apollo/__generated__/graphql'
 
 type ProductItem = Pick<Product, 'price' | 'sale'>
 
-type Item = Pick<any, 'quantity' | 'license'> & {
+type Item = Pick<CartItemFragment, 'quantity' | 'license'> & {
   product: ProductItem
 }
 
