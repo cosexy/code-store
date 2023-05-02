@@ -1,14 +1,14 @@
 <template>
   <div class="relative pb-2 pt-1">
     <div class="flex items-center">
-      <label v-if="$slots['prefix']" class="block pr-2.5">
+      <label v-if="$slots['prefix']" class="block pr-1">
         <slot name="prefix" />
       </label>
 
       <input
         ref="target"
         v-model="_value"
-        class="block flex-1 bg-transparent focus:outline-none"
+        class="block flex-1 border-0 bg-transparent focus:border-0 focus:outline-none focus:ring-0"
         :placeholder="placeholder"
         :type="type"
       >

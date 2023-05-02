@@ -1,9 +1,8 @@
 <template>
   <div class="ml-auto flex items-center">
     <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-      <a href="#" class="text-sm font-medium text-gray-700 hover:text-gray-800">Sign in</a>
+      <nav-user />
       <span class="h-6 w-px bg-gray-200" aria-hidden="true" />
-      <a href="#" class="text-sm font-medium text-gray-700 hover:text-gray-800">Create account</a>
     </div>
 
     <div class="hidden lg:ml-8 lg:flex">
@@ -28,7 +27,8 @@
 </template>
 
 <script setup lang="ts">
-
+const { open: openAuth } = useDialog('auth')
+const authStore = useAuth()
 </script>
 
 <style scoped>

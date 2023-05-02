@@ -1,8 +1,15 @@
 <template>
   <div>
-    <a v-if="!authStore.user" href="javascript:void(0)" class="text-sm font-semibold leading-6 text-gray-900" @click.prevent="openAuth()">Log in <span aria-hidden="true">&rarr;</span></a>
+    <a
+      v-if="!authStore.user"
+      href="javascript:void(0)"
+      class="text-sm font-medium text-gray-700 hover:text-gray-800"
+      @click="openAuth()"
+    >
+      Sign in
+    </a>
 
-    <headless-menu as="div" class="relative inline-block text-left">
+    <headless-menu as="div" class="relative flex items-center justify-center">
       <headless-menu-button>
         <nuxt-img class="shadow-default h-8 w-8 overflow-hidden rounded-full" src="/images/user.png" alt="" />
       </headless-menu-button>
@@ -16,7 +23,7 @@
         leave-to-class="transform scale-95 opacity-0"
       >
         <headless-menu-items
-          class="absolute right-0 mt-2 w-56 overflow-hidden rounded-md bg-slate-900 shadow focus:outline-none"
+          class="absolute right-0 mt-24 w-56 overflow-hidden rounded-md bg-slate-900 shadow focus:outline-none"
         >
           <div class="p-1">
             <headless-menu-item v-slot="{ active }">
