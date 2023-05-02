@@ -1,10 +1,8 @@
 import type { MaybeRefOrGetter } from '@vueuse/core'
 import { toRef } from '@vueuse/core'
-import { GetProduct_product } from '~/apollo/queries/__generated__/GetProduct'
+import { Product } from '~/apollo/__generated__/graphql'
 
-type Product = Pick<GetProduct_product, 'price' | 'sale'>
-
-export const usePrice = (_product: MaybeRefOrGetter<Product>) => {
+export const usePrice = (_product: MaybeRefOrGetter<Pick<Product, 'price' | 'sale'>>) => {
   const product = toRef(_product)
 
   const price = computed(() => product.value.price)

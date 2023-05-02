@@ -1,16 +1,12 @@
 <template>
   <div>
-    <button class="relative text-gray-500" @click="toogleShow()">
-      <Icon class="h-6 w-6" name="solar:bag-4-bold-duotone" />
-
-      <span
-        class="bg-primary aspect-1 shadow-primary-300 absolute right-0 top-0 flex h-[20px] -translate-y-1 translate-x-3 items-center justify-center rounded-full p-0.5 text-[10px] text-white shadow"
-      >
-        {{ count <= 99 ? count : '99+' }}
+    <nuxt-link to="/cart" class="group -m-2 flex items-center p-2">
+      <icon name="solar:bag-linear" class="h-6 w-6 shrink-0 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+      <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+        {{ count }}
       </span>
-    </button>
-
-    <cart-main v-model:open="show" :cart="cart" />
+      <span class="sr-only">items in cart, view bag</span>
+    </nuxt-link>
   </div>
 </template>
 

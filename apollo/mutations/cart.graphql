@@ -8,3 +8,10 @@ mutation AddToCart($input: AddToCartInput!) {
         createdAt
     }
 }
+
+
+mutation RemoveFromCart($input: RemoreFromCartInput!) {
+    remoreFromCart(input: $input) {
+        id
+    }
+}
