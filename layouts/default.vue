@@ -6,6 +6,7 @@
     <modal-auth />
     <client-only>
       <includes-notify />
+      <includes-search />
     </client-only>
   </div>
 </template>

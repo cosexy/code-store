@@ -3,7 +3,7 @@
     <!-- Mobile menu -->
     <nav-mobile-menu v-model:open="open" />
 
-    <header class="shadow-default fixed left-0 top-0 z-40 w-full bg-white">
+    <header class="shadow-default fixed left-0 top-0 z-30 w-full bg-white">
       <nav aria-label="Top" class="mx-auto flex h-[80px] max-w-7xl items-center">
         <button type="button" class="rounded-md bg-white p-2 text-gray-400 lg:hidden" @click="toggleOpen()">
           <span class="sr-only">Open menu</span>
