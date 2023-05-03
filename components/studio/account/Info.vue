@@ -17,38 +17,65 @@
           </div>
         </div>
 
-        <div class="sm:col-span-3">
-          <label for="first-name" class="block text-sm font-medium leading-6 text-white">First name</label>
+        <div class="col-span-full">
+          <label
+            for="name"
+            class="block text-sm font-medium leading-6 text-white"
+          >
+            Full name
+          </label>
           <div class="mt-2">
-            <input id="first-name" type="text" name="first-name" autocomplete="given-name" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
-          </div>
-        </div>
-
-        <div class="sm:col-span-3">
-          <label for="last-name" class="block text-sm font-medium leading-6 text-white">Last name</label>
-          <div class="mt-2">
-            <input id="last-name" type="text" name="last-name" autocomplete="family-name" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+            <input
+              id="name"
+              v-model="input.name"
+              type="text"
+              name="name"
+              autocomplete="name"
+              class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+            >
           </div>
         </div>
 
         <div class="col-span-full">
-          <label for="email" class="block text-sm font-medium leading-6 text-white">Email address</label>
+          <label
+            for="email"
+            class="block text-sm font-medium leading-6 text-white"
+          >
+            Email address
+          </label>
           <div class="mt-2">
-            <input id="email" name="email" type="email" autocomplete="email" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+            <input
+              id="email"
+              v-model="input.email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+            >
           </div>
         </div>
 
         <div class="col-span-full">
-          <label for="username" class="block text-sm font-medium leading-6 text-white">Username</label>
+          <label
+            for="username"
+            class="block text-sm font-medium leading-6 text-white"
+          >
+            Username
+          </label>
           <div class="mt-2">
-            <div class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-              <span class="flex select-none items-center pl-3 text-gray-400 sm:text-sm">example.com/</span>
+            <div
+              class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500"
+            >
+              <span class="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
+                code.guen.dev/
+              </span>
               <input
                 id="username"
+                v-model="input.slug"
                 type="text"
                 name="username"
                 autocomplete="username"
-                class="flex-1 border-0 bg-transparent py-1.5 pl-1 text-white focus:ring-0 sm:text-sm sm:leading-6"
+                class="flex-1 border-0 bg-transparent py-1.5 pl-0 text-white focus:ring-0 sm:text-sm sm:leading-6"
                 placeholder="janesmith"
               >
             </div>
@@ -56,20 +83,38 @@
         </div>
 
         <div class="col-span-full">
-          <label for="timezone" class="block text-sm font-medium leading-6 text-white">Timezone</label>
+          <label
+            for="occupation"
+            class="block text-sm font-medium leading-6 text-white"
+          >
+            Occupation
+          </label>
           <div class="mt-2">
-            <select id="timezone" name="timezone" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 [&_*]:text-black">
-              <option>Pacific Standard Time</option>
-              <option>Eastern Standard Time</option>
-              <option>Greenwich Mean Time</option>
+            <select
+              id="occupation"
+              name="occupation"
+              class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 [&_*]:text-black"
+            >
+              <option
+                v-for="occupation in occupations"
+                :key="occupation"
+              >
+                {{ occupation }}
+              </option>
             </select>
           </div>
         </div>
       </div>
 
       <div class="mt-8 flex">
-        <button type="submit" class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-          Save
+        <button
+          v-auto-animate
+          type="submit"
+          class="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          :disabled="loading"
+        >
+          <icon v-if="loading" name="line-md:loading-twotone-loop" class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+          Update Information
         </button>
       </div>
     </form>
@@ -77,7 +122,28 @@
 </template>
 
 <script setup lang="ts">
+import { UpdateUserInput } from '~/apollo/__generated__/graphql'
 
+const authStore = useAuth()
+
+const input = ref<UpdateUserInput>({
+  avatar: '',
+  email: '',
+  name: '',
+  occupation: '',
+  slug: ''
+})
+const insertForm = () => {
+  ['avatar', 'email', 'name', 'occupation', 'slug'].forEach((key) => {
+    input.value[key] = authStore.user?.[key]
+  })
+}
+insertForm()
+
+// List of occupations related to ID insdustry
+const occupations = computed(() => ['Designer', 'Developer', 'Product Manager', 'Data Scientist', 'Other'])
+
+const { mutate, loading } = useMutation(UpdateMeDocument)
 </script>
 
 <style scoped>

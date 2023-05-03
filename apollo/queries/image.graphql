@@ -1,0 +1,9 @@
+fragment ImageItem on Image {
+    id
+    path
+    width
+    height
+    size
+    createdAt
+    updatedAt
+}

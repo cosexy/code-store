@@ -1,11 +1,10 @@
-// @ts-ignore
-import { ImageEntity } from '~/apollo/queries/__generated__/ImageEntity'
+import { ImageItemFragment } from '~/apollo/__generated__/graphql'
 
 export const useUpload = () => {
   const runtimeConfig = useRuntimeConfig()
   const authStore = useAuth()
 
-  const fetchResult = createEventHook<ImageEntity[]>()
+  const fetchResult = createEventHook<ImageItemFragment[]>()
   const fetchError = createEventHook<any>()
 
   const loading = ref<boolean>(false)
@@ -21,7 +20,7 @@ export const useUpload = () => {
     group && formData.append('group', group)
 
     try {
-      const res = await $fetch<ImageEntity[]>(new URL('/images', runtimeConfig.public.apiBackend).href, {
+      const res = await $fetch<ImageItemFragment[]>(new URL('/images', runtimeConfig.public.apiBackend).href, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${authStore.token}`
