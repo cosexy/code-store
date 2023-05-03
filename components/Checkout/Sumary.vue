@@ -62,7 +62,7 @@ const emits = defineEmits<{
 
 const value = useVModel(props, 'cart', emits)
 
-const { original, discount, fee, final, savings } = useCart(value)
+const { original, discount, fee, final, savings } = useCart(props.cart)
 </script>
 
 <style scoped></style>

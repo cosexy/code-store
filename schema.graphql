@@ -58,7 +58,6 @@ type Mutation {
     clearCart: [Cart!]!
     createCategory(input: CreateCategoryInput!): Category!
     createLisence(createLisenceInput: CreateLisenceInput!): Lisence!
-    createMerchandise(createMerchandiseInput: CreateMerchandiseInput!): Merchandise!
     createOrder(input: CreateOrderInput!): Order!
     createPost(input: CreatePostInput!): Post!
     createProduct(input: CreateProductInput!): Product!
@@ -68,15 +67,11 @@ type Mutation {
     remoreFromCart(input: RemoreFromCartInput!): Cart!
     removeCategory(input: RemoveCategoryInput!): Category!
     removeLisence(id: Int!): Lisence!
-    removeMerchandise(id: Int!): Merchandise!
-    removeOrder(id: Int!): Order!
     removePost(input: RemovePostInput!): Post!
     signIn(input: SignInInput!): String!
     signUp(input: SignUpInput!): String!
     updateCategory(input: UpdateCategoryInput!): Category!
     updateLisence(updateLisenceInput: UpdateLisenceInput!): Lisence!
-    updateMerchandise(updateMerchandiseInput: UpdateMerchandiseInput!): Merchandise!
-    updateOrder(updateOrderInput: UpdateOrderInput!): Order!
     updatePost(input: UpdatePostInput!): Post!
     updateProduct(input: UpdateProductInput!): Product!
 }
@@ -105,7 +100,7 @@ type Order {
     "GooglePay token"
     token: String!
     updatedAt: Float!
-    user: User!
+    user: User
     "Zip"
     zip: String!
 }
@@ -145,9 +140,6 @@ type Query {
     lisence(id: Int!): Lisence!
     lisences: [Lisence!]!
     me: User!
-    merchandise(id: Int!): Merchandise!
-    order(id: Int!): Order!
-    orders: [Order!]!
     post(filter: PostFilter!): Post!
     posts(filter: PostsFilter!): [Post!]!
     product(filter: GetProductFilter!): Product!
@@ -202,7 +194,7 @@ scalar JSON
 
 input AddToCartInput {
     license: LISENCE_TYPE!
-    project: ID!
+    product: ID!
     quantity: Float
 }
 
@@ -218,7 +210,7 @@ input CreateLisenceInput {
 
 input CreateMerchandiseInput {
     license: LISENCE_TYPE!
-    project: ID!
+    product: ID!
     quantity: Float
 }
 
@@ -298,7 +290,7 @@ input GetProductsFilter {
 input ModifyQuantityCartInput {
     id: ID!
     license: LISENCE_TYPE
-    project: ID
+    product: ID
     quantity: Float
 }
 
@@ -347,32 +339,6 @@ input UpdateLisenceInput {
     "Example field (placeholder)"
     exampleField: Int
     id: Int!
-}
-
-input UpdateMerchandiseInput {
-    id: Int!
-    license: LISENCE_TYPE
-    project: ID
-    quantity: Float
-}
-
-input UpdateOrderInput {
-    "Address"
-    address: String
-    "City"
-    city: String
-    "Country"
-    country: String
-    "Email"
-    email: String
-    id: Int!
-    merchandise: [CreateMerchandiseInput!]
-    "State"
-    state: String
-    "GooglePay token"
-    token: String
-    "Zip"
-    zip: String
 }
 
 input UpdatePostInput {

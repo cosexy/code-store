@@ -3,7 +3,7 @@
     <h2 id="payment-and-shipping-heading" class="sr-only">
       Payment and shipping details
     </h2>
-    <form cart="">
+    <form cart="" @submit.prevent="openBuyPopup">
       <div class="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
         <div>
           <h3 id="contact-info-heading" class="text-lg font-medium text-gray-900">
@@ -16,6 +16,7 @@
               <input
                 id="email-address"
                 v-model="form.email"
+                required
                 type="email"
                 name="email-address"
                 autocomplete="email"
@@ -39,6 +40,7 @@
                 <input
                   id="region"
                   v-model="form.state"
+                  required
                   type="text"
                   name="region"
                   autocomplete="address-level1"
@@ -53,6 +55,7 @@
                 <input
                   id="address"
                   v-model="form.address"
+                  required
                   type="text"
                   name="address"
                   autocomplete="street-address"
@@ -68,6 +71,7 @@
                   id="city"
                   v-model="form.city"
                   type="text"
+                  required
                   name="region"
                   autocomplete="address-level1"
                   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -82,6 +86,7 @@
                   id="postal-code"
                   v-model="form.zip"
                   type="text"
+                  required
                   name="postal-code"
                   autocomplete="postal-code"
                   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -91,7 +96,10 @@
           </div>
         </div>
 
-        <div ref="googlePayRef" class="mt-10 border-t border-gray-200 pt-6">
+        <div class="mt-10 border-t border-gray-200 pt-6">
+          <button ref="submitBtn" class="sr-only" type="submit">
+            Submit
+          </button>
           <div ref="googlePayRef" class="w-full" />
         </div>
       </div>
@@ -101,7 +109,8 @@
 
 <script setup lang="ts">
 import PaymentData = google.payments.api.PaymentData
-import { CartItemFragment, CreateOrderInput } from '~/apollo/__generated__/graphql'
+import { CartItemFragment, CreateOrderInput, CreateOrderMutation } from '~/apollo/__generated__/graphql'
+import { SingleExecutionResult } from '@apollo/client'
 
 const props = defineProps<{
   cart: CartItemFragment[]
@@ -116,54 +125,84 @@ const form = reactive<Omit<CreateOrderInput, 'merchandise' | 'token'>>({
   zip: ''
 })
 
+const submitBtn = ref<HTMLButtonElement>()
+
 /**
  * Google Pay
  */
 const { discount, final, fee } = useCart(props.cart)
 const googlePayRef = ref()
-const { onCreate, toDataRequest, onApproved } = useGooglePay()
+const { onCreate, toDataRequest, onApproved, getGooglePaymentsClient } = useGooglePay()
 onCreate((client) => {
   const btn = client.createButton({
     buttonColor: 'default',
     buttonSizeMode: 'fill',
-    onClick: () => {
-      const data = toDataRequest({
-        merchantInfo: {
-          // @todo a merchant ID is available for a production environment after approval by Google
-          // See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
-          merchantId: 'BCR2DN4TZKH5LQI5',
-          merchantName: 'Guen Chan'
-        },
-        transactionInfo: {
-          displayItems: [
-            {
-              label: 'Subtotal',
-              type: 'SUBTOTAL',
-              price: `${discount.value}`
-            },
-            {
-              label: 'Fee',
-              type: 'TAX',
-              price: `${fee.value}`
-            }
-          ],
-          countryCode: 'US',
-          currencyCode: 'USD',
-          totalPriceStatus: 'FINAL',
-          totalPrice: `${final.value}`,
-          totalPriceLabel: 'Total'
-        }
-      })
-      client.loadPaymentData(data)
-    }
+    onClick: () => submitBtn.value?.click()
   })
 
   googlePayRef.value.appendChild(btn)
 })
 
+const openBuyPopup = () => {
+  const client = getGooglePaymentsClient()
+  const data = toDataRequest({
+    merchantInfo: {
+      // @todo a merchant ID is available for a production environment after approval by Google
+      // See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
+      merchantId: 'BCR2DN4TZKH5LQI5',
+      merchantName: 'Guen Chan'
+    },
+    transactionInfo: {
+      displayItems: [
+        {
+          label: 'Subtotal',
+          type: 'SUBTOTAL',
+          price: `${discount.value}`
+        },
+        {
+          label: 'Fee',
+          type: 'TAX',
+          price: `${fee.value}`
+        }
+      ],
+      countryCode: 'US',
+      currencyCode: 'USD',
+      totalPriceStatus: 'FINAL',
+      totalPrice: `${final.value}`,
+      totalPriceLabel: 'Total'
+    }
+  })
+  client.loadPaymentData(data)
+}
+
+// emit purchased
+const router = useRouter()
+
+const { mutate: createOrder, onDone: onPurchased } = useMutation(CreateOrderDocument)
+onPurchased((result: SingleExecutionResult<CreateOrderMutation>) => {
+  if (result.data?.createOrder) {
+    router.replace({
+      name: 'orders-id',
+      params: {
+        id: result.data.createOrder.id
+      }
+    })
+  }
+})
+
 const afterPurhasing = (paymentData: PaymentData) => {
-  // @todo send payment data to backend
-  console.log(paymentData)
+  const token = paymentData.paymentMethodData.tokenizationData.token
+
+  const input: CreateOrderInput = {
+    ...form,
+    token,
+    merchandise: props.cart.map((item) => ({
+      product: item.product.id,
+      quantity: item.quantity,
+      license: item.license
+    }))
+  }
+  createOrder({ input })
 }
 onApproved((paymentData) => afterPurhasing(paymentData))
 </script>

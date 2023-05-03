@@ -1,6 +1,8 @@
 <template>
-  <div class="bg-white">
-    <div v-if="cart.length">
+  <div v-auto-animate class="bg-white">
+    <checkout-empty v-if="current === 'empty'" />
+
+    <div v-else-if="current === 'purchase'">
       <div class="fixed left-0 top-0 hidden h-full w-1/2 bg-white lg:block" aria-hidden="true" />
       <div class="fixed right-0 top-0 hidden h-full w-1/2 bg-indigo-900 lg:block" aria-hidden="true" />
 
@@ -12,7 +14,8 @@
         <checkout-form :cart="cart" />
       </div>
     </div>
-    <checkout-empty v-else />
+
+    <checkout-thankyou v-else-if="current === 'thankyou'" />
   </div>
 </template>
 
@@ -20,6 +23,15 @@
 import { Ref } from 'vue'
 import { CartItemFragment, GetCartDocument } from '~/apollo/__generated__/graphql'
 
+const { current, goTo } = useStepper([
+  'empty',
+  'purchase'
+], 'empty')
+
 const { result } = await useAsyncQuery(GetCartDocument)
-const cart: Ref<CartItemFragment[]> = ref(result?.value?.cart)
+const cart: Ref<CartItemFragment[]> = ref(result.value?.cart)
+if (cart.value.length) {
+  goTo('purchase')
+}
+
 </script>
