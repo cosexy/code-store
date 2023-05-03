@@ -1,8 +1,6 @@
 <template>
   <div class="bg-white">
-    <checkout-empty />
-
-    <div v-if="false">
+    <div v-if="cart.length">
       <div class="fixed left-0 top-0 hidden h-full w-1/2 bg-white lg:block" aria-hidden="true" />
       <div class="fixed right-0 top-0 hidden h-full w-1/2 bg-indigo-900 lg:block" aria-hidden="true" />
 
@@ -14,14 +12,16 @@
         <checkout-form :cart="cart" />
       </div>
     </div>
+    <checkout-empty v-else />
   </div>
 </template>
 
 <script setup async lang="ts">
+import { Ref } from 'vue'
 import { CartItemFragment, GetCartDocument } from '~/apollo/__generated__/graphql'
 
 const { result } = await useAsyncQuery(GetCartDocument)
-const cart = computed<CartItemFragment[]>(() => result?.value?.cart || [])
+const cart: Ref<CartItemFragment[]> = ref(result?.value?.cart)
 
 watch(cart, () => {
   // console.log(cart.value)
