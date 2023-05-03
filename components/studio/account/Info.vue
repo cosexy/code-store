@@ -3,38 +3,46 @@
     name="Personal Information"
     subject="Use a permanent address where you can receive mail."
   >
-    <form class="md:col-span-2">
+    <form-instance :value="input" :rules="rules" class="md:col-span-2">
       <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-        <div class="col-span-full flex items-center gap-x-8">
-          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover">
-          <div>
-            <button type="button" class="rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">
-              Change avatar
-            </button>
-            <p class="mt-2 text-xs leading-5 text-gray-400">
-              JPG, GIF or PNG. 1MB max.
-            </p>
-          </div>
-        </div>
+        <form-image
+          v-model:value="input.avatar"
+          v-model:image="imageForm"
+          class="col-span-full flex items-center gap-x-8"
+        >
+          <template #default="{ src, provider, open }">
+            <nuxt-img
+              :src="src"
+              alt=""
+              class="h-24 w-24 flex-none cursor-pointer rounded-lg bg-gray-800 object-cover"
+              :provider="provider"
+              @click="open"
+            />
+            <div>
+              <button
+                type="button"
+                class="rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+                @click="open"
+              >
+                Change avatar
+              </button>
+              <p class="mt-2 text-xs leading-5 text-gray-400">
+                JPG, GIF or PNG. 10MB max.
+              </p>
+            </div>
+          </template>
+        </form-image>
 
-        <div class="col-span-full">
-          <label
-            for="name"
-            class="block text-sm font-medium leading-6 text-white"
+        <form-item name="name" label="Full name" class="col-span-full">
+          <input
+            id="name"
+            v-model="input.name"
+            type="text"
+            name="name"
+            autocomplete="name"
+            class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
           >
-            Full name
-          </label>
-          <div class="mt-2">
-            <input
-              id="name"
-              v-model="input.name"
-              type="text"
-              name="name"
-              autocomplete="name"
-              class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-            >
-          </div>
-        </div>
+        </form-item>
 
         <div class="col-span-full">
           <label
@@ -117,28 +125,37 @@
           Update Information
         </button>
       </div>
-    </form>
+    </form-instance>
   </studio-account-tab>
 </template>
 
 <script setup lang="ts">
-import { UpdateUserInput } from '~/apollo/__generated__/graphql'
+import { Ref } from 'vue'
+import { ImageItemFragment, UpdateUserInput } from '~/apollo/__generated__/graphql'
+import { FormRule } from '~/entities/form.entity'
 
 const authStore = useAuth()
 
-const input = ref<UpdateUserInput>({
+const input: Ref<UpdateUserInput> = ref({
   avatar: '',
   email: '',
   name: '',
   occupation: '',
   slug: ''
 })
+const imageForm: Ref<Pick<ImageItemFragment, 'id' | 'path'>> = ref({
+  id: '',
+  path: ''
+})
+
 const insertForm = () => {
   ['avatar', 'email', 'name', 'occupation', 'slug'].forEach((key) => {
     input.value[key] = authStore.user?.[key]
   })
 }
 insertForm()
+
+const rules = computed<Record<string, FormRule>>(() => ({}))
 
 // List of occupations related to ID insdustry
 const occupations = computed(() => ['Designer', 'Developer', 'Product Manager', 'Data Scientist', 'Other'])
