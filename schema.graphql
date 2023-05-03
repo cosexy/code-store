@@ -42,12 +42,24 @@ type Lisence {
     exampleField: Int!
 }
 
+type Merchandise {
+    createdAt: Float!
+    id: ID!
+    license: LISENCE_TYPE!
+    price: Float!
+    product: Product!
+    quantity: Float!
+    sale: Float
+    updatedAt: Float!
+}
+
 type Mutation {
     addToCart(input: AddToCartInput!): Cart!
     clearCart: [Cart!]!
     createCategory(input: CreateCategoryInput!): Category!
     createLisence(createLisenceInput: CreateLisenceInput!): Lisence!
-    createOrder(createOrderInput: CreateOrderInput!): Order!
+    createMerchandise(createMerchandiseInput: CreateMerchandiseInput!): Merchandise!
+    createOrder(input: CreateOrderInput!): Order!
     createPost(input: CreatePostInput!): Post!
     createProduct(input: CreateProductInput!): Product!
     createTag(input: CreateTagInput!): Tag!
@@ -56,12 +68,14 @@ type Mutation {
     remoreFromCart(input: RemoreFromCartInput!): Cart!
     removeCategory(input: RemoveCategoryInput!): Category!
     removeLisence(id: Int!): Lisence!
+    removeMerchandise(id: Int!): Merchandise!
     removeOrder(id: Int!): Order!
     removePost(input: RemovePostInput!): Post!
     signIn(input: SignInInput!): String!
     signUp(input: SignUpInput!): String!
     updateCategory(input: UpdateCategoryInput!): Category!
     updateLisence(updateLisenceInput: UpdateLisenceInput!): Lisence!
+    updateMerchandise(updateMerchandiseInput: UpdateMerchandiseInput!): Merchandise!
     updateOrder(updateOrderInput: UpdateOrderInput!): Order!
     updatePost(input: UpdatePostInput!): Post!
     updateProduct(input: UpdateProductInput!): Product!
@@ -75,10 +89,25 @@ type Notify {
 }
 
 type Order {
+    "Address"
+    address: String!
+    "City"
+    city: String!
+    "Country"
+    country: String!
     createdAt: Float!
+    "Email"
+    email: String!
     id: ID!
+    merchandise: [Merchandise!]!
+    "State"
+    state: String!
+    "GooglePay token"
+    token: String!
     updatedAt: Float!
     user: User!
+    "Zip"
+    zip: String!
 }
 
 type Post {
@@ -116,6 +145,7 @@ type Query {
     lisence(id: Int!): Lisence!
     lisences: [Lisence!]!
     me: User!
+    merchandise(id: Int!): Merchandise!
     order(id: Int!): Order!
     orders: [Order!]!
     post(filter: PostFilter!): Post!
@@ -129,6 +159,7 @@ type Query {
 type Subscription {
     addedToCart: Cart!
     notifyFired: Notify!
+    ordering: Cart!
 }
 
 type Tag {
@@ -185,9 +216,28 @@ input CreateLisenceInput {
     exampleField: Int!
 }
 
+input CreateMerchandiseInput {
+    license: LISENCE_TYPE!
+    project: ID!
+    quantity: Float
+}
+
 input CreateOrderInput {
-    "Example field (placeholder)"
-    exampleField: Int!
+    "Address"
+    address: String!
+    "City"
+    city: String!
+    "Country"
+    country: String!
+    "Email"
+    email: String!
+    merchandise: [CreateMerchandiseInput!]!
+    "State"
+    state: String!
+    "GooglePay token"
+    token: String!
+    "Zip"
+    zip: String!
 }
 
 input CreatePostInput {
@@ -299,10 +349,30 @@ input UpdateLisenceInput {
     id: Int!
 }
 
-input UpdateOrderInput {
-    "Example field (placeholder)"
-    exampleField: Int
+input UpdateMerchandiseInput {
     id: Int!
+    license: LISENCE_TYPE
+    project: ID
+    quantity: Float
+}
+
+input UpdateOrderInput {
+    "Address"
+    address: String
+    "City"
+    city: String
+    "Country"
+    country: String
+    "Email"
+    email: String
+    id: Int!
+    merchandise: [CreateMerchandiseInput!]
+    "State"
+    state: String
+    "GooglePay token"
+    token: String
+    "Zip"
+    zip: String
 }
 
 input UpdatePostInput {

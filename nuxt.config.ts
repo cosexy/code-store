@@ -14,8 +14,7 @@ export default defineNuxtConfig({
     'nuxt-icon',
     'nuxt-purgecss',
     '@vueuse/nuxt',
-    'nuxt-headlessui',
-    '@formkit/nuxt'
+    'nuxt-headlessui'
   ],
   googleFonts: {
     families: {

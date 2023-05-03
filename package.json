@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^1.0.0-beta.6",
-    "@formkit/nuxt": "^0.16.5",
     "@nguyenshort/vue-lottie": "^1.0.0",
     "@nuxtjs/robots": "^3.0.0",
     "@pinia/nuxt": "^0.4.9",
