@@ -22,8 +22,4 @@ import { CartItemFragment, GetCartDocument } from '~/apollo/__generated__/graphq
 
 const { result } = await useAsyncQuery(GetCartDocument)
 const cart: Ref<CartItemFragment[]> = ref(result?.value?.cart)
-
-watch(cart, () => {
-  // console.log(cart.value)
-})
 </script>
