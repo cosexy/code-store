@@ -13,10 +13,14 @@ export default defineComponent({
     }
   },
   setup (props: FormItemProp) {
-    const api = useFormContext('FormItem')
-    console.log(api.rules)
+    const { rules, messages } = useFormContext('FormItem')
+
+    // assign name to api.messages
+    messages.value[props.name] = ''
+
+    const validator = rules[props.name]?.validator
     return {
-      api
+      validator
     }
   },
   render () {

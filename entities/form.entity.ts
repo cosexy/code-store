@@ -1,9 +1,9 @@
-import { InjectionKey } from 'vue'
+import { InjectionKey, Ref } from 'vue'
 
 export interface FormRule {
     message: string
     required?: boolean
-    validator?: (value: any) => boolean
+    validator?: (value: any) => Promise<boolean>
     trigger?: string[]
 }
 
@@ -12,13 +12,19 @@ export interface FormProps {
     rules: Record<string, FormRule>
 }
 
-export const FormContext = Symbol('FormContext') as InjectionKey<FormProps>
+export interface FormContext extends Pick<FormProps, 'rules'> {
+    value: Ref<Record<string, any>>
+    messages: Ref<Record<string, string>>
+    validate: () => Promise<boolean>
+}
+
+export const FormContext = Symbol('FormContext') as InjectionKey<FormContext>
 
 export interface FormItemProp {
     /**
      * value path
      */
-    name: string | string[]
+    name: string
 
     /**
      * Form label

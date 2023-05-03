@@ -3,7 +3,7 @@
     name="Personal Information"
     subject="Use a permanent address where you can receive mail."
   >
-    <form-instance :value="input" :rules="rules" class="md:col-span-2">
+    <form-instance v-model:value="input" :rules="rules" class="md:col-span-2">
       <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
         <form-image
           v-model:value="input.avatar"
