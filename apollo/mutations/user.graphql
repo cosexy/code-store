@@ -5,3 +5,18 @@ mutation SignIn($input: SignInInput!) {
 mutation SignUp($input: SignUpInput!) {
     signUp(input: $input)
 }
+
+
+mutation UpdateMe($input: UpdateUserInput!) {
+    updateMe(input: $input) {
+        id
+        avatar {
+            id
+            path
+        }
+        name
+        email
+        occupation
+        slug
+    }
+}

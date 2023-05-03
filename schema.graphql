@@ -72,6 +72,7 @@ type Mutation {
     signUp(input: SignUpInput!): String!
     updateCategory(input: UpdateCategoryInput!): Category!
     updateLisence(updateLisenceInput: UpdateLisenceInput!): Lisence!
+    updateMe(input: UpdateUserInput!): User!
     updatePost(input: UpdatePostInput!): Post!
     updateProduct(input: UpdateProductInput!): Product!
 }
@@ -170,6 +171,7 @@ type User {
     email: String!
     id: ID!
     name: String!
+    occupation: String
     role: USER_ROLE_ENUM!
     slug: String!
     updatedAt: Float!
@@ -364,4 +366,12 @@ input UpdateProductInput {
     price: Int
     sale: Int
     tags: [String!]
+}
+
+input UpdateUserInput {
+    avatar: ID
+    email: String
+    name: String
+    occupation: String
+    slug: String
 }
