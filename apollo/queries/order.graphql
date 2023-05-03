@@ -1,0 +1,32 @@
+fragment OrderMerchandise on Merchandise {
+    id
+    license
+    price
+    quantity
+    sale
+    product {
+        id
+        avatar {
+            id
+            path
+        }
+        slug
+        description
+        name
+    }
+}
+
+
+fragment OrderItem on Order {
+    id
+    createdAt
+    merchandise {
+        ...OrderMerchandise
+    }
+}
+
+query Order($filter: OrderFilter!) {
+    order(filter: $filter) {
+        ...OrderItem
+    }
+}

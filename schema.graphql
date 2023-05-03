@@ -140,6 +140,7 @@ type Query {
     lisence(id: Int!): Lisence!
     lisences: [Lisence!]!
     me: User!
+    order(filter: OrderFilter!): Order!
     post(filter: PostFilter!): Post!
     posts(filter: PostsFilter!): [Post!]!
     product(filter: GetProductFilter!): Product!
@@ -292,6 +293,10 @@ input ModifyQuantityCartInput {
     license: LISENCE_TYPE
     product: ID
     quantity: Float
+}
+
+input OrderFilter {
+    id: ID!
 }
 
 input PostFilter {

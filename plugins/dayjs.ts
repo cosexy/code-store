@@ -27,7 +27,7 @@ export default defineNuxtPlugin(() => {
   dayjs.extend(relativeTime)
   dayjs.extend(localizedFormat)
   dayjs.extend(customParseFormat)
-  dayjs.locale('vi')
+  dayjs.locale('en')
 
   return {
     provide: {
