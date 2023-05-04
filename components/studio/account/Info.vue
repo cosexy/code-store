@@ -3,7 +3,12 @@
     name="Personal Information"
     subject="Use a permanent address where you can receive mail."
   >
-    <form-instance v-model:value="input" :rules="rules" class="md:col-span-2">
+    <form-instance
+      v-model:value="input"
+      :rules="rules"
+      class="md:col-span-2"
+      @on-ok="submitForm"
+    >
       <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
         <form-image
           v-model:value="input.avatar"
@@ -102,6 +107,7 @@
           <div class="mt-2">
             <select
               id="occupation"
+              v-model="input.occupation"
               name="occupation"
               class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 [&_*]:text-black"
             >
@@ -199,7 +205,14 @@ const rules = computed(() => ({
 // List of occupations related to ID insdustry
 const occupations = computed(() => ['Designer', 'Developer', 'Product Manager', 'Data Scientist', 'Other'])
 
+// submit form
 const { mutate, loading } = useMutation(UpdateMeDocument)
+const submitForm = () => mutate({
+  input: {
+    ...input.value,
+    avatar: input.value.avatar || null
+  }
+})
 </script>
 
 <style scoped>

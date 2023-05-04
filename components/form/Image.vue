@@ -9,7 +9,7 @@ import { ImageItemFragment, InputMaybe, Scalars } from '~/apollo/__generated__/g
 
 const props = defineProps<{
   image?: Pick<ImageItemFragment, 'id' | 'path'>
-  value?: string | InputMaybe<Scalars['ID']>
+  value?: Pick<ImageItemFragment, 'id' | 'path'> | string | InputMaybe<Scalars['ID']>
 }>()
 // emit v-model
 const emits = defineEmits<{

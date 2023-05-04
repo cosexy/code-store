@@ -29,7 +29,6 @@ export default defineComponent({
         Object.keys(messages.value).map(async (key) => {
           const rule = props.rules[key]
           if (rule?.validator) {
-            console.log(value.value[key])
             try {
               const result = await rule.validator(value.value[key])
               if (result) {
