@@ -13,6 +13,11 @@ export default defineComponent({
       default: () => ({})
     }
   },
+  emits: [
+    'update:value',
+    'onOk',
+    'onError'
+  ],
   setup (props: FormProps, { emit }) {
     const value = useVModel(props, 'value', emit)
     const messages = ref<Record<string, string>>({})
@@ -21,9 +26,10 @@ export default defineComponent({
     const validate = async () => {
       // validate all fields
       await Promise.all(
-        Object.keys(messages).map(async (key) => {
+        Object.keys(messages.value).map(async (key) => {
           const rule = props.rules[key]
           if (rule?.validator) {
+            console.log(value.value[key])
             try {
               const result = await rule.validator(value.value[key])
               if (result) {
@@ -37,11 +43,27 @@ export default defineComponent({
           }
         })
       )
+
       const errors = Object.values(messages.value).filter((message) => message)
-      if (errors.length) {
+      if (!errors.length) {
         return true
       }
       throw new Error('Form validation failed')
+    }
+
+    const onSubmit = async (e: Event) => {
+      e.preventDefault()
+
+      try {
+        const success = await validate()
+        if (success) {
+          emit('onOk')
+        } else {
+          emit('onError')
+        }
+      } catch (e) {
+        emit('onError')
+      }
     }
 
     provide(FormContext, {
@@ -53,10 +75,13 @@ export default defineComponent({
 
     return {
       messages,
-      validate
+      validate,
+      onSubmit
     }
   },
   render () {
-    return h('div', this.$slots.default?.())
+    return h('form', {
+      onSubmit: this.onSubmit
+    }, this.$slots.default?.())
   }
 })

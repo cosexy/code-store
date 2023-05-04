@@ -1,3 +1,4 @@
+import { useAutoAnimate } from '@formkit/auto-animate/vue'
 import { FormItemProp } from '~/entities/form.entity'
 
 export default defineComponent({
@@ -10,45 +11,71 @@ export default defineComponent({
     label: {
       type: String,
       default: ''
+    },
+    autoClear: {
+      type: Boolean,
+      default: true
     }
   },
   setup (props: FormItemProp) {
-    const { rules, messages } = useFormContext('FormItem')
+    const { messages } = useFormContext('FormItem')
 
     // assign name to api.messages
     messages.value[props.name] = ''
+    const message = computed(() => messages.value[props.name])
+    if (props.autoClear) {
+      watch(message, (value) => {
+        if (value) {
+          setTimeout(() => {
+            messages.value[props.name] = ''
+          }, 3000)
+        }
+      })
+    }
 
-    const validator = rules[props.name]?.validator
+    // v-auto-animate
+    const [parent] = useAutoAnimate()
+
     return {
-      validator
+      message,
+      parent
     }
   },
   render () {
-    const child = []
-    if (this.$slots.label) {
-      child.push(
-        this.$slots.label?.()
-      )
-    } else {
-      child.push(
-        h('label', {
-          for: this.name,
-          class: {
-            'block text-sm font-medium leading-6 text-white': true,
-            'sr-only': !this.label
-          }
-        }, this.label)
-      )
-    }
+    const label = this.$slots.label
+      ? this.$slots.label?.()
+      : h('label', {
+        for: this.name,
+        class: {
+          'block text-sm font-medium leading-6 text-white': true,
+          'sr-only': !this.label
+        }
+      }, this.label)
 
-    child.push(
-      h('div', {
-        class: [
-          'mt-2'
+    const message = h('p', {
+      class: ['mt-2 text-sm text-red-600']
+    }, this.message)
+
+    const content = h('div', {
+      class: [
+        'mt-2'
+      ]
+    }, this.$slots.default?.({
+      message: this.message
+    }))
+
+    const nodes = this.message
+      ? [
+          label,
+          content,
+          message
         ]
-      }, this.$slots.default?.())
-    )
+      : [label, content]
 
-    return h('div', child)
+    // v-auto-animate
+    return h('div', {
+      ref: 'parent'
+    }, nodes
+    )
   }
 })

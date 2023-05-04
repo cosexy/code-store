@@ -2,9 +2,12 @@ import { InjectionKey, Ref } from 'vue'
 
 export interface FormRule {
     message: string
-    required?: boolean
-    validator?: (value: any) => Promise<boolean>
+    validator: (value: any) => Promise<boolean>
     trigger?: string[]
+}
+
+export interface FormInstance {
+    validate: () => Promise<boolean>
 }
 
 export interface FormProps {
@@ -30,4 +33,9 @@ export interface FormItemProp {
      * Form label
      */
     label?: string
+
+    /**
+     * Auto clear message when get error
+     */
+    autoClear?: boolean
 }

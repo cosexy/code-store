@@ -5,11 +5,11 @@
 </template>
 
 <script setup lang="ts">
-import { ImageItemFragment } from '~/apollo/__generated__/graphql'
+import { ImageItemFragment, InputMaybe, Scalars } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
   image?: Pick<ImageItemFragment, 'id' | 'path'>
-  value?: string
+  value?: string | InputMaybe<Scalars['ID']>
 }>()
 // emit v-model
 const emits = defineEmits<{

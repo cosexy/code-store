@@ -33,62 +33,64 @@
           </template>
         </form-image>
 
-        <form-item name="name" label="Full name" class="col-span-full">
+        <form-item
+          v-slot="{ message }"
+          name="name"
+          label="Full name"
+          class="col-span-full"
+        >
           <input
             id="name"
             v-model="input.name"
             type="text"
             name="name"
             autocomplete="name"
-            class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+            class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+            :class="[message ? 'ring-rose-500 focus:ring-rose-500' : 'focus:ring-indigo-500']"
           >
         </form-item>
 
-        <div class="col-span-full">
-          <label
-            for="email"
-            class="block text-sm font-medium leading-6 text-white"
+        <form-item
+          v-slot="{ message }"
+          name="email"
+          label="Email ID"
+          class="col-span-full"
+        >
+          <input
+            id="email"
+            v-model="input.email"
+            name="email"
+            type="text"
+            autocomplete="email"
+            class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+            :class="[message ? 'ring-rose-500 focus:ring-rose-500' : 'focus:ring-indigo-500']"
           >
-            Email address
-          </label>
-          <div class="mt-2">
-            <input
-              id="email"
-              v-model="input.email"
-              name="email"
-              type="email"
-              autocomplete="email"
-              class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-            >
-          </div>
-        </div>
+        </form-item>
 
-        <div class="col-span-full">
-          <label
-            for="username"
-            class="block text-sm font-medium leading-6 text-white"
+        <form-item
+          v-slot="{ message }"
+          name="slug"
+          label="Username"
+          class="col-span-full"
+        >
+          <div
+            class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset"
+            :class="[message ? 'ring-rose-500 focus-within:ring-rose-500' : 'focus-within:ring-indigo-500']"
           >
-            Username
-          </label>
-          <div class="mt-2">
-            <div
-              class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500"
+            <span class="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
+              code.guen.dev/
+            </span>
+            <input
+              id="username"
+              v-model="input.slug"
+              type="text"
+              name="username"
+              autocomplete="username"
+              class="flex-1 border-0 bg-transparent py-1.5 pl-0 text-white focus:ring-0 sm:text-sm sm:leading-6"
+              placeholder="cute"
             >
-              <span class="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
-                code.guen.dev/
-              </span>
-              <input
-                id="username"
-                v-model="input.slug"
-                type="text"
-                name="username"
-                autocomplete="username"
-                class="flex-1 border-0 bg-transparent py-1.5 pl-0 text-white focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="janesmith"
-              >
-            </div>
           </div>
-        </div>
+        </form-item>
 
         <div class="col-span-full">
           <label
@@ -155,7 +157,44 @@ const insertForm = () => {
 }
 insertForm()
 
-const rules = computed<Record<string, FormRule>>(() => ({}))
+const rules = computed(() => ({
+  name: {
+    message: 'Please enter your name',
+    validator: (value: string) => {
+      const name = value.trim()
+      if (name.length < 4) {
+        throw new Error('Name must be at least 5 characters')
+      }
+      return true
+    }
+  },
+  email: {
+    message: 'Please enter your email',
+    validator: (value: string) => {
+      const email = value.trim()
+      if (!email) {
+        throw new Error('Email is required')
+      }
+      if (!email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
+        throw new Error('Email is invalid')
+      }
+      return true
+    }
+  },
+  slug: {
+    message: 'Please enter your username',
+    validator: (value: string) => {
+      const slug = value.trim()
+      if (!slug) {
+        throw new Error('Username is required')
+      }
+      if (!slug.match(/^[a-zA-Z0-9._-]+$/)) {
+        throw new Error('Username is invalid')
+      }
+      return true
+    }
+  }
+}))
 
 // List of occupations related to ID insdustry
 const occupations = computed(() => ['Designer', 'Developer', 'Product Manager', 'Data Scientist', 'Other'])
