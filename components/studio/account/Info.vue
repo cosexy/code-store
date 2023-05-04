@@ -12,7 +12,6 @@
       <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
         <form-image
           v-model:value="input.avatar"
-          v-model:image="imageForm"
           class="col-span-full flex items-center gap-x-8"
         >
           <template #default="{ src, provider, open }">
@@ -124,7 +123,6 @@
 
       <div class="mt-8 flex">
         <button
-          v-auto-animate
           type="submit"
           class="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           :disabled="loading"
@@ -140,20 +138,22 @@
 <script setup lang="ts">
 import { Ref } from 'vue'
 import { ImageItemFragment, UpdateUserInput } from '~/apollo/__generated__/graphql'
-import { FormRule } from '~/entities/form.entity'
 
 const authStore = useAuth()
 
-const input: Ref<UpdateUserInput> = ref({
-  avatar: '',
+interface CustomInputType extends Omit<UpdateUserInput, 'avatar'> {
+  avatar: Pick<ImageItemFragment, 'id' | 'path'>
+}
+
+const input: Ref<CustomInputType> = ref({
+  avatar: {
+    id: '',
+    path: ''
+  },
   email: '',
   name: '',
   occupation: '',
   slug: ''
-})
-const imageForm: Ref<Pick<ImageItemFragment, 'id' | 'path'>> = ref({
-  id: '',
-  path: ''
 })
 
 const insertForm = () => {
@@ -210,7 +210,7 @@ const { mutate, loading } = useMutation(UpdateMeDocument)
 const submitForm = () => mutate({
   input: {
     ...input.value,
-    avatar: input.value.avatar || null
+    avatar: input.value.avatar ? input.value.avatar.id : undefined
   }
 })
 </script>

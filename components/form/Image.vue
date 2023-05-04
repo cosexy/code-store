@@ -5,18 +5,15 @@
 </template>
 
 <script setup lang="ts">
-import { ImageItemFragment, InputMaybe, Scalars } from '~/apollo/__generated__/graphql'
+import { ImageItemFragment } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
-  image?: Pick<ImageItemFragment, 'id' | 'path'>
-  value?: Pick<ImageItemFragment, 'id' | 'path'> | string | InputMaybe<Scalars['ID']>
+  value?: Pick<ImageItemFragment, 'id' | 'path'>
 }>()
 // emit v-model
 const emits = defineEmits<{
   (event: 'update:value', value?: string): void
-  (event: 'update:image', value?: Pick<ImageItemFragment, 'id' | 'path'>): void
 }>()
-const _image = useVModel(props, 'image', emits)
 const _value = useVModel(props, 'value', emits)
 
 const { upload, onResult } = useUpload()
@@ -29,8 +26,10 @@ watch(files, (files) => files?.length && upload(files[0]))
 
 const afterUpload = (files: Pick<ImageItemFragment, 'id' | 'path'>[]) => {
   if (files.length) {
-    _image.value = files[0]
-    _value.value = _image.value.id
+    _value.value = {
+      id: files[0].id,
+      path: files[0].path
+    }
   }
   reset()
 }
@@ -38,8 +37,8 @@ const afterUpload = (files: Pick<ImageItemFragment, 'id' | 'path'>[]) => {
 onResult(afterUpload)
 
 // render data
-const src = computed(() => _image.value?.path || '/images/user.png')
-const provider = computed(() => _image.value?.path ? 'backend' : '')
+const src = computed(() => _value.value?.path || '/images/user.png')
+const provider = computed(() => _value.value?.path ? 'backend' : '')
 </script>
 
 <style scoped>

@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
-import { User } from '~/apollo/__generated__/graphql'
+import { MeQuery } from '~/apollo/__generated__/graphql'
 interface State {
     token?: string
-    user?: User
+    user?: MeQuery['me']
 }
 
 export const useAuth = defineStore<string, State>({

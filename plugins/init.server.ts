@@ -4,19 +4,15 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const authStore = useAuth()
 
   const token = getCookie(useRequestEvent(), 'apollo:codestore.token')
-
-  if (token && process.server) {
+  if (token) {
     try {
-      // @ts-ignore
-      const { user } = await $fetch('/api/me', {
-        headers: {
-          Authorization: 'Bearer ' + token
-        }
+      const { client } = useApolloClient()
+      const { data } = await client.query({
+        query: MeDocument
       })
 
-      if (user) {
-        // @ts-ignore
-        authStore.user = user
+      if (data.me) {
+        authStore.user = data.me
         authStore.token = token
       }
     } catch (e) {
