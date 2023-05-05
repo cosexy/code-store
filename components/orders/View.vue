@@ -109,24 +109,25 @@
 </template>
 
 <script setup lang="ts" async>
-import { OrderItemFragment, OrderMerchandiseFragment } from '~/apollo/__generated__/graphql'
+import { OrderMerchandiseFragment, OrderQuery } from '~/apollo/__generated__/graphql'
+import { UseCartItem } from '~/composables/useCart'
 
 const props = defineProps<{
-  order: OrderItemFragment
+  order: OrderQuery['order']
 }>()
 
 const order = computed(() => props.order)
 const merchandise = computed<OrderMerchandiseFragment[]>(() => order.value?.merchandise as OrderMerchandiseFragment[])
 
 // cart
-const cart = computed(() => merchandise.value.map((item) => ({
-  ...item,
+const cart = computed<UseCartItem[]>(() => merchandise.value.map((item) => ({
+  quantity: item.quantity,
+  licenseType: item.lisence.type,
   product: {
-    ...item.product,
     price: item.price,
     sale: item.sale
   }
 })))
 
-const { final } = useCart(cart as any)
+const { final } = useCart(cart)
 </script>

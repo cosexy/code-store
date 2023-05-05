@@ -31,7 +31,29 @@ fragment OrderItem on Order {
 
 query Order($filter: OrderFilter!) {
     order(filter: $filter) {
-        ...OrderItem
+        id
+        createdAt
+        merchandise {
+            id
+            lisence {
+                id
+                type
+                value
+            }
+            price
+            quantity
+            sale
+            product {
+                id
+                avatar {
+                    id
+                    path
+                }
+                slug
+                description
+                name
+            }
+        }
     }
 }
 
