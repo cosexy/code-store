@@ -12,7 +12,7 @@
         </p>
       </div>
 
-      <p>{{ item.license === 'EXTENDED' ? 'Extended' : 'Regular' }} Lisence</p>
+      <p>{{ item.licenseType === Lisence_Type.Extended ? 'Extended' : 'Regular' }} Lisence</p>
 
       <div class="flex justify-between space-x-4">
         <p v-if="!item.product.sale">
@@ -32,13 +32,15 @@
 </template>
 
 <script lang="ts" setup>
+import { GetCartQuery, Lisence_Type } from '~/apollo/__generated__/graphql'
+
 const props = defineProps<{
-  item: any
+  item: GetCartQuery['cart'][0]
 }>()
 
 const { regular, extended } = usePrice(props.item.product)
 const finalPrice = computed(() => {
-  return (props.item.license === 'EXTENDED' ? extended.value : regular.value) * props.item.quantity
+  return (props.item.licenseType === Lisence_Type.Extended ? extended.value : regular.value) * props.item.quantity
 })
 </script>
 

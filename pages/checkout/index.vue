@@ -20,8 +20,7 @@
 </template>
 
 <script setup async lang="ts">
-import { Ref } from 'vue'
-import { CartItemFragment, GetCartDocument } from '~/apollo/__generated__/graphql'
+import { GetCartDocument, GetCartQuery } from '~/apollo/__generated__/graphql'
 
 const { current, goTo } = useStepper([
   'empty',
@@ -29,7 +28,7 @@ const { current, goTo } = useStepper([
 ], 'empty')
 
 const { result } = await useAsyncQuery(GetCartDocument)
-const cart: Ref<CartItemFragment[]> = ref(result.value?.cart)
+const cart = ref<GetCartQuery['cart']>(result.value?.cart || [])
 if (cart.value.length) {
   goTo('purchase')
 }

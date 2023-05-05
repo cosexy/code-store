@@ -50,14 +50,14 @@
 </template>
 
 <script lang="ts" setup>
-import { CartItemFragment } from '~/apollo/__generated__/graphql'
+import { GetCartQuery } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
-  cart: CartItemFragment[]
+  cart: GetCartQuery['cart']
 }>()
 
 const emits = defineEmits<{
-  (event: 'update:cart', value: CartItemFragment[]): void
+  (event: 'update:cart', value: GetCartQuery['cart']): void
 }>()
 
 const value = useVModel(props, 'cart', emits)

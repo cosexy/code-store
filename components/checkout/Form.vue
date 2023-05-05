@@ -82,10 +82,17 @@
 
           <div class="relative mt-6 flex gap-x-3">
             <div class="flex h-6 items-center">
-              <input id="candidates" aria-describedby="candidates-description" name="candidates" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+              <input
+                id="separate"
+                v-model="form.separate"
+                aria-describedby="candidates-description"
+                name="separate"
+                type="checkbox"
+                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+              >
             </div>
             <div class="text-sm leading-6">
-              <label for="comments" class="font-medium">
+              <label for="separate" class="font-medium">
                 Separate license
               </label>
               <p class="text-gray-400">
@@ -109,19 +116,19 @@
 <script setup lang="ts">
 import { SingleExecutionResult } from '@apollo/client'
 import PaymentData = google.payments.api.PaymentData
-import { CartItemFragment, CreateOrderInput, CreateOrderMutation } from '~/apollo/__generated__/graphql'
+import { CreateOrderInput, CreateOrderMutation, GetCartQuery } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
-  cart: CartItemFragment[]
+  cart: GetCartQuery['cart']
 }>()
 
 const form = reactive<Omit<CreateOrderInput, 'merchandise' | 'token'>>({
   address: '',
   city: '',
   country: '',
-  email: '',
   state: '',
-  zip: ''
+  zip: '',
+  separate: false
 })
 
 const submitBtn = ref<HTMLButtonElement>()
@@ -198,7 +205,7 @@ const afterPurhasing = (paymentData: PaymentData) => {
     merchandise: props.cart.map((item) => ({
       product: item.product.id,
       quantity: item.quantity,
-      license: item.license
+      licenseType: item.licenseType
     }))
   }
   createOrder({ input })
