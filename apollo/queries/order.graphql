@@ -1,6 +1,10 @@
 fragment OrderMerchandise on Merchandise {
     id
-    license
+    lisence {
+        id
+        type
+        value
+    }
     price
     quantity
     sale

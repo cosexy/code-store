@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { AddToCartDocument } from '~/apollo/__generated__/graphql'
+import { AddToCartDocument, Lisence_Type } from '~/apollo/__generated__/graphql'
 
 type Product = any
 const product = ref<Product>({
@@ -111,12 +111,12 @@ onReceive((_product) => {
 const lisences = computed(() => [
   {
     name: 'Regular License',
-    value: 'REGULAR',
+    value: Lisence_Type.Regular,
     description: 'A regular license grants you limited usage rights for a product, often for a single project or client.'
   },
   {
     name: 'Extended License',
-    value: 'EXTENDED',
+    value: Lisence_Type.Extended,
     description: 'An extended license grants you broader usage rights for a product, often allowing for multiple projects or clients.'
   }
 ])
@@ -127,6 +127,6 @@ const { mutate: add } = useMutation(AddToCartDocument)
 
 const addToCart = () => {
   close()
-  add({ input: { project: product.value.id, license: selectedSelence.value } })
+  add({ input: { product: product.value.id, licenseType: selectedSelence.value } })
 }
 </script>

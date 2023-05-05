@@ -13,7 +13,7 @@ subscription AddedToCart {
             sale
 
         }
-        license
+        licenseType
         quantity
     }
 }

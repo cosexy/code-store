@@ -9,7 +9,7 @@ schema {
 type Cart {
     createdAt: Float!
     id: ID!
-    license: LISENCE_TYPE!
+    licenseType: LISENCE_TYPE!
     product: Product!
     quantity: Float!
     updatedAt: Float!
@@ -38,14 +38,25 @@ type Image {
 }
 
 type Lisence {
-    "Example field (placeholder)"
-    exampleField: Int!
+    createdAt: Float!
+    domains: [LisenceDomain!]!
+    id: ID!
+    maximum: Float!
+    type: LISENCE_TYPE!
+    updatedAt: Float!
+    value: String!
+}
+
+type LisenceDomain {
+    domain: String!
+    id: ID!
 }
 
 type Merchandise {
     createdAt: Float!
     id: ID!
-    license: LISENCE_TYPE!
+    lisence: Lisence!
+    order: Order!
     price: Float!
     product: Product!
     quantity: Float!
@@ -57,21 +68,18 @@ type Mutation {
     addToCart(input: AddToCartInput!): Cart!
     clearCart: [Cart!]!
     createCategory(input: CreateCategoryInput!): Category!
-    createLisence(createLisenceInput: CreateLisenceInput!): Lisence!
     createOrder(input: CreateOrderInput!): Order!
     createPost(input: CreatePostInput!): Post!
     createProduct(input: CreateProductInput!): Product!
     createTag(input: CreateTagInput!): Tag!
     deleteProduct(input: UpdateProductInput!): Product!
-    modifyQuantityCart(input: ModifyQuantityCartInput!): Cart!
     remoreFromCart(input: RemoreFromCartInput!): Cart!
     removeCategory(input: RemoveCategoryInput!): Category!
-    removeLisence(id: Int!): Lisence!
     removePost(input: RemovePostInput!): Post!
     signIn(input: SignInInput!): String!
     signUp(input: SignUpInput!): String!
+    updateCart(input: UpdateCartInput!): Cart!
     updateCategory(input: UpdateCategoryInput!): Category!
-    updateLisence(updateLisenceInput: UpdateLisenceInput!): Lisence!
     updateMe(input: UpdateUserInput!): User!
     updatePost(input: UpdatePostInput!): Post!
     updateProduct(input: UpdateProductInput!): Product!
@@ -92,8 +100,6 @@ type Order {
     "Country"
     country: String!
     createdAt: Float!
-    "Email"
-    email: String!
     id: ID!
     merchandise: [Merchandise!]!
     "State"
@@ -124,7 +130,9 @@ type Product {
     content: JSON!
     createdAt: Float!
     description: String!
+    highlights: [String!]!
     id: ID!
+    license: String!
     name: String!
     price: Float!
     sale: Float
@@ -138,8 +146,6 @@ type Query {
     cart: [Cart!]!
     categories(filter: GetCategoriesFilter!): [Category!]!
     categoriesCount(filter: GetCountCategoriesFilter!): Float!
-    lisence(id: Int!): Lisence!
-    lisences: [Lisence!]!
     me: User!
     order(filter: OrderFilter!): Order!
     orders(filter: OrdersFilter!): [Order!]!
@@ -198,7 +204,7 @@ enum USER_ROLE_ENUM {
 scalar JSON
 
 input AddToCartInput {
-    license: LISENCE_TYPE!
+    licenseType: LISENCE_TYPE!
     product: ID!
     quantity: Float
 }
@@ -208,13 +214,8 @@ input CreateCategoryInput {
     name: String!
 }
 
-input CreateLisenceInput {
-    "Example field (placeholder)"
-    exampleField: Int!
-}
-
 input CreateMerchandiseInput {
-    license: LISENCE_TYPE!
+    licenseType: LISENCE_TYPE!
     product: ID!
     quantity: Float
 }
@@ -226,9 +227,9 @@ input CreateOrderInput {
     city: String!
     "Country"
     country: String!
-    "Email"
-    email: String!
     merchandise: [CreateMerchandiseInput!]!
+    "Separate key"
+    separate: Boolean
     "State"
     state: String!
     "GooglePay token"
@@ -292,13 +293,6 @@ input GetProductsFilter {
     tags: [ID!]
 }
 
-input ModifyQuantityCartInput {
-    id: ID!
-    license: LISENCE_TYPE
-    product: ID
-    quantity: Float
-}
-
 input OrderFilter {
     id: ID!
 }
@@ -344,16 +338,17 @@ input SignUpInput {
     password: String!
 }
 
+input UpdateCartInput {
+    id: ID!
+    licenseType: LISENCE_TYPE
+    product: ID
+    quantity: Float
+}
+
 input UpdateCategoryInput {
     description: String = ""
     id: ID!
     name: String
-}
-
-input UpdateLisenceInput {
-    "Example field (placeholder)"
-    exampleField: Int
-    id: Int!
 }
 
 input UpdatePostInput {

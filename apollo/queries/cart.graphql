@@ -11,7 +11,7 @@ fragment CartItem on Cart {
         price
         sale
     }
-    license
+    licenseType
     quantity
 }
 

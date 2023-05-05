@@ -4,7 +4,7 @@ mutation AddToCart($input: AddToCartInput!) {
         product {
             id
         }
-        license
+        licenseType
         createdAt
     }
 }
@@ -16,8 +16,8 @@ mutation RemoveFromCart($input: RemoreFromCartInput!) {
     }
 }
 
-mutation ModifyQuantityCart($input: ModifyQuantityCartInput!) {
-    modifyQuantityCart(input: $input) {
+mutation UpdateCart($input: UpdateCartInput!) {
+    updateCart(input: $input) {
         id
         quantity
     }
