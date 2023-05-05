@@ -63,19 +63,19 @@
 <script setup lang="ts">
 import { SingleExecutionResult } from '@apollo/client'
 import {
-  CartItemFragment,
+  GetCartQuery,
   Lisence_Type,
   RemoveFromCartDocument,
   RemoveFromCartMutation
 } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
-  item: CartItemFragment
+  item: GetCartQuery['cart'][0]
 }>()
 
 const { regular, extended } = usePrice(props.item.product)
 const finalPrice = computed(() => {
-  return (props.item.license === Lisence_Type.Extended ? extended.value : regular.value) * props.item.quantity
+  return (props.item.licenseType === Lisence_Type.Extended ? extended.value : regular.value) * props.item.quantity
 })
 
 const { client } = useApolloClient()
@@ -89,7 +89,7 @@ afterRemoved((result: SingleExecutionResult<RemoveFromCartMutation>) => {
   }
 })
 
-const { mutate: changeQuantity } = useMutation(ModifyQuantityCartDocument)
+const { mutate: changeQuantity } = useMutation(UpdateCartDocument)
 
 /**
  * Change quantity

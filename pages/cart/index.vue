@@ -16,8 +16,8 @@
 </template>
 
 <script setup lang="ts" async>
-import { CartItemFragment, GetCartDocument } from '~/apollo/__generated__/graphql'
+import { GetCartDocument } from '~/apollo/__generated__/graphql'
 
 const { result } = await useAsyncQuery(GetCartDocument)
-const products = computed<CartItemFragment[]>(() => result?.value?.cart || [])
+const products = computed(() => result?.value?.cart || [])
 </script>

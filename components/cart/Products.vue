@@ -11,10 +11,10 @@
 </template>
 
 <script setup lang="ts">
-import { CartItemFragment } from '~/apollo/__generated__/graphql'
+import { GetCartQuery } from '~/apollo/__generated__/graphql'
 
 defineProps<{
-  products: CartItemFragment[]
+  products: GetCartQuery['cart']
 }>()
 </script>
 

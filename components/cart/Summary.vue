@@ -55,10 +55,10 @@
 </template>
 
 <script setup lang="ts">
-import { CartItemFragment } from '~/apollo/__generated__/graphql'
+import { GetCartQuery } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
-  products: CartItemFragment[]
+  products: GetCartQuery['cart']
 }>()
 
 const cart = ref(props.products)
