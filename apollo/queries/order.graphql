@@ -30,3 +30,14 @@ query Order($filter: OrderFilter!) {
         ...OrderItem
     }
 }
+
+query ordersCount {
+    ordersCount
+}
+
+
+query orders($filter: OrdersFilter!) {
+    orders(filter: $filter) {
+        ...OrderItem
+    }
+}

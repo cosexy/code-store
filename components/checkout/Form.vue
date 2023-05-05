@@ -6,27 +6,6 @@
     <form cart="" @submit.prevent="openBuyPopup">
       <div class="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
         <div>
-          <h3 id="contact-info-heading" class="text-lg font-medium text-gray-900">
-            Contact information
-          </h3>
-
-          <div class="mt-6">
-            <label for="email-address" class="block text-sm font-medium text-gray-700">Email address</label>
-            <div class="mt-1">
-              <input
-                id="email-address"
-                v-model="form.email"
-                required
-                type="email"
-                name="email-address"
-                autocomplete="email"
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              >
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-10">
           <h3 class="text-lg font-medium text-gray-900">
             Billing information
           </h3>
@@ -96,6 +75,26 @@
           </div>
         </div>
 
+        <div class="mt-10">
+          <h3 class="text-lg font-medium text-gray-900">
+            Lisence options
+          </h3>
+
+          <div class="relative mt-6 flex gap-x-3">
+            <div class="flex h-6 items-center">
+              <input id="candidates" aria-describedby="candidates-description" name="candidates" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+            </div>
+            <div class="text-sm leading-6">
+              <label for="comments" class="font-medium">
+                Separate license
+              </label>
+              <p class="text-gray-400">
+                You will receive a separate license for each item in your cart.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div class="mt-10 border-t border-gray-200 pt-6">
           <button ref="submitBtn" class="sr-only" type="submit">
             Submit
@@ -108,9 +107,9 @@
 </template>
 
 <script setup lang="ts">
+import { SingleExecutionResult } from '@apollo/client'
 import PaymentData = google.payments.api.PaymentData
 import { CartItemFragment, CreateOrderInput, CreateOrderMutation } from '~/apollo/__generated__/graphql'
-import { SingleExecutionResult } from '@apollo/client'
 
 const props = defineProps<{
   cart: CartItemFragment[]

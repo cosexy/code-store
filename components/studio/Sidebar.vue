@@ -9,12 +9,56 @@
         <ul role="list" class="flex flex-1 flex-col gap-y-7">
           <li>
             <ul role="list" class="-mx-2 space-y-1">
-              <li v-for="item in navigation" :key="item.name">
-                <a href="#" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white', 'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6']">
-                  <icon :name="item.icon" class="h-6 w-6 shrink-0" aria-hidden="true" />
-                  {{ item.name }}
-                </a>
-              </li>
+              <headless-disclosure
+                v-for="item in navigation"
+                :key="item.name"
+                v-slot="{ open }"
+                as="li"
+              >
+                <headless-disclosure-button as="template">
+                  <a
+                    href="javascript:void(0)"
+                    :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white']"
+                    class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                  >
+                    <icon :name="item.icon" class="h-6 w-6 shrink-0" aria-hidden="true" />
+                    {{ item.name }}
+
+                    <icon
+                      v-if="item.children"
+                      class="ml-auto h-6 w-6 shrink-0 opacity-40"
+                      :class="{
+                        'rotate-180': open
+                      }"
+                      name="material-symbols:keyboard-arrow-down-rounded"
+                    />
+
+                  </a>
+                </headless-disclosure-button>
+                <transition
+                  v-if="item.children"
+                  enter-active-class="transition duration-100 ease-out"
+                  enter-from-class="transform scale-95 opacity-0"
+                  enter-to-class="transform scale-100 opacity-100"
+                  leave-active-class="transition duration-75 ease-out"
+                  leave-from-class="transform scale-100 opacity-100"
+                  leave-to-class="transform scale-95 opacity-0"
+                >
+                  <headless-disclosure-panel class="text-gray-500">
+                    <ul class="pb-2 pl-5 pt-3 text-sm">
+                      <li
+                        v-for="(child, index) in item.children"
+                        :key="index"
+                      >
+                        <a href="javascript:void(0)" class="flex items-center gap-x-1 py-2">
+                          <icon name="bi:dot" size="20" />
+                          {{ child.name }}
+                        </a>
+                      </li>
+                    </ul>
+                  </headless-disclosure-panel>
+                </transition>
+              </headless-disclosure>
             </ul>
           </li>
           <li>
@@ -30,12 +74,9 @@
               </li>
             </ul>
           </li>
+
           <li class="-mx-6 mt-auto">
-            <a href="#" class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800">
-              <img class="h-8 w-8 rounded-full bg-gray-800" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-              <span class="sr-only">Your profile</span>
-              <span aria-hidden="true">Tom Cook</span>
-            </a>
+            <studio-user />
           </li>
         </ul>
       </nav>

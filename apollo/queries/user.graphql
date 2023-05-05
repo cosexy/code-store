@@ -1,18 +1,14 @@
-fragment MeItem on User {
-    id
-    name
-    email
-    role
-    avatar {
-        id
-        path
-    }
-    occupation
-    slug
-}
-
 query Me {
     me {
-        ...MeItem
+        id
+        name
+        email
+        role
+        avatar {
+            id
+            path
+        }
+        occupation
+        slug
     }
 }

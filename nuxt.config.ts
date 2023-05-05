@@ -52,5 +52,18 @@ export default defineNuxtConfig({
   },
   imports: {
     dirs: ['stores', 'apollo/__generated__']
+  },
+  hooks: {
+    // edit router
+    'pages:extend': (pages) => {
+      pages.forEach((page) => {
+        if (page.path.startsWith('/studio')) {
+          page.meta = {
+            ...page.meta,
+            layout: 'studio'
+          }
+        }
+      })
+    }
   }
 })

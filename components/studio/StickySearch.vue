@@ -14,6 +14,8 @@
         </div>
       </form>
     </div>
+
+    <div id="actions" />
   </div>
 </template>
 
