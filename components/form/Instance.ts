@@ -1,4 +1,7 @@
 import { PropType } from 'vue'
+import Schema from 'async-validator'
+const validator = new Schema(descriptor)
+
 import { FormContext, FormProps, FormRule } from '~/entities/form.entity'
 
 export default defineComponent({
