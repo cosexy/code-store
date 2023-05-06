@@ -28,4 +28,6 @@ export interface FormItemProp {
      * Auto clear message when get error
      */
     autoClear?: boolean
+
+    duration?: number
 }

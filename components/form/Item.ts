@@ -15,6 +15,10 @@ export default defineComponent({
     autoClear: {
       type: Boolean,
       default: true
+    },
+    duration: {
+      type: Number,
+      default: 5000
     }
   },
   setup (props: FormItemProp) {
@@ -37,7 +41,7 @@ export default defineComponent({
         if (value) {
           setTimeout(() => {
             messages.value[props.name] = ''
-          }, 3000)
+          }, props.duration)
         }
       })
     }
