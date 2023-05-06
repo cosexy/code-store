@@ -17,9 +17,9 @@
         <div>
           <span
             class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"
-            :class="[item.license === Lisence_Type.Regular ? 'bg-indigo-100 text-indigo-600' : 'bg-rose-100 text-rose-600']"
+            :class="[item.lisence.type === Lisence_Type.Regular ? 'bg-indigo-100 text-indigo-600' : 'bg-rose-100 text-rose-600']"
           >
-            {{ item.license === Lisence_Type.Extended ? 'Extended' : 'Standard' }}
+            {{ item.lisence.type === Lisence_Type.Extended ? 'Extended' : 'Standard' }}
           </span>
         </div>
 
@@ -52,17 +52,12 @@
           </a>
         </div>
         <div class="flex flex-1 justify-center pl-4">
-          <nuxt-link
-            :to="{
-              name: 'products-id',
-              params: {
-                id: item.product.slug
-              }
-            }"
+          <a
+            href="javascript:void(0)"
             class="whitespace-nowrap text-indigo-600 hover:text-indigo-500"
           >
-            View product
-          </nuxt-link>
+            Copy lisence
+          </a>
         </div>
       </div>
     </div>

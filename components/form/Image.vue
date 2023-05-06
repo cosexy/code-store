@@ -12,7 +12,8 @@ const props = defineProps<{
 }>()
 // emit v-model
 const emits = defineEmits<{
-  (event: 'update:value', value?: string): void
+  (event: 'update:value', value?: Pick<ImageItemFragment, 'id' | 'path'>): void
+  (event: 'change', value: Pick<ImageItemFragment, 'id' | 'path'>): void
 }>()
 const _value = useVModel(props, 'value', emits)
 
@@ -37,7 +38,7 @@ const afterUpload = (files: Pick<ImageItemFragment, 'id' | 'path'>[]) => {
 onResult(afterUpload)
 
 // render data
-const src = computed(() => _value.value?.path || '/images/user.png')
+const src = computed(() => _value.value?.path)
 const provider = computed(() => _value.value?.path ? 'backend' : '')
 </script>
 

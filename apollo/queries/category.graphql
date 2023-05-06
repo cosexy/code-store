@@ -1,0 +1,6 @@
+query StudioCategories {
+    categories {
+        id
+        name
+    }
+}

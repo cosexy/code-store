@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full min-h-screen bg-gray-900">
+  <div class="dark:selection:t dark h-full min-h-screen bg-gray-900">
     <studio-sidebar-mobile v-model:open="open" :navigation="navigation" :teams="teams" />
 
     <!-- Static sidebar for desktop -->

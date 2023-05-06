@@ -132,7 +132,7 @@ type Product {
     description: String!
     highlights: [String!]!
     id: ID!
-    license: String!
+    license: JSON!
     name: String!
     price: Float!
     sale: Float
@@ -144,8 +144,8 @@ type Product {
 
 type Query {
     cart: [Cart!]!
-    categories(filter: GetCategoriesFilter!): [Category!]!
-    categoriesCount(filter: GetCountCategoriesFilter!): Float!
+    categories: [Category!]!
+    categoriesCount: Float!
     me: User!
     order(filter: OrderFilter!): Order!
     orders(filter: OrdersFilter!): [Order!]!
@@ -250,6 +250,8 @@ input CreateProductInput {
     category: ID!
     content: JSON!
     description: String!
+    highlights: [String!]
+    lisence: JSON
     name: String!
     price: Int!
     sale: Int
@@ -267,11 +269,6 @@ input GetCategoriesFilter {
     name: String
     offset: Int!
     sort: String!
-}
-
-"Return all categories"
-input GetCountCategoriesFilter {
-    name: String
 }
 
 input GetCountProductsFilter {
@@ -364,7 +361,9 @@ input UpdateProductInput {
     category: ID
     content: JSON
     description: String
+    highlights: [String!]
     id: ID!
+    lisence: JSON
     name: String
     price: Int
     sale: Int
