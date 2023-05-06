@@ -2,12 +2,11 @@ import { InjectionKey, Ref } from 'vue'
 import { Rules } from 'async-validator'
 
 export interface FormProps<T = any> {
-    model: Record<string, any>
+    value: Record<string, any>
     rules: Rules
 }
 
 export interface FormContext extends Pick<FormProps, 'rules'> {
-    value: Ref<Record<string, any>>
     messages: Ref<Record<string, string>>
 }
 

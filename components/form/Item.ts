@@ -25,8 +25,8 @@ export default defineComponent({
     const { messages, rules } = useFormContext('FormItem')
 
     // assign name to api.messages
-    const validator = rules[props.name]
-    if (validator) {
+    const rule = rules[props.name]
+    if (rule) {
       messages.value[props.name] = ''
 
       onUnmounted(() => {

@@ -4,7 +4,7 @@
     subject="Use a permanent address where you can receive mail."
   >
     <form-instance
-      v-model:value="input"
+      :value="input"
       :rules="rules"
       class="md:col-span-2"
       @on-ok="submitForm"
@@ -137,6 +137,7 @@
 
 <script setup lang="ts">
 import { Ref } from 'vue'
+import { Rules } from 'async-validator'
 import { ImageItemFragment, UpdateUserInput } from '~/apollo/__generated__/graphql'
 
 const authStore = useAuth()
@@ -157,49 +158,36 @@ const input: Ref<CustomInputType> = ref({
 })
 
 const insertForm = () => {
-  ['avatar', 'email', 'name', 'occupation', 'slug'].forEach((key) => {
-    input.value[key] = authStore.user?.[key]
-  })
+  input.value = {
+    avatar: authStore.user?.avatar || {
+      id: '',
+      path: ''
+    },
+    email: authStore.user?.email || '',
+    name: authStore.user?.name || '',
+    occupation: authStore.user?.occupation || '',
+    slug: authStore.user?.slug || ''
+  }
 }
 insertForm()
 
-const rules = computed(() => ({
-  name: {
-    message: 'Please enter your name',
-    validator: (value: string) => {
-      const name = value.trim()
-      if (name.length < 4) {
-        throw new Error('Name must be at least 5 characters')
-      }
-      return true
+const rules = computed<Rules>(() => ({
+  name: [
+    { required: true, message: 'Please enter your name' },
+    { min: 4, message: 'Name must be at least 5 characters' }
+  ],
+  email: [
+    { required: true, message: 'Please enter your email' },
+    { type: 'email', message: 'Email is invalid' }
+  ],
+  slug: [
+    { required: true, message: 'Please enter your username' },
+    { min: 3, message: 'Username must be at least 3 characters' },
+    {
+      message: 'Username must be lowercase and can only contain alphanumeric characters and dashes',
+      pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/
     }
-  },
-  email: {
-    message: 'Please enter your email',
-    validator: (value: string) => {
-      const email = value.trim()
-      if (!email) {
-        throw new Error('Email is required')
-      }
-      if (!email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
-        throw new Error('Email is invalid')
-      }
-      return true
-    }
-  },
-  slug: {
-    message: 'Please enter your username',
-    validator: (value: string) => {
-      const slug = value.trim()
-      if (!slug) {
-        throw new Error('Username is required')
-      }
-      if (!slug.match(/^[a-zA-Z0-9._-]+$/)) {
-        throw new Error('Username is invalid')
-      }
-      return true
-    }
-  }
+  ]
 }))
 
 // List of occupations related to ID insdustry
