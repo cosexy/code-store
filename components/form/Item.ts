@@ -55,6 +55,7 @@ export default defineComponent({
     }
   },
   render () {
+    // Label
     const label = this.$slots.label
       ? this.$slots.label?.()
       : h('label', {
@@ -65,18 +66,26 @@ export default defineComponent({
         }
       }, this.label)
 
-    const message = h('p', {
-      class: ['mt-2 text-sm text-red-600']
-    }, this.message)
+    // Error message
+    const message = this.$slots.error
+      ? this.$slots.error?.({
+        message: this.message
+      })
+      : h('p', {
+        class: ['mt-2 text-sm text-red-600']
+      }, this.message)
 
+    // Content
     const content = h('div', {
       class: [
         'mt-2'
       ]
     }, this.$slots.default?.({
-      message: this.message
+      message: this.message,
+      isValid: !this.message
     }))
 
+    // Final dom
     const nodes = this.message
       ? [
           label,
