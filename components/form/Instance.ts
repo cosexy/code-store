@@ -28,17 +28,21 @@ export default defineComponent({
       await Promise.all(
         Object.keys(messages.value).map(async (key) => {
           const rule = props.rules[key]
-          if (rule?.validator) {
+          if (rule?.required && !value.value[key]) {
+            messages.value[key] = `${key} is required`
+          } else if (rule?.validator) {
             try {
-              const result = await rule.validator(value.value[key])
-              if (result) {
-                messages.value[key] = ''
+              const error = await rule.validator(value.value[key], value.value)
+              if (error) {
+                messages.value[key] = error
               } else {
-                messages.value[key] = rule.message
+                messages.value[key] = ''
               }
             } catch (e: any) {
               messages.value[key] = e.message
             }
+          } else {
+            messages.value[key] = ''
           }
         })
       )

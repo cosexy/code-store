@@ -1,9 +1,6 @@
 <template>
-  <div
-    id="editorjs"
-    class="prose prose-slate dark:prose-invert mx-auto max-w-none"
-  >
-    <div id="editor" />
+  <div class="prose prose-slate dark:prose-invert mx-auto max-w-none">
+    <div ref="el" />
   </div>
 </template>
 
@@ -61,9 +58,11 @@ const emit = defineEmits<{
   (e: 'update:value', data: OutputData): void
 }>()
 
+const el = ref<HTMLElement>()
+
 const initEditor = () => {
   editor.value = new EditorJS({
-    holder: 'editor',
+    holder: el.value,
     placeholder: 'Say something...',
     data: props.value,
     tools: {

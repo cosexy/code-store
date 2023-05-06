@@ -1,18 +1,19 @@
 import { InjectionKey, Ref } from 'vue'
 
 export interface FormRule {
-    message: string
-    validator: (value: any) => Promise<boolean>
-    trigger?: string[]
+    required?: boolean
+    validator: (value: any, data: any) => Promise<string>
 }
 
 export interface FormInstance {
     validate: () => Promise<boolean>
 }
 
-export interface FormProps {
+export type FormRules<T = any> = Partial<Record<keyof T, FormRule>>
+
+export interface FormProps<T = any> {
     value: Record<string, any>
-    rules: Record<string, FormRule>
+    rules: FormRules<T>
 }
 
 export interface FormContext extends Pick<FormProps, 'rules'> {

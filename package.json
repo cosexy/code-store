@@ -63,6 +63,7 @@
     "@tinymce/tinymce-vue": "^5.1.0",
     "@vueuse/math": "^10.1.0",
     "animejs": "^3.2.1",
+    "async-validator": "^4.2.5",
     "chart.js": "^3.9.1",
     "country-list": "^2.3.0",
     "dayjs": "^1.11.7",

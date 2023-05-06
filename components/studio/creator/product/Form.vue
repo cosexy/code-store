@@ -1,6 +1,7 @@
 <template>
   <form-instance
     v-model:value="value"
+    :rules="rules"
     class="mx-auto max-w-2xl py-6"
   >
     <div class="space-y-12">
@@ -228,7 +229,28 @@
             class="sm:col-span-full"
           >
             <client-only>
-              <lazy-form-editorjs />
+              <lazy-form-editorjs v-model:value="form.lisence" />
+            </client-only>
+          </form-item>
+        </div>
+      </div>
+
+      <div class="border-b border-white/10 pb-12">
+        <h2 class="text-base font-semibold leading-7 text-white">
+          Content
+        </h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400">
+          Specify the content of your product.
+        </p>
+
+        <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <form-item
+            label="Lisence"
+            name="lisence"
+            class="sm:col-span-full"
+          >
+            <client-only>
+              <lazy-form-editorjs v-model:value="form.lisence" />
             </client-only>
           </form-item>
         </div>
@@ -248,6 +270,7 @@
 
 <script setup lang="ts">
 import { CreateProductInput, ImageItemFragment } from '~/apollo/__generated__/graphql'
+import { FormRules } from '~/entities/form.entity'
 
 const props = defineProps<{
   form: CreateProductInput
@@ -262,6 +285,53 @@ const emit = defineEmits<{
   (event: 'update:form', value: CreateProductInput): void
 }>()
 const value = useVModel(props, 'form', emit)
+
+// @ts-ignore
+const rules = computed<FormRules<CreateProductInput>>(() => {
+  return {
+    name: {
+      required: true,
+      validator: (value: string) => {
+        const name = value.trim()
+        if (name.length < 4) {
+          return 'Name must be at least 5 characters'
+        }
+      }
+    },
+    avatar: {
+      required: true
+    },
+    description: {
+      required: true,
+      validator: (value: string) => {
+        const description = value.trim()
+        if (description.length < 10) {
+          return 'Description must be at least 10 characters'
+        }
+      }
+    },
+    category: {
+      required: true
+    },
+    price: {
+      required: true,
+      validator: (value: string) => {
+        // check if value is number and greater than 0
+        if (!value || isNaN(Number(value)) || Number(value) <= 0) {
+          return 'Price must be a number and greater than 0'
+        }
+      }
+    },
+    sale: {
+      validator: (value: string, data) => {
+        if (!value) {
+          return 'Sale is required'
+        }
+        return true
+      }
+    }
+  }
+})
 
 const formImage = ref<Pick<ImageItemFragment, 'id' | 'path'>>({
   id: '',
