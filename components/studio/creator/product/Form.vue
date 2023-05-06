@@ -1,6 +1,6 @@
 <template>
   <form-instance
-    v-model:value="value"
+    v-model:model="value"
     :rules="rules"
     class="mx-auto max-w-2xl py-6"
   >
@@ -269,8 +269,8 @@
 </template>
 
 <script setup lang="ts">
+import { Rules } from 'async-validator'
 import { CreateProductInput, ImageItemFragment } from '~/apollo/__generated__/graphql'
-import { FormRules } from '~/entities/form.entity'
 
 const props = defineProps<{
   form: CreateProductInput
@@ -286,52 +286,42 @@ const emit = defineEmits<{
 }>()
 const value = useVModel(props, 'form', emit)
 
-// @ts-ignore
-const rules = computed<FormRules<CreateProductInput>>(() => {
-  return {
-    name: {
-      required: true,
-      validator: (value: string) => {
-        const name = value.trim()
-        if (name.length < 4) {
-          return 'Name must be at least 5 characters'
+const rules: Rules = {
+  name: [
+    { required: true, message: 'Please enter product name' },
+    { min: 3, message: 'Product name must be at least 3 characters' }
+  ],
+  avatar: [
+    { required: true, message: 'Please select product avatar' }
+  ],
+  description: [
+    { required: true, message: 'Please enter product description' },
+    { min: 3, message: 'Product description must be at least 3 characters' }
+  ],
+  category: [
+    { required: true, message: 'Please select product category' }
+  ],
+  price: [
+    { required: true, message: 'Please enter product price' },
+    { type: 'number', message: 'Product price must be a number' },
+    { min: 0, message: 'Product price must be greater than 0' }
+  ],
+  sale: [
+    { type: 'number', message: 'Product sale must be a number' },
+    { min: 0, message: 'Product sale must be greater than 0' },
+    {
+      asyncValidator: () => {
+        // optional
+        if (!value.value.sale) {
+          return Promise.resolve()
         }
-      }
-    },
-    avatar: {
-      required: true
-    },
-    description: {
-      required: true,
-      validator: (value: string) => {
-        const description = value.trim()
-        if (description.length < 10) {
-          return 'Description must be at least 10 characters'
+        if (value.value.sale >= value.value.price) {
+          return Promise.reject(new Error('Product sale must be less than price'))
         }
-      }
-    },
-    category: {
-      required: true
-    },
-    price: {
-      required: true,
-      validator: (value: string) => {
-        // check if value is number and greater than 0
-        if (!value || isNaN(Number(value)) || Number(value) <= 0) {
-          return 'Price must be a number and greater than 0'
-        }
-      }
-    },
-    sale: {
-      validator: (value: string, data) => {
-        if (!value) {
-          return 'Sale is required'
-        }
-        return true
       }
     }
-  }
-})
+  ]
+}
 
 const formImage = ref<Pick<ImageItemFragment, 'id' | 'path'>>({
   id: '',

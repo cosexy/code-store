@@ -18,10 +18,19 @@ export default defineComponent({
     }
   },
   setup (props: FormItemProp) {
-    const { messages } = useFormContext('FormItem')
+    const { messages, rules } = useFormContext('FormItem')
 
     // assign name to api.messages
-    messages.value[props.name] = ''
+    const validator = rules[props.name]
+    if (validator) {
+      messages.value[props.name] = ''
+
+      onUnmounted(() => {
+        delete messages.value[props.name]
+      })
+    }
+
+    // assign name to api.messages
     const message = computed(() => messages.value[props.name])
     if (props.autoClear) {
       watch(message, (value) => {
