@@ -38,8 +38,7 @@ export default defineComponent({
         })
         emit('onOk')
       } catch ({ errors }) {
-        console.log(errors)
-        ;(errors as ValidateError[]).forEach((error) => {
+        (errors as ValidateError[]).forEach((error) => {
           if (error.field) {
             messages.value[error.field] = error.message!
           }
