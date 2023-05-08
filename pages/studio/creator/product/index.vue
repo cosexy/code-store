@@ -1,7 +1,7 @@
 <template>
   <studio-tabs :tabs="tabs">
     <headless-tab-panel>
-      <studio-creator-product-tabs-information />
+      <studio-creator-product-information />
     </headless-tab-panel>
   </studio-tabs>
 </template>

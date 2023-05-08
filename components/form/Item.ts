@@ -72,7 +72,7 @@ export default defineComponent({
         message: this.message
       })
       : h('p', {
-        class: ['mt-2 text-sm text-red-600']
+        class: ['mt-2 text-sm text-rose-600']
       }, this.message)
 
     // Content
