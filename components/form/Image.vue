@@ -5,15 +5,19 @@
 </template>
 
 <script setup lang="ts">
-import { ImageItemFragment } from '~/apollo/__generated__/graphql'
+import { Image } from '~/apollo/__generated__/graphql'
+
+interface Props {
+  value?: Pick<Image, 'id' | 'path'>
+}
 
 const props = defineProps<{
-  value?: Pick<ImageItemFragment, 'id' | 'path'>
+  value?: Props['value']
 }>()
 // emit v-model
 const emits = defineEmits<{
-  (event: 'update:value', value?: Pick<ImageItemFragment, 'id' | 'path'>): void
-  (event: 'change', value: Pick<ImageItemFragment, 'id' | 'path'>): void
+  (event: 'update:value', value?: Props['value']): void
+  (event: 'change', value: Pick<Image, 'id' | 'path'>): void
 }>()
 const _value = useVModel(props, 'value', emits)
 
@@ -25,11 +29,11 @@ const { files, open, reset } = useFileDialog({
 
 watch(files, (files) => files?.length && upload(files[0]))
 
-const afterUpload = (files: Pick<ImageItemFragment, 'id' | 'path'>[]) => {
+const afterUpload = (files: Props['value'][]) => {
   if (files.length) {
     _value.value = {
-      id: files[0].id,
-      path: files[0].path
+      id: files[0]!.id,
+      path: files[0]!.path
     }
   }
   reset()

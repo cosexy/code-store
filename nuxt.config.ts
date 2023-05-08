@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { defineNuxtConfig } from 'nuxt/config'
+import { NuxtPage } from '@nuxt/schema'
 
 export default defineNuxtConfig({
   modules: [
@@ -23,6 +24,7 @@ export default defineNuxtConfig({
       'Nunito+Sans': [400, 500, 600, 700, 800]
     }
   },
+  // @ts-ignore
   runtimeConfig: {
     // Private config that is only available on the server
     apiSecret: process.env.NUXT_API_SECRET,
@@ -55,7 +57,7 @@ export default defineNuxtConfig({
   },
   hooks: {
     // edit router
-    'pages:extend': (pages) => {
+    'pages:extend': (pages: NuxtPage[]) => {
       pages.forEach((page) => {
         if (page.path.startsWith('/studio')) {
           page.meta = {

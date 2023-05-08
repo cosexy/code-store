@@ -270,7 +270,7 @@
 
 <script setup lang="ts">
 import { Rules } from 'async-validator'
-import { CreateProductInput, ImageItemFragment } from '~/apollo/__generated__/graphql'
+import { CreateProductInput, Image } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
   form: CreateProductInput
@@ -323,7 +323,7 @@ const rules: Rules = {
   ]
 }
 
-const formImage = ref<Pick<ImageItemFragment, 'id' | 'path'>>({
+const formImage = ref<Pick<Image, 'id' | 'path'>>({
   id: '',
   path: ''
 })
