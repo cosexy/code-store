@@ -1,6 +1,6 @@
 <template>
   <div>
-    <studio-creator-product-form v-model:form="input" />
+    <studio-creator-product-form v-model:form="input" @submit="submitForm($event)" />
   </div>
 </template>
 
@@ -19,6 +19,10 @@ const input = ref<CreateProductInput>({
   sale: undefined,
   tags: []
 })
+
+const submitForm = (value: CreateProductInput) => {
+  console.log(value)
+}
 </script>
 
 <style scoped>
