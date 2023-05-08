@@ -20,22 +20,24 @@
             id="name"
             v-model="value.name"
             type="text"
-            name="name"
-            autocomplete="name"
-            placeholder="Product Name"
+            name="product-name"
+            autocomplete="product-name"
+            placeholder="Name"
             class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
           >
         </form-item>
 
         <form-item name="avatar" label="Avatar" class="col-span-full">
-          <!-- flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10 -->
-          <lazy-form-image
+          <form-image
             v-slot="{ open, src, provider }"
-            v-model:value="formImage"
+            v-model:value="imageInput"
             class="aspect-[6/4] h-64 cursor-pointer overflow-hidden rounded-lg border border-dashed border-white/25"
           >
             <div
-              class="flex h-full w-full flex-col items-center justify-center"
+              class="flex h-full w-full items-center justify-center"
+              :class="{
+                'flex-col': !src
+              }"
               @click="open"
             >
               <nuxt-img v-if="src" :src="src" alt="" class="h-full w-full object-cover" :provider="provider" />
@@ -51,12 +53,13 @@
                 </p>
               </template>
             </div>
-          </lazy-form-image>
+          </form-image>
         </form-item>
 
         <form-item
           name="description"
           label="Description"
+          extra="Give a brief description of your product."
           class="sm:col-span-full"
         >
           <textarea
@@ -66,9 +69,6 @@
             rows="4"
             class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
           />
-          <p class="mt-3 text-sm leading-6 text-gray-400">
-            Give a brief description of your product.
-          </p>
         </form-item>
 
         <form-item
@@ -139,56 +139,38 @@
         </template>
 
         <form-item
-          v-slot="{ message }"
           label="Original price"
+          prefix="$"
           name="price"
           class="sm:col-span-3"
         >
-          <div
-            class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset"
-            :class="[message ? 'ring-rose-500 focus-within:ring-rose-500' : 'focus-within:ring-indigo-500']"
+          <input
+            id="price"
+            v-model.number="value.price"
+            type="text"
+            name="price"
+            autocomplete="username"
+            class="flex-1 border-0 bg-transparent py-1.5 pl-2 text-white focus:ring-0 sm:text-sm sm:leading-6"
+            placeholder="0.00"
           >
-            <span class="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
-              $
-            </span>
-            <input
-              id="price"
-              v-model.number="value.price"
-              type="text"
-              name="price"
-              autocomplete="username"
-              class="flex-1 border-0 bg-transparent py-1.5 pl-2 text-white focus:ring-0 sm:text-sm sm:leading-6"
-              placeholder="0.00"
-            >
-          </div>
         </form-item>
 
         <form-item
-          v-slot="{ message }"
           label="Sale off"
           name="sale"
           class="sm:col-span-3"
+          prefix="$"
+          extra="Set empty to disable sale off"
         >
-          <div
-            class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset"
-            :class="[message ? 'ring-rose-500 focus-within:ring-rose-500' : 'focus-within:ring-indigo-500']"
+          <input
+            id="sale"
+            v-model.number="value.sale"
+            type="text"
+            name="sale"
+            autocomplete="username"
+            class="flex-1 border-0 bg-transparent py-1.5 pl-2 text-white focus:ring-0 sm:text-sm sm:leading-6"
+            placeholder="0.00"
           >
-            <span class="flex select-none items-center pl-3 text-gray-400 sm:text-sm">
-              $
-            </span>
-            <input
-              id="sale"
-              v-model.number="value.sale"
-              type="text"
-              name="sale"
-              autocomplete="username"
-              class="flex-1 border-0 bg-transparent py-1.5 pl-2 text-white focus:ring-0 sm:text-sm sm:leading-6"
-              placeholder="0.00"
-            >
-          </div>
-          <p class="mt-2 text-xs text-gray-400">
-            Set empty to disable sale off
-          </p>
         </form-item>
       </studio-creator-product-section>
 
@@ -200,6 +182,7 @@
           label="Highlights"
           name="highlights"
           class="sm:col-span-full"
+          extra="Enter each highlight on a new line."
         >
           <textarea
             id="highlights"
@@ -209,9 +192,6 @@
             rows="3"
             class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
           />
-          <p class="mt-1 text-sm leading-6 text-gray-400">
-            Enter each highlight on a new line.
-          </p>
         </form-item>
 
         <form-item
@@ -254,6 +234,7 @@
 
 <script setup lang="ts">
 import { Rules } from 'async-validator'
+import { Ref } from 'vue'
 import { CreateProductInput, Image } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
@@ -265,7 +246,6 @@ const props = defineProps<{
  */
 const emit = defineEmits<{
   (event: 'submit', value: CreateProductInput): void
-  // v-model for form
   (event: 'update:form', value: CreateProductInput): void
 }>()
 const value = useVModel(props, 'form', emit)
@@ -308,11 +288,11 @@ const rules: Rules = {
   ]
 }
 
-const formImage = ref<Pick<Image, 'id' | 'path'>>({
+const imageInput: Ref<Pick<Image, 'id' | 'path'>> = ref({
   id: '',
   path: ''
 })
-watch(formImage, (val) => {
+watch(imageInput, (val) => {
   if (val) {
     value.value.avatar = val.id
   }
@@ -328,7 +308,6 @@ const categories = computed(() => result.value?.categories ?? [])
  * Tags
  */
 const tagInput = ref('')
-
 /**
  * If tagInput.value is not empty, and does not exist in tags (toLowerCase), add it to tags
  */
@@ -354,7 +333,7 @@ const onOk = () => {
   const input: CreateProductInput = {
     ...value.value,
     highlights: highlights.value.split('\n').filter((e) => e).map((e) => e.trim()),
-    avatar: formImage.value.id
+    avatar: imageInput.value.id
   }
   emit('submit', input)
 }
