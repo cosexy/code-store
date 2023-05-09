@@ -1,17 +1,19 @@
-import { ImageItemFragment } from '~/apollo/__generated__/graphql'
+import { Document, Image } from '~/apollo/__generated__/graphql'
+
+type FileType = Pick<Image, 'id' | 'path'> | Pick<Document, 'id' | 'path'>
 
 export const useUpload = () => {
   const runtimeConfig = useRuntimeConfig()
   const authStore = useAuth()
 
-  const fetchResult = createEventHook<ImageItemFragment[]>()
+  const fetchResult = createEventHook<FileType[]>()
   const fetchError = createEventHook<any>()
 
   const loading = ref<boolean>(false)
-  const upload = async (_: File | File[], group?: string) => {
+  const upload = async (_: File | File[] | FileList, group?: string) => {
     loading.value = true
 
-    const files = Array.isArray(_) ? _ : [_]
+    const files = _ instanceof FileList ? Array.from(_) : Array.isArray(_) ? _ : [_]
 
     const formData = new FormData()
     files.forEach(file => {
@@ -20,7 +22,7 @@ export const useUpload = () => {
     group && formData.append('group', group)
 
     try {
-      const res = await $fetch<ImageItemFragment[]>(new URL('/images', runtimeConfig.public.apiBackend).href, {
+      const res = await $fetch<FileType[]>(new URL('/images', runtimeConfig.public.apiBackend).href, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${authStore.token}`

@@ -11,7 +11,7 @@ import Editor from '@tinymce/tinymce-vue'
 import type { RawEditorOptions } from 'tinymce'
 
 const props = withDefaults(defineProps<{
-  value: string
+  value: string | any
   config?: Partial<RawEditorOptions>
 }>(), {
   value: '',

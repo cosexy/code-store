@@ -28,9 +28,10 @@
         </form-item>
 
         <form-item name="avatar" label="Avatar" class="col-span-full">
-          <form-image
+          <form-file
             v-slot="{ open, src, provider }"
             v-model:value="imageInput"
+            :config="{ accept: 'image/*', multiple: false }"
             class="aspect-[6/4] h-64 cursor-pointer overflow-hidden rounded-lg border border-dashed border-white/25"
           >
             <div
@@ -53,7 +54,7 @@
                 </p>
               </template>
             </div>
-          </form-image>
+          </form-file>
         </form-item>
 
         <form-item
@@ -125,6 +126,22 @@
             @keydown.enter.prevent="addTag"
           >
         </form-item>
+
+        <form-item
+          label="Highlights"
+          name="highlights"
+          class="sm:col-span-full"
+          extra="Enter each highlight on a new line."
+        >
+          <textarea
+            id="highlights"
+            ref="textarea"
+            v-model="highlights"
+            name="highlights"
+            rows="3"
+            class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+          />
+        </form-item>
       </studio-creator-product-section>
 
       <studio-creator-product-section
@@ -175,23 +192,23 @@
       </studio-creator-product-section>
 
       <studio-creator-product-section
-        title="Extra options"
-        description="Get notified about new orders, refunds, and more."
+        title="Reources"
+        description="Upload your product files. You can upload multiple files at once."
       >
         <form-item
-          label="Highlights"
-          name="highlights"
-          class="sm:col-span-full"
-          extra="Enter each highlight on a new line."
+          name="version"
+          label="Version"
+          class="sm:col-span-3"
         >
-          <textarea
-            id="highlights"
-            ref="textarea"
-            v-model="highlights"
-            name="highlights"
-            rows="3"
+          <input
+            id="name"
+            v-model="value.version"
+            type="text"
+            name="product-version"
+            autocomplete="product-version"
+            placeholder="xxx.xxx.xxx"
             class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-          />
+          >
         </form-item>
 
         <form-item
@@ -285,6 +302,16 @@ const rules: Rules = {
         }
       }
     }
+  ],
+  version: [
+    {
+      required: true,
+      message: 'Please enter product version'
+    },
+    {
+      pattern: /^\d+(?:\.\d+){0,2}$/,
+      message: 'Product version must be in the format ^\\d+(?:\\.\\d+){0,2}$'
+    }
   ]
 }
 
@@ -309,7 +336,7 @@ const categories = computed(() => result.value?.categories ?? [])
  */
 const tagInput = ref('')
 /**
- * If tagInput.value is not empty, and does not exist in tags (toLowerCase), add it to tags
+ * If tagInput is not empty, and does not exist in tags (toLowerCase), add it to tags
  */
 const addTag = () => {
   if (tagInput.value) {
