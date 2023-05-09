@@ -39,3 +39,29 @@ query GetProduct($filter: GetProductFilter!) {
         createdAt
     }
 }
+
+
+query ProductInformation($filter: GetProductFilter!) {
+    product(filter: $filter) {
+        id
+        name
+        avatar {
+            id
+            path
+        }
+        description
+        category {
+            id
+            name
+        }
+        tags {
+            id
+            name
+        }
+        price
+        sale
+        highlights
+        license
+        content
+    }
+}

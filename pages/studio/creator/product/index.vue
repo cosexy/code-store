@@ -1,15 +1,31 @@
 <template>
-  <studio-tabs :tabs="tabs">
-    <headless-tab-panel>
-      <studio-creator-product-information />
-    </headless-tab-panel>
-  </studio-tabs>
+  <div>
+    <studio-creator-product-form v-model:form="input" @on-submit="submitForm($event)" />
+  </div>
 </template>
 
 <script setup lang="ts">
-const tabs = computed(() => ['Information', 'Analytics', 'Lisences', 'Reviews'])
+import { CreateProductInput } from '~/apollo/__generated__/graphql'
 
-const router = useRouter()
+const input = ref<CreateProductInput>({
+  avatar: '',
+  category: '',
+  content: {},
+  description: '',
+  highlights: [],
+  lisence: {},
+  name: '',
+  price: 0,
+  sale: undefined,
+  tags: []
+})
+
+const { mutate, loading } = useMutation(CreateProductDocument)
+
+const submitForm = (value: CreateProductInput) => {
+  console.log(value)
+  mutate({ input: input.value })
+}
 </script>
 
 <style scoped>

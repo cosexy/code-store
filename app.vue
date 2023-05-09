@@ -4,7 +4,9 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+useColorMode()
+</script>
 <style>
 button, html, input, select, textarea {
     font-family: Nunito Sans,SF Pro Text,SF Pro Icons,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;

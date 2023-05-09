@@ -2,7 +2,7 @@
   <form-instance
     v-model:value="value"
     :rules="rules"
-    class="mx-auto max-w-2xl py-6"
+    class="mx-auto max-w-4xl py-6"
     @on-ok="onOk"
     @on-error="onError"
   >
@@ -200,7 +200,7 @@
           class="sm:col-span-full"
         >
           <client-only>
-            <lazy-form-editorjs v-model:value="value.lisence" />
+            <lazy-form-editor v-model:value="value.lisence" :config="{ height: '500px' }" />
           </client-only>
         </form-item>
       </studio-creator-product-section>
@@ -215,7 +215,7 @@
           class="sm:col-span-full"
         >
           <client-only>
-            <lazy-form-editorjs v-model:value="value.content" />
+            <lazy-form-editor v-model:value="value.content" :config="{ height: '1000px' }" />
           </client-only>
         </form-item>
       </studio-creator-product-section>
@@ -245,7 +245,7 @@ const props = defineProps<{
  * Define Form
  */
 const emit = defineEmits<{
-  (event: 'submit', value: CreateProductInput): void
+  (event: 'onSubmit', value: CreateProductInput): void
   (event: 'update:form', value: CreateProductInput): void
 }>()
 const value = useVModel(props, 'form', emit)
@@ -329,14 +329,13 @@ const removeTagBy = (index: number) => {
  * Highlights
  */
 const { textarea, input: highlights } = useTextareaAutosize()
-const onOk = () => {
-  const input: CreateProductInput = {
-    ...value.value,
-    highlights: highlights.value.split('\n').filter((e) => e).map((e) => e.trim()),
-    avatar: imageInput.value.id
+watch(highlights, (val) => {
+  if (val) {
+    value.value.highlights = val.split('\n').filter((e) => e).map((e) => e.trim())
   }
-  emit('submit', input)
-}
+})
+
+const onOk = () => emit('onSubmit', value.value)
 
 const onError = () => {
   // console.log('error')

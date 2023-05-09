@@ -1,6 +1,6 @@
 <template>
   <div>
-    <studio-creator-product-form v-model:form="input" @submit="submitForm($event)" />
+    <studio-creator-product-form v-model:form="input" @on-submit="submitForm($event)" />
   </div>
 </template>
 
@@ -20,8 +20,11 @@ const input = ref<CreateProductInput>({
   tags: []
 })
 
+const { mutate, loading } = useMutation(CreateProductDocument)
+
 const submitForm = (value: CreateProductInput) => {
   console.log(value)
+  mutate({ input: input.value })
 }
 </script>
 

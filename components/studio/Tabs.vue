@@ -38,7 +38,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   tabs: string[]
-  activeTab: string
+  activeTab?: string
 }>()
 
 if (!props.tabs.length) {
@@ -66,7 +66,7 @@ const initTab = computed(() => {
   return 0
 })
 
-const changeTab = (index) => {
+const changeTab = (index: number) => {
   router.replace({ query: { tab: props.tabs[index].toLowerCase() } })
 }
 
