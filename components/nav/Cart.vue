@@ -12,9 +12,9 @@
 
 <script lang="ts" setup>
 import { SingleExecutionResult } from '@apollo/client'
-import { AddedToCartSubscription, CartItemFragment } from '~/apollo/__generated__/graphql'
+import { AddedToCartSubscription, GetCartQuery } from '~/apollo/__generated__/graphql'
 
-const cart = ref<CartItemFragment[]>([])
+const cart = ref<GetCartQuery['cart']>([])
 
 const authStore = useAuth()
 if (authStore.user) {
@@ -52,8 +52,6 @@ if (authStore.user) {
   // TODO: use local storage
 }
 const count = useArrayReduce(cart, (a, b) => a + b.quantity, 0)
-
-const [show, toogleShow] = useToggle(false)
 </script>
 
 <style scoped></style>
