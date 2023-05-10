@@ -11,7 +11,7 @@
 
       <div class="flex items-center">
         <p class="text-lg text-gray-900 sm:text-xl">
-          $ {{ selectedSelence === 'REGULAR' ? regular : extended }}
+          $ {{ selectedSelence === Lisence_Type.Extended ? regular : extended }}
         </p>
 
         <div class="ml-4 border-l border-gray-300 pl-4">
@@ -83,10 +83,9 @@
 </template>
 
 <script setup lang="ts">
-import { AddToCartDocument, Lisence_Type } from '~/apollo/__generated__/graphql'
+import { AddToCartDocument, Lisence_Type, Product } from '~/apollo/__generated__/graphql'
 
-type Product = any
-const product = ref<Product>({
+const product = ref<Pick<Product, 'id' | 'name' | 'price' | 'sale'>>({
   id: '',
   name: '',
   price: 0,
@@ -94,7 +93,7 @@ const product = ref<Product>({
 })
 const { regular, extended } = usePrice(product)
 
-const { onReceive, close } = useDialog<Product>('over-overview', {
+const { onReceive, close } = useDialog<Pick<Product, 'id' | 'name' | 'price' | 'sale'>>('over-overview', {
   watch: true
 })
 onReceive((_product) => {
@@ -125,8 +124,17 @@ const selectedSelence = ref(lisences.value[0].value)
 
 const { mutate: add } = useMutation(AddToCartDocument)
 
+const authStore = useAuth()
+const localCart = useLocalCart()
+
 const addToCart = () => {
   close()
-  add({ input: { product: product.value.id, licenseType: selectedSelence.value } })
+  if (authStore.user) {
+    add({
+      input: { product: product.value.id, licenseType: selectedSelence.value }
+    })
+  } else {
+    //
+  }
 }
 </script>
