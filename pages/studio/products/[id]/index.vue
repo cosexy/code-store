@@ -3,11 +3,41 @@
     <headless-tab-panel>
       <includes-spinner :spinning="loading">
         <studio-creator-product-form
+          id="form-studio"
           v-model:form="input"
           :init-data="initData"
           @on-submit="submitForm($event)"
         />
       </includes-spinner>
+
+      <includes-teleport to="#actions">
+        <div class="space-x-4">
+          <button
+            form="form-studio"
+            class="inline-flex items-center gap-x-1.5 rounded-md bg-rose-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            <icon
+              :name="loading ? 'line-md:loading-twotone-loop' : 'material-symbols:delete-outline-rounded'"
+              class="-ml-0.5 h-5 w-5"
+              aria-hidden="true"
+            />
+            Delete
+          </button>
+
+          <button
+            form="form-studio"
+            type="submit"
+            class="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            <icon
+              :name="loading ? 'line-md:loading-twotone-loop' : 'material-symbols:fitbit-check-small-rounded'"
+              class="-ml-0.5 h-5 w-5"
+              aria-hidden="true"
+            />
+            Update
+          </button>
+        </div>
+      </includes-teleport>
     </headless-tab-panel>
   </studio-tabs>
 </template>
