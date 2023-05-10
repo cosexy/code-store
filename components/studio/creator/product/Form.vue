@@ -137,7 +137,7 @@
         <form-item
           label="Highlights"
           name="highlights"
-          class="sm:col-span-full"
+          class="sm:col-span-5"
           extra="Enter each highlight on a new line."
         >
           <textarea
@@ -225,7 +225,7 @@
               type="text"
               name="product-version"
               autocomplete="product-version"
-              placeholder="Click to select a file"
+              :placeholder="documentInputLable"
               class="flex-1 cursor-pointer border-0 bg-transparent py-1.5 pl-2 text-white focus:ring-0 sm:text-sm sm:leading-6"
             >
           </form-item>
@@ -348,6 +348,12 @@ const rules: Rules = {
       pattern: /^\d+(?:\.\d+){0,2}$/,
       message: 'Product version must be in the format ^\\d+(?:\\.\\d+){0,2}$'
     }
+  ],
+  document: [
+    {
+      required: true,
+      message: 'Please select product document'
+    }
   ]
 }
 
@@ -358,6 +364,12 @@ const imageInput: Ref<Pick<Image, 'id' | 'path'>> = ref({
 const documentInput: Ref<Pick<Document, 'id' | 'path'>> = ref({
   id: '',
   path: ''
+})
+const documentInputLable = computed(() => {
+  if (documentInput.value.path) {
+    return documentInput.value.path.split('/').pop()
+  }
+  return 'Click to select a file'
 })
 
 watch(imageInput, (val) => {

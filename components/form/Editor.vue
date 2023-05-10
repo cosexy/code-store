@@ -1,6 +1,6 @@
 <template>
   <Editor
-    v-model="value"
+    v-model="text"
     api-key="tsh7eq005xx3m9pm3chxowf4qdigs5iorj38qop6q2ho8ac1"
     :init="config"
   />
@@ -25,7 +25,11 @@ const config = computed<RawEditorOptions>(() => ({
   ...props.config
 }))
 
-const value = ref('')
+const emit = defineEmits<{
+  (event: 'update:value', value: string): void
+}>()
+
+const text = useVModel(props, 'value', emit)
 </script>
 
 <style scoped>

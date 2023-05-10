@@ -1,6 +1,11 @@
 <template>
   <div>
-    <studio-creator-product-form v-model:form="input" @on-submit="submitForm($event)" />
+    <includes-spinner :spinning="loading">
+      <studio-creator-product-form
+        v-model:form="input"
+        @on-submit="submitForm($event)"
+      />
+    </includes-spinner>
   </div>
 </template>
 
@@ -10,14 +15,16 @@ import { CreateProductInput } from '~/apollo/__generated__/graphql'
 const input = ref<CreateProductInput>({
   avatar: '',
   category: '',
-  content: {},
+  content: '',
   description: '',
   highlights: [],
-  lisence: {},
+  lisence: '',
   name: '',
   price: 0,
   sale: undefined,
-  tags: []
+  tags: [],
+  document: '',
+  version: ''
 })
 
 const { mutate, loading } = useMutation(CreateProductDocument)
