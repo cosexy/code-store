@@ -18,14 +18,14 @@ const cart = ref<GetCartQuery['cart']>([])
 
 const authStore = useAuth()
 if (authStore.user) {
-  const { result } = useQuery(GetCartDocument, {})
+  const { result } = useQuery(GetCartDocument)
 
   const products = computed(() => result.value?.cart || [])
   syncRef(products, cart, { direction: 'ltr' })
 
   const { client } = useApolloClient()
   // real time support
-  const { onResult: addedToCart, result: data } = useSubscription(AddedToCartDocument)
+  const { onResult: addedToCart } = useSubscription(AddedToCartDocument)
   addedToCart((res: SingleExecutionResult<AddedToCartSubscription>) => {
     const item = res.data?.addedToCart
     if (item) {
@@ -48,8 +48,6 @@ if (authStore.user) {
       }
     }
   })
-} else {
-  // TODO: use local storage
 }
 const count = useArrayReduce(cart, (a, b) => a + b.quantity, 0)
 </script>
