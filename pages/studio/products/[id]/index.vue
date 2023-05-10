@@ -12,17 +12,58 @@
 
       <includes-teleport to="#actions">
         <div class="space-x-4">
-          <button
-            form="form-studio"
-            class="inline-flex items-center gap-x-1.5 rounded-md bg-rose-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            <icon
-              :name="loading ? 'line-md:loading-twotone-loop' : 'material-symbols:delete-outline-rounded'"
-              class="-ml-0.5 h-5 w-5"
-              aria-hidden="true"
-            />
-            Delete
-          </button>
+          <headless-popover class="relative" as="templete">
+            <headless-popover-button>
+              <button
+                form="form-studio"
+                class="inline-flex items-center gap-x-1.5 rounded-md bg-rose-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                <icon
+                  :name="loading ? 'line-md:loading-twotone-loop' : 'material-symbols:delete-outline-rounded'"
+                  class="-ml-0.5 h-5 w-5"
+                  aria-hidden="true"
+                />
+                Delete
+              </button>
+            </headless-popover-button>
+            <transition
+              enter-active-class="transition duration-200 ease-out"
+              enter-from-class="translate-y-1 opacity-0"
+              enter-to-class="translate-y-0 opacity-100"
+              leave-active-class="transition duration-150 ease-in"
+              leave-from-class="translate-y-0 opacity-100"
+              leave-to-class="translate-y-1 opacity-0"
+            >
+              <headless-popover-panel
+                v-slot="{ close }"
+                class="absolute right-0 z-10 mt-3 w-[380px] overflow-hidden rounded-md shadow"
+              >
+                <div class="space-y-3 bg-gray-700 p-3 text-white">
+                  <div class="flex items-center space-x-1.5">
+                    <icon name="ph:seal-warning-fill" />
+                    <span>Are you sure you want to delete this product?</span>
+                  </div>
+
+                  <div class="flex justify-end space-x-2">
+                    <button
+                      type="button"
+                      class="rounded bg-white/10 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-white/20"
+                      @click="close"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      class="rounded bg-indigo-500 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                      @click="remove({ input: { id: $route.params.id } })"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </headless-popover-panel>
+            </transition>
+          </headless-popover>
 
           <button
             form="form-studio"
