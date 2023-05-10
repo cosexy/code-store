@@ -63,5 +63,10 @@ query ProductInformation($filter: GetProductFilter!) {
         highlights
         license
         content
+        version
+        document {
+            id
+            path
+        }
     }
 }

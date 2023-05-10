@@ -29,13 +29,30 @@ const input = ref<CreateProductInput>({
 
 const route = useRoute()
 
-const { result } = await useAsyncQuery(ProductInformationDocument, {
+const { result, onResult } = useQuery(ProductInformationDocument, {
   filter: {
     slug: route.params.id as string
   }
 })
 
-console.log(result.value)
+onResult((value) => {
+  if (value.data.product) {
+    input.value = {
+      avatar: value.data.product.avatar.id,
+      category: value.data.product.category.id,
+      content: value.data.product.content,
+      description: value.data.product.description,
+      highlights: value.data.product.highlights,
+      lisence: value.data.product.license,
+      name: value.data.product.name,
+      price: value.data.product.price,
+      sale: value.data.product.sale,
+      tags: value.data.product.tags.map((tag) => tag.name),
+      version: value.data.product.version,
+      document: value.data.product.document.id
+    }
+  }
+})
 
 /**
  * Submit form
