@@ -12,9 +12,10 @@
 
 <script lang="ts" setup>
 import { SingleExecutionResult } from '@apollo/client'
+import { Ref } from 'vue'
 import { AddedToCartSubscription, GetCartQuery } from '~/apollo/__generated__/graphql'
 
-const cart = ref<GetCartQuery['cart']>([])
+const cart: Ref<GetCartQuery['cart']> = ref([])
 
 const authStore = useAuth()
 if (authStore.user) {
@@ -49,7 +50,8 @@ if (authStore.user) {
     }
   })
 } else {
-  // TODO: use local storage
+  const { storage } = useLocalCart()
+  syncRef(storage, cart, { direction: 'ltr' })
 }
 const count = useArrayReduce(cart, (a, b) => a + b.quantity, 0)
 </script>

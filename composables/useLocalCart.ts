@@ -8,6 +8,8 @@ export interface LocalCartItem extends Pick<Cart, 'licenseType' | 'quantity' | '
 export const useLocalCart = () => {
   const storage = useStorage<LocalCartItem[]>('cart', [])
 
+  const count = useArrayReduce(storage, (acc, item) => acc + item.quantity, 0)
+
   const addOrInc = (item: Omit<LocalCartItem, 'quantity' | 'id'>) => {
     const index = storage.value.findIndex((i) => i.product.id === item.product.id && i.licenseType === item.licenseType)
     if (index === -1) {
@@ -31,6 +33,7 @@ export const useLocalCart = () => {
 
   return {
     storage,
+    count,
     addOrInc,
     changeQuanlity
   }
