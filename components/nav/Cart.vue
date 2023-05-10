@@ -48,6 +48,8 @@ if (authStore.user) {
       }
     }
   })
+} else {
+  // TODO: use local storage
 }
 const count = useArrayReduce(cart, (a, b) => a + b.quantity, 0)
 </script>
