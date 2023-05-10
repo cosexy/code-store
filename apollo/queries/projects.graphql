@@ -70,3 +70,22 @@ query ProductInformation($filter: GetProductStudioFilter!) {
         }
     }
 }
+
+
+query StudioProducts($filter: GetProductsStudioFilter!) {
+    studioProducts(filter: $filter) {
+        id
+        name
+        avatar {
+            id
+            path
+        }
+        version
+        price
+        sale
+    }
+}
+
+query StudioProductsCount($filter: GetCountProductsStudioFilter!) {
+    studioProductsCount(filter: $filter)
+}

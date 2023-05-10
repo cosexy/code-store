@@ -31,6 +31,9 @@ export default <Partial<Config>>{
           800: '#233d93',
           900: '#1d3278'
         }
+      },
+      aspectRatio: {
+        product: '6/4'
       }
     }
   },

@@ -168,6 +168,8 @@ type Query {
     products(filter: GetProductsFilter!): [Product!]!
     productsCount(filter: GetCountProductsFilter!): Float!
     studioProduct(filter: GetProductStudioFilter!): Product!
+    studioProducts(filter: GetProductsStudioFilter!): [Product!]!
+    studioProductsCount(filter: GetCountProductsStudioFilter!): Float!
     tags(filter: GetCategoriesFilter!): [Tag!]!
 }
 
@@ -289,6 +291,12 @@ input GetCountProductsFilter {
     tags: [ID!]
 }
 
+input GetCountProductsStudioFilter {
+    category: ID
+    name: String
+    tags: [ID!]
+}
+
 input GetProductFilter {
     slug: String!
 }
@@ -298,6 +306,15 @@ input GetProductStudioFilter {
 }
 
 input GetProductsFilter {
+    category: ID
+    limit: Int!
+    name: String
+    offset: Int!
+    sort: String!
+    tags: [ID!]
+}
+
+input GetProductsStudioFilter {
     category: ID
     limit: Int!
     name: String
