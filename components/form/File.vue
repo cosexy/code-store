@@ -1,6 +1,6 @@
 <template>
   <div>
-    <slot :src="src" :provider="provider" :open="open" :reset="reset" />
+    <slot :files="_value" :provider="provider" :open="open" :reset="reset" />
   </div>
 </template>
 
@@ -13,9 +13,12 @@ type FileType = Pick<Image, 'id' | 'path'> | Pick<Document, 'id' | 'path'>
 interface Props {
   value?: FileType | FileType[]
   config?: UseFileDialogOptions
+  type: 'images' | 'documents'
+  group?: string
 }
 
 const props = defineProps<Props>()
+
 // emit v-model
 const emits = defineEmits<{
   (event: 'update:value', value?: Props['value']): void
@@ -25,9 +28,11 @@ const emits = defineEmits<{
 const _value = useVModel(props, 'value', emits)
 
 const { upload, onResult } = useUpload()
+
+// drag and drop
 const { files, open, reset } = useFileDialog(props.config)
 
-watch(files, (files) => files?.length && upload(files))
+watch(files, (files) => files?.length && upload(files, props.type, props.group || 'default'))
 
 const toArrayItem = (file: FileType) => {
   return {
@@ -50,8 +55,6 @@ const afterUpload = (files: FileType[]) => {
 
 onResult(afterUpload)
 
-// render data
-const src = computed(() => _value.value)
 const provider = computed(() => 'backend')
 </script>
 

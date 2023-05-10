@@ -29,19 +29,26 @@
 
         <form-item name="avatar" label="Avatar" class="col-span-full">
           <form-file
-            v-slot="{ open, src, provider }"
+            v-slot="{ open, provider }"
             v-model:value="imageInput"
+            type="images"
             :config="{ accept: 'image/*', multiple: false }"
             class="aspect-[6/4] h-64 cursor-pointer overflow-hidden rounded-lg border border-dashed border-white/25"
           >
             <div
               class="flex h-full w-full items-center justify-center"
               :class="{
-                'flex-col': !src
+                'flex-col': !imageInput.path
               }"
               @click="open"
             >
-              <nuxt-img v-if="src" :src="src" alt="" class="h-full w-full object-cover" :provider="provider" />
+              <nuxt-img
+                v-if="imageInput.path"
+                :src="imageInput.path"
+                alt=""
+                class="h-full w-full object-cover"
+                :provider="provider"
+              />
               <template v-else>
                 <icon name="ic:outline-add-photo-alternate" class="mx-auto h-12 w-12 text-gray-500" aria-hidden="true" />
                 <div class="mt-4 flex text-sm leading-6 text-gray-400">
@@ -195,13 +202,42 @@
         title="Reources"
         description="Upload your product files. You can upload multiple files at once."
       >
+        <form-file
+          v-slot="{ open }"
+          v-model:value="documentInput"
+          type="documents"
+          :config="{ accept: '.zip,.rar,.7zip', multiple: false }"
+          class="sm:col-span-4"
+        >
+          <form-item
+            name="document"
+            label="Document"
+            class="sm:col-span-3"
+            extra="Provide a document for your product. It will be downloaded by the user after purchasing."
+            @click="open"
+          >
+            <template #prefix>
+              <icon size="18" name="material-symbols:upload-rounded" />
+            </template>
+            <input
+              id="document"
+              readonly
+              type="text"
+              name="product-version"
+              autocomplete="product-version"
+              placeholder="Click to select a file"
+              class="flex-1 cursor-pointer border-0 bg-transparent py-1.5 pl-2 text-white focus:ring-0 sm:text-sm sm:leading-6"
+            >
+          </form-item>
+        </form-file>
+
         <form-item
           name="version"
           label="Version"
-          class="sm:col-span-3"
+          class="sm:col-span-2"
         >
           <input
-            id="name"
+            id="version"
             v-model="value.version"
             type="text"
             name="product-version"
@@ -252,7 +288,7 @@
 <script setup lang="ts">
 import { Rules } from 'async-validator'
 import { Ref } from 'vue'
-import { CreateProductInput, Image } from '~/apollo/__generated__/graphql'
+import { CreateProductInput, Image, Document } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
   form: CreateProductInput
@@ -319,9 +355,19 @@ const imageInput: Ref<Pick<Image, 'id' | 'path'>> = ref({
   id: '',
   path: ''
 })
+const documentInput: Ref<Pick<Document, 'id' | 'path'>> = ref({
+  id: '',
+  path: ''
+})
+
 watch(imageInput, (val) => {
   if (val) {
     value.value.avatar = val.id
+  }
+})
+watch(documentInput, (val) => {
+  if (val) {
+    value.value.document = val.id
   }
 })
 

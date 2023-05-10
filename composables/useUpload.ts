@@ -10,19 +10,20 @@ export const useUpload = () => {
   const fetchError = createEventHook<any>()
 
   const loading = ref<boolean>(false)
-  const upload = async (_: File | File[] | FileList, group?: string) => {
+
+  const upload = async (_: File | File[] | FileList, type: 'images' | 'documents', group?: string) => {
     loading.value = true
 
     const files = _ instanceof FileList ? Array.from(_) : Array.isArray(_) ? _ : [_]
 
     const formData = new FormData()
     files.forEach(file => {
-      formData.append('images', file)
+      formData.append(type, file)
     })
     group && formData.append('group', group)
 
     try {
-      const res = await $fetch<FileType[]>(new URL('/images', runtimeConfig.public.apiBackend).href, {
+      const res = await $fetch<FileType[]>(new URL(`/${type}`, runtimeConfig.public.apiBackend).href, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${authStore.token}`
@@ -30,17 +31,22 @@ export const useUpload = () => {
         body: formData
       })
 
-      fetchResult.trigger(res)
+      await fetchResult.trigger(res)
 
       return res
     } catch (e) {
-      fetchError.trigger(e)
+      await fetchError.trigger(e)
     }
 
     loading.value = false
   }
 
+  const images = async (_: File | File[] | FileList, group?: string) => upload(_, 'images', group)
+  const documents = async (_: File | File[] | FileList, group?: string) => upload(_, 'documents', group)
+
   return {
+    images,
+    documents,
     upload,
     onResult: fetchResult.on,
     onError: fetchError.on
