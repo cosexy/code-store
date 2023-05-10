@@ -282,7 +282,12 @@ import { Ref } from 'vue'
 import { CreateProductInput, Image, Document } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
-  form: CreateProductInput | any
+  form: CreateProductInput | any,
+  initData?: {
+    image?: Pick<Image, 'id' | 'path'>
+    document?: Pick<Document, 'id' | 'path'>
+    highlights?: string
+  }
 }>()
 
 /**
@@ -348,11 +353,11 @@ const rules: Rules = {
   ]
 }
 
-const imageInput: Ref<Pick<Image, 'id' | 'path'>> = ref({
+const imageInput: Ref<Pick<Image, 'id' | 'path'>> = ref(props.initData?.image ?? {
   id: '',
   path: ''
 })
-const documentInput: Ref<Pick<Document, 'id' | 'path'>> = ref({
+const documentInput: Ref<Pick<Document, 'id' | 'path'>> = ref(props.initData?.document ?? {
   id: '',
   path: ''
 })
@@ -390,7 +395,7 @@ const tagInput = ref('')
 const addTag = () => {
   if (tagInput.value) {
     const tag = tagInput.value.toLowerCase()
-    const index = value.value.tags.findIndex((e) => e.toLowerCase() === tag)
+    const index = value.value.tags.findIndex((e: string) => e.toLowerCase() === tag)
     if (index === -1) {
       value.value.tags.push(tag)
     }
@@ -405,6 +410,11 @@ const removeTagBy = (index: number) => {
  * Highlights
  */
 const { textarea, input: highlights } = useTextareaAutosize()
+if (props.initData?.highlights) {
+  // eslint-disable-next-line vue/no-setup-props-destructure
+  highlights.value = props.initData.highlights
+}
+
 watch(highlights, (val) => {
   if (val) {
     value.value.highlights = val.split('\n').filter((e) => e).map((e) => e.trim())
