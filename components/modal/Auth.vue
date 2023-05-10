@@ -85,8 +85,8 @@
         <button class="from-primary-500 to-primary-600 shadow-primary-300 mt-4 w-full rounded-full bg-gradient-to-r py-1.5 uppercase text-white shadow-md" @click="submit">
           <Icon name="material-symbols:arrow-circle-right" />
           <span class="ml-1 text-xs font-semibold">
-              {{ isLogin ? 'Sign In' : 'Sign Up' }}
-            </span>
+            {{ isLogin ? 'Sign In' : 'Sign Up' }}
+          </span>
         </button>
 
         <div class="mb-1">
@@ -95,8 +95,8 @@
             <span
               class="mx-3 shrink-0 text-xs font-medium uppercase text-gray-400"
             >
-                Or
-              </span>
+              Or
+            </span>
             <span class="h-px w-full bg-gray-200" />
           </div>
           <div class="mt-5 flex items-center justify-center space-x-10 text-2xl">
