@@ -3,3 +3,10 @@ mutation CreateProduct($input: CreateProductInput!) {
         id
     }
 }
+
+
+mutation RemoveProduct($input: RemoveProductStudioInput!) {
+    studioRemoveProduct(input: $input) {
+        id
+    }
+}

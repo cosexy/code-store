@@ -6,7 +6,7 @@
           id="form-studio"
           v-model:form="input"
           :init-data="initData"
-          @on-submit="submitForm($event)"
+          @on-submit="submitForm()"
         />
       </includes-spinner>
 
@@ -64,9 +64,9 @@ const input = ref<CreateProductInput>({
 
 const route = useRoute()
 
-const { result, onResult } = await useAsyncQuery(ProductInformationDocument, {
+const { result } = await useAsyncQuery(ProductInformationDocument, {
   filter: {
-    slug: route.params.id as string
+    id: route.params.id as string
   }
 })
 
@@ -76,32 +76,32 @@ const initData = ref<{
   highlights?: string
 }>({})
 
-if (result.value?.product) {
+if (result.value?.studioProduct) {
   input.value = {
-    avatar: result.value?.product.avatar.id,
-    category: result.value?.product.category.id,
-    content: result.value?.product.content,
-    description: result.value?.product.description,
-    highlights: result.value?.product.highlights,
-    lisence: result.value?.product.license,
-    name: result.value?.product.name,
-    price: result.value?.product.price,
-    sale: result.value?.product.sale,
-    tags: result.value?.product.tags.map((tag) => tag.name),
-    version: result.value?.product.version,
-    document: result.value?.product.document.id
+    avatar: result.value?.studioProduct.avatar.id,
+    category: result.value?.studioProduct.category.id,
+    content: result.value?.studioProduct.content,
+    description: result.value?.studioProduct.description,
+    highlights: result.value?.studioProduct.highlights,
+    lisence: result.value?.studioProduct.license,
+    name: result.value?.studioProduct.name,
+    price: result.value?.studioProduct.price,
+    sale: result.value?.studioProduct.sale,
+    tags: result.value?.studioProduct.tags.map((tag) => tag.name),
+    version: result.value?.studioProduct.version,
+    document: result.value?.studioProduct.document.id
   }
 
   initData.value = {
     image: {
-      id: result.value?.product.avatar.id,
-      path: result.value?.product.avatar.path
+      id: result.value?.studioProduct.avatar.id,
+      path: result.value?.studioProduct.avatar.path
     },
     document: {
-      id: result.value?.product.document.id,
-      path: result.value?.product.document.path
+      id: result.value?.studioProduct.document.id,
+      path: result.value?.studioProduct.document.path
     },
-    highlights: result.value?.product.highlights.join('\n')
+    highlights: result.value?.studioProduct.highlights.join('\n')
   }
 }
 /**
@@ -109,10 +109,12 @@ if (result.value?.product) {
  */
 const { mutate, loading } = useMutation(CreateProductDocument)
 
-const submitForm = (value: CreateProductInput) => {
-  console.log(value)
-  mutate({ input: input.value })
-}
+const submitForm = () => mutate({ input: input.value })
+
+/**
+ * Remove
+ */
+const { mutate: remove, loading: removeLoading } = useMutation(RemoveProductDocument)
 </script>
 
 <style scoped>

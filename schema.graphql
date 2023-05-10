@@ -82,12 +82,12 @@ type Mutation {
     createPost(input: CreatePostInput!): Post!
     createProduct(input: CreateProductInput!): Product!
     createTag(input: CreateTagInput!): Tag!
-    deleteProduct(input: UpdateProductInput!): Product!
     remoreFromCart(input: RemoreFromCartInput!): Cart!
     removeCategory(input: RemoveCategoryInput!): Category!
     removePost(input: RemovePostInput!): Post!
     signIn(input: SignInInput!): String!
     signUp(input: SignUpInput!): String!
+    studioRemoveProduct(input: RemoveProductStudioInput!): Product!
     updateCart(input: UpdateCartInput!): Cart!
     updateCategory(input: UpdateCategoryInput!): Category!
     updateMe(input: UpdateUserInput!): User!
@@ -167,6 +167,7 @@ type Query {
     product(filter: GetProductFilter!): Product!
     products(filter: GetProductsFilter!): [Product!]!
     productsCount(filter: GetCountProductsFilter!): Float!
+    studioProduct(filter: GetProductStudioFilter!): Product!
     tags(filter: GetCategoriesFilter!): [Tag!]!
 }
 
@@ -292,6 +293,10 @@ input GetProductFilter {
     slug: String!
 }
 
+input GetProductStudioFilter {
+    id: ID!
+}
+
 input GetProductsFilter {
     category: ID
     limit: Int!
@@ -332,6 +337,10 @@ input RemoveCategoryInput {
 }
 
 input RemovePostInput {
+    id: ID!
+}
+
+input RemoveProductStudioInput {
     id: ID!
 }
 

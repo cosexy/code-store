@@ -41,8 +41,8 @@ query GetProduct($filter: GetProductFilter!) {
 }
 
 
-query ProductInformation($filter: GetProductFilter!) {
-    product(filter: $filter) {
+query ProductInformation($filter: GetProductStudioFilter!) {
+    studioProduct(filter: $filter) {
         id
         name
         avatar {
