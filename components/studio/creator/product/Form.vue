@@ -282,7 +282,7 @@ import { Ref } from 'vue'
 import { CreateProductInput, Image, Document } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
-  form: CreateProductInput
+  form: CreateProductInput | any
 }>()
 
 /**
