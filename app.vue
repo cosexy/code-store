@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 useColorMode()
+useProvideModalStore()
 </script>
 <style>
 button, html, input, select, textarea {

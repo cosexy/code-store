@@ -1,26 +1,31 @@
-import { DialogEntity } from '~/entities/dialog.entity'
-
-interface IOptions<T = any> {
+interface DialogEntity<T = any> {
+  name: string
   actived?: boolean
   data?: T
+}
+
+interface DialogOptions<T = any> extends Omit<DialogEntity<T>, 'name'>{
   watch?: boolean
 }
 
-export const useDialogStore = createGlobalState(
-  () => {
-    const modals = ref<DialogEntity[]>([])
-    return { modals }
-  }
-)
+const [useProvideModalStore, useState] = createInjectionState(() => {
+  // state
+  const modals = ref<DialogEntity[]>([])
 
-export const useDialog = <T = any>(name: string, options?: IOptions<T>) => {
-  if (!name) {
-    throw new Error('name is required')
+  return {
+    modals
   }
+})
 
-  const store = useDialogStore()
+export {
+  useProvideModalStore
+}
+
+export const useDialog = <T = any>(name: string, options?: DialogOptions<T>) => {
+  const store = useState()!
 
   const modalIndex = useArrayFindIndex(store.modals, (modal) => modal.name === name)
+
   if (modalIndex.value === -1) {
     store.modals.value.push({
       name,
@@ -28,6 +33,7 @@ export const useDialog = <T = any>(name: string, options?: IOptions<T>) => {
       data: options?.data
     })
   }
+
   const modal = computed({
     get: () => store.modals.value[modalIndex.value],
     set: (value) => {
