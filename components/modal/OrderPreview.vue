@@ -125,7 +125,7 @@ const selectedSelence = ref(lisences.value[0].value)
 const { mutate: add } = useMutation(AddToCartDocument)
 
 const authStore = useAuth()
-const localCart = useLocalCart()
+const { addOrInc } = useLocalCart()
 
 const addToCart = () => {
   close()
@@ -134,7 +134,12 @@ const addToCart = () => {
       input: { product: product.value.id, licenseType: selectedSelence.value }
     })
   } else {
-    //
+    addOrInc({
+      licenseType: selectedSelence.value,
+      product: {
+        id: product.value.id
+      }
+    })
   }
 }
 </script>
