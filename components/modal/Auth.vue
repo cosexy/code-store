@@ -140,6 +140,7 @@
 </template>
 
 <script lang="ts" setup>
+import { VueLottiePlayer } from '@nguyenshort/vue-lottie'
 import { NotifyType } from '~/entities/notify.entity'
 import { SignInDocument, SignUpDocument } from '~/apollo/__generated__/graphql'
 

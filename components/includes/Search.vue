@@ -35,7 +35,7 @@
           <headless-dialog-panel class="mx-auto max-w-3xl divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
             <headless-combobox v-slot="{ activeOption }" @update:modelValue="onSelect">
               <div class="relative">
-                <MagnifyingGlassIcon class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                <icon name="ph:magnifying-glass-bold" class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-gray-400" aria-hidden="true" />
                 <headless-combobox-input class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." @change="query = $event.target.value" />
               </div>
 
@@ -49,7 +49,12 @@
                       <div :class="['group flex cursor-default select-none items-center rounded-md p-2', active && 'bg-gray-100 text-gray-900']">
                         <img :src="person.imageUrl" alt="" class="h-6 w-6 flex-none rounded-full">
                         <span class="ml-3 flex-auto truncate">{{ person.name }}</span>
-                        <ChevronRightIcon v-if="active" class="ml-3 h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
+                        <icon
+                          v-if="active"
+                          name="material-symbols:chevron-right-rounded"
+                          class="ml-3 h-5 w-5 flex-none text-gray-400"
+                          aria-hidden="true"
+                        />
                       </div>
                     </headless-combobox-option>
                   </div>
@@ -96,7 +101,7 @@
               </headless-combobox-options>
 
               <div v-if="query !== '' && filteredPeople.length === 0" class="px-6 py-14 text-center text-sm sm:px-14">
-                <UsersIcon class="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
+                <!--                <UsersIcon class="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />-->
                 <p class="mt-4 font-semibold text-gray-900">
                   No people found
                 </p>

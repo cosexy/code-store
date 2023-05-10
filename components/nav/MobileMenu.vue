@@ -27,7 +27,7 @@
             <div class="flex px-4 pb-2 pt-5">
               <button type="button" class="-m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400" @click="open = false">
                 <span class="sr-only">Close menu</span>
-                <XMarkIconOutline class="h-6 w-6" aria-hidden="true" />
+                <icon name="material-symbols:close-rounded" class="h-6 w-6" aria-hidden="true" />
               </button>
             </div>
 
