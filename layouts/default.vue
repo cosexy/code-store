@@ -8,9 +8,12 @@
       <includes-notify />
       <includes-search />
     </client-only>
+    <modal-sync-cart v-if="auth.user" />
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const auth = useAuth()
+</script>
 
 <style scoped></style>

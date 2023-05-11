@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import { SingleExecutionResult } from '@apollo/client'
 import { Ref } from 'vue'
-import { AddedToCartSubscription, GetCartQuery } from '~/apollo/__generated__/graphql'
+import { GetCartQuery, UpdatedInCartSubscription } from '~/apollo/__generated__/graphql'
 
 const cart: Ref<GetCartQuery['cart']> = ref([])
 
@@ -26,9 +26,9 @@ if (authStore.user) {
 
   const { client } = useApolloClient()
   // real time support
-  const { onResult: addedToCart } = useSubscription(AddedToCartDocument)
-  addedToCart((res: SingleExecutionResult<AddedToCartSubscription>) => {
-    const item = res.data?.addedToCart
+  const { onResult: addedToCart } = useSubscription(UpdatedInCartDocument)
+  addedToCart((res: SingleExecutionResult<UpdatedInCartSubscription>) => {
+    const item = res.data?.updatedInCart
     if (item) {
       // check if item already exists
       const exists = cart.value.find((_e) => _e.id === item.id)

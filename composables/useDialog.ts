@@ -10,7 +10,7 @@ interface DialogOptions<T = any> extends Omit<DialogEntity<T>, 'name'>{
 
 const [useProvideModalStore, useState] = createInjectionState(() => {
   // state
-  const modals = ref<DialogEntity[]>([])
+  const modals = reactive<Record<string, DialogEntity>>({})
 
   return {
     modals
@@ -24,20 +24,18 @@ export {
 export const useDialog = <T = any>(name: string, options?: DialogOptions<T>) => {
   const store = useState()!
 
-  const modalIndex = useArrayFindIndex(store.modals, (modal) => modal.name === name)
-
-  if (modalIndex.value === -1) {
-    store.modals.value.push({
+  if (!store.modals[name]) {
+    store.modals[name] = {
       name,
       actived: false,
       data: options?.data
-    })
+    }
   }
 
   const modal = computed({
-    get: () => store.modals.value[modalIndex.value],
+    get: () => store.modals[name],
     set: (value) => {
-      store.modals.value[modalIndex.value] = value
+      store.modals[name] = value
     }
   })
 

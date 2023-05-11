@@ -1,5 +1,5 @@
-subscription AddedToCart {
-    addedToCart {
+subscription UpdatedInCart {
+    updatedInCart {
         id
         product {
             id

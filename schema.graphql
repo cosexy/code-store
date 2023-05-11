@@ -88,6 +88,7 @@ type Mutation {
     signIn(input: SignInInput!): String!
     signUp(input: SignUpInput!): String!
     studioRemoveProduct(input: RemoveProductStudioInput!): Product!
+    syncToCart(input: SyncToCartInput!): [Cart!]!
     updateCart(input: UpdateCartInput!): Cart!
     updateCategory(input: UpdateCategoryInput!): Category!
     updateMe(input: UpdateUserInput!): User!
@@ -175,9 +176,9 @@ type Query {
 }
 
 type Subscription {
-    addedToCart: Cart!
     notifyFired: Notify!
     ordering: Cart!
+    updatedInCart: Cart!
 }
 
 type Tag {
@@ -375,6 +376,10 @@ input SignUpInput {
     email: String!
     name: String!
     password: String!
+}
+
+input SyncToCartInput {
+    items: [AddToCartInput!]!
 }
 
 input UpdateCartInput {
