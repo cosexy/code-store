@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { ReviewsQueryVariables } from '~/apollo/__generated__/graphql'
+import { AddedReviewDocument, CountReviewDocument, ReviewsQueryVariables } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
   count: number
@@ -33,36 +33,42 @@ const vars = ref<ReviewsQueryVariables>({
 const { result } = useQuery(ReviewsDocument, vars)
 const reviews = computed(() => result.value?.reviews || [])
 
-const reviews2 = {
-  average: 4,
-  featured: [
-    {
-      id: 1,
-      rating: 5,
-      content: `
-        <p>This icon pack is just what I need for my latest project. There's an icon for just about anything I could ever need. Love the playful look!</p>
-      `,
-      date: 'July 16, 2021',
-      datetime: '2021-07-16',
-      author: 'Emily Selman',
-      avatarSrc:
-        'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80'
-    },
-    {
-      id: 2,
-      rating: 5,
-      content: `
-        <p>Blown away by how polished this icon pack is. Everything looks so consistent and each SVG is optimized out of the box so I can use it directly with confidence. It would take me several hours to create a single icon this good, so it's a steal at this price.</p>
-      `,
-      date: 'July 12, 2021',
-      datetime: '2021-07-12',
-      author: 'Hector Gibbons',
-      avatarSrc:
-        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80'
+// realtime
+const { onResult } = useSubscription(AddedReviewDocument, {
+  filter: {
+    product: props.productId
+  }
+})
+
+const { client } = useApolloClient()
+onResult((result) => {
+  const _review = result.data?.addedReview
+  if (_review) {
+    // TODO: add review to cache
+    // update average rate
+    const reviewInformation = client.readQuery({
+      query: ReviewInformationDocument,
+      variables: {
+        product: props.productId
+      }
+    })
+    if (reviewInformation) {
+      const reviewCount = reviewInformation.reviewCount + 1
+      const reviewAverage = Number(((reviewInformation.reviewAverage * reviewInformation.reviewCount + _review.rate) / reviewCount).toFixed(1))
+      client.writeQuery({
+        query: ReviewInformationDocument,
+        variables: {
+          product: props.productId
+        },
+        data: {
+          reviewAverage,
+          reviewCount
+        }
+      })
     }
-    // More reviews...
-  ]
-}
+  }
+})
+
 </script>
 
 <style scoped>

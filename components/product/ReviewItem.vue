@@ -5,7 +5,7 @@
         <nuxt-img :provider="review.user.avatar?.path ? 'backend' : ''" :src="review.user.avatar?.path || '/images/avatar.jpg'" alt="" />
       </div>
     </div>
-    <div class="_content space-y-1 py-10">
+    <div class="_content w-full space-y-1 py-10">
       <h3 class="font-medium text-gray-900">
         {{ review.user.name }}
       </h3>

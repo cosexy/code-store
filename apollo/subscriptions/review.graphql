@@ -1,0 +1,17 @@
+subscription AddedReview($filter: AddedReviewFilter!) {
+    addedReview(filter: $filter) {
+        id
+        rate
+        content
+        createdAt
+        user {
+            id
+            name
+            avatar {
+                id
+                path
+            }
+            slug
+        }
+    }
+}

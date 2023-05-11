@@ -130,7 +130,7 @@ onReceive((product) => {
   }
 })
 
-const rules = computed<Rules>(() => ({
+const rules = computed(() => ({
   content: [
     { required: true, message: 'Please enter your review' }
   ],
@@ -190,6 +190,7 @@ onDone(() => {
 
   setTimeout(() => {
     close()
+    goTo('review')
   }, 3000)
 })
 

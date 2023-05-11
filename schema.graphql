@@ -191,6 +191,7 @@ type Review {
 }
 
 type Subscription {
+    addedReview(filter: AddedReviewFilter!): Review!
     notifyFired: Notify!
     syncedCart: SyncedCart!
     updatedInCart: Cart!
@@ -242,6 +243,10 @@ input AddToCartInput {
     licenseType: LISENCE_TYPE!
     product: ID!
     quantity: Float
+}
+
+input AddedReviewFilter {
+    product: ID!
 }
 
 input CreateCategoryInput {
