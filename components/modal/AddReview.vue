@@ -57,6 +57,7 @@
 
         <form-item name="content" class="mt-5">
           <textarea
+            v-model="vars.content"
             rows="5"
             class="w-full rounded-md border-transparent bg-gray-100 p-3 ring-0 transition focus:border-0 focus:shadow-none focus:outline-0 focus:ring-0"
             placeholder="Write your review here..."
@@ -81,11 +82,29 @@
           </button>
         </div>
       </form-instance>
+
+      <div
+        v-else
+        class="flex flex-col items-center justify-center"
+      >
+        <vue-lottie-player
+          width="250px"
+          height="200px"
+          loop
+          path="https://assets8.lottiefiles.com/packages/lf20_ymyikn6l.json"
+        />
+        <div class="mt-4 text-center">
+          <p class="mt-2 text-sm text-gray-500">
+            Thank you for your review!
+          </p>
+        </div>
+      </div>
     </div>
   </modal-base>
 </template>
 
 <script setup lang="ts">
+import { VueLottiePlayer } from '@nguyenshort/vue-lottie'
 import { Rules } from 'async-validator'
 import { CreateReviewDocument, CreateReviewInput } from '~/apollo/__generated__/graphql'
 
@@ -164,7 +183,11 @@ watch(averageRate, (val) => {
   vars.value.rate = val
 })
 
-const { loading, mutate } = useMutation(CreateReviewDocument)
+const { loading, mutate, onDone } = useMutation(CreateReviewDocument)
+
+onDone(() => {
+  goTo('success')
+})
 
 const submit = () => {
   mutate({ input: vars.value })
