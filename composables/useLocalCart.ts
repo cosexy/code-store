@@ -4,7 +4,7 @@ export interface LocalCartItem extends Pick<Cart, 'licenseType' | 'quantity' | '
     product: Pick<Product, 'id'>
 }
 
-const [useLocalCartProvide, useLocalCart] = createInjectionState(() => {
+export const useLocalCart = () => {
   const isReady = ref(false)
 
   const storage = useLocalStorage<LocalCartItem[]>('cart', [])
@@ -41,9 +41,4 @@ const [useLocalCartProvide, useLocalCart] = createInjectionState(() => {
     changeQuanlity,
     isReady
   }
-})
-
-export {
-  useLocalCart,
-  useLocalCartProvide
 }

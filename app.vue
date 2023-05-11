@@ -7,11 +7,6 @@
 <script setup lang="ts">
 useColorMode()
 useProvideModalStore()
-
-const auth = useAuth()
-if (!auth.user) {
-  useLocalCartProvide()
-}
 </script>
 <style>
 button, html, input, select, textarea {
