@@ -116,7 +116,7 @@ const {
   'success'
 ], 'review')
 
-const { onReceive, onClosed } = useDialog<string>('add-review', { watch: true })
+const { onReceive, onClosed, close } = useDialog<string>('add-review', { watch: true })
 
 const vars = ref<CreateReviewInput>({
   product: '',
@@ -187,6 +187,10 @@ const { loading, mutate, onDone } = useMutation(CreateReviewDocument)
 
 onDone(() => {
   goTo('success')
+
+  setTimeout(() => {
+    close()
+  }, 3000)
 })
 
 const submit = () => {
