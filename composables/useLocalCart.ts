@@ -5,16 +5,9 @@ export interface LocalCartItem extends Pick<Cart, 'licenseType' | 'quantity' | '
 }
 
 const [useLocalCartProvide, useLocalCart] = createInjectionState(() => {
-  const cookieRef = useCookie<LocalCartItem[]>('cart', {
-    default: () => []
-  })
+  const isReady = ref(false)
 
-  const storage = ref<LocalCartItem[]>(cookieRef.value)
-
-  syncRef(cookieRef, storage, {
-    immediate: true,
-    direction: 'ltr'
-  })
+  const storage = useLocalStorage<LocalCartItem[]>('cart', [])
 
   const count = useArrayReduce(storage, (acc, item) => acc + item.quantity, 0)
 
@@ -39,11 +32,14 @@ const [useLocalCartProvide, useLocalCart] = createInjectionState(() => {
     storage.value[index].quantity = quanlity
   }
 
+  onMounted(() => nextTick(() => isReady.value = true))
+
   return {
     storage,
     count,
     addOrInc,
-    changeQuanlity
+    changeQuanlity,
+    isReady
   }
 })
 

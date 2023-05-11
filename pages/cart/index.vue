@@ -21,32 +21,42 @@
 </template>
 
 <script setup lang="ts">
-import { MaybeRefOrGetter } from '@vueuse/core'
+import { Ref } from 'vue'
 import { GetCartQuery, ParseProductsQueryVariables } from '~/apollo/__generated__/graphql'
 
-let products: MaybeRefOrGetter<GetCartQuery['cart']>
-const loading: MaybeRefOrGetter<boolean> = ref(false)
+const products: Ref<GetCartQuery['cart']> = ref([])
 
 const auth = useAuth()
 if (auth.user) {
-  const { result } = await useAsyncQuery(GetCartDocument)
-  products = computed(() => result.value?.cart || [])
+  const { onResult } = await useAsyncQuery(GetCartDocument)
+  onResult((res) => {
+    products.value = res.data?.cart || []
+  })
 } else {
-  const { storage } = useLocalCart()!
+  const { storage, isReady } = useLocalCart()!
   const vars = computed<ParseProductsQueryVariables>(() => ({
     filter: {
       products: Array.from(new Set(storage.value.map((item) => item.product.id))) || []
     }
   }))
 
-  const { result, loading: getting } = await useQuery(ParseProductsDocument, vars)
-  products = computed(() => {
-    const products = result.value?.parseProducts || []
-    return storage.value.map((item) => ({
-      ...item,
-      product: products.find((product) => product.id === item.product.id)!
-    }))
+  const { load, onResult } = useLazyQuery(ParseProductsDocument, vars)
+
+  whenever(isReady, () => load())
+
+  onResult((res) => {
+    products.value = storage.value.reduce((acc, item) => {
+      const product = res.data?.parseProducts.find((p) => p.id === item.product.id)
+      if (product) {
+        acc.push({
+          ...item,
+          product
+        })
+      }
+      return acc
+    }, [] as GetCartQuery['cart'])
   })
-  syncRef(loading, getting, { direction: 'ltr' })
 }
+
+const loading = useQueryLoading()
 </script>
