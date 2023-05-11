@@ -26,7 +26,7 @@
           <span>Tax estimate</span>
           <a href="#" class="ml-2 shrink-0 text-gray-400 hover:text-gray-500">
             <span class="sr-only">Learn more about how tax is calculated</span>
-            <QuestionMarkCircleIcon class="h-5 w-5" aria-hidden="true" />
+            <icon name="iconamoon:question-mark-circle" class="h-5 w-5" aria-hidden="true" />
           </a>
         </dt>
         <dd class="text-sm font-medium text-gray-900">

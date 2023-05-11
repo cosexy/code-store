@@ -15,9 +15,31 @@
   </div>
 </template>
 
-<script setup lang="ts" async>
-import { GetCartDocument } from '~/apollo/__generated__/graphql'
+<script setup lang="ts">
+import { MaybeRefOrGetter } from '@vueuse/core'
+import { GetCartQuery, ParseProductsQueryVariables } from '~/apollo/__generated__/graphql'
 
-const { result } = await useAsyncQuery(GetCartDocument)
-const products = computed(() => result?.value?.cart || [])
+let products: MaybeRefOrGetter<GetCartQuery['cart']> = ref([])
+
+const auth = useAuth()
+if (auth.user) {
+  const { result } = await useAsyncQuery(GetCartDocument)
+  products = computed(() => result.value?.cart || [])
+} else {
+  const { storage } = useLocalCart()!
+  const vars = computed<ParseProductsQueryVariables>(() => ({
+    filter: {
+      products: Array.from(new Set(storage.value.map((item) => item.product.id))) || []
+    }
+  }))
+
+  const { result } = await useQuery(ParseProductsDocument, vars)
+  products = computed(() => {
+    const products = result.value?.parseProducts || []
+    return storage.value.map((item) => ({
+      ...item,
+      product: products.find((product) => product.id === item.product.id)!
+    }))
+  })
+}
 </script>

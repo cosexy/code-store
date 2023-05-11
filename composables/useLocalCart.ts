@@ -1,12 +1,20 @@
-import { useStorage } from '@vueuse/core'
 import { Cart, Product } from '~/apollo/__generated__/graphql'
 
 export interface LocalCartItem extends Pick<Cart, 'licenseType' | 'quantity' | 'id'>{
     product: Pick<Product, 'id'>
 }
 
-export const useLocalCart = () => {
-  const storage = useStorage<LocalCartItem[]>('cart', [])
+const [useLocalCartProvide, useLocalCart] = createInjectionState(() => {
+  const cookieRef = useCookie<LocalCartItem[]>('cart', {
+    default: () => []
+  })
+
+  const storage = ref<LocalCartItem[]>(cookieRef.value)
+
+  syncRef(cookieRef, storage, {
+    immediate: true,
+    direction: 'ltr'
+  })
 
   const count = useArrayReduce(storage, (acc, item) => acc + item.quantity, 0)
 
@@ -37,4 +45,9 @@ export const useLocalCart = () => {
     addOrInc,
     changeQuanlity
   }
+})
+
+export {
+  useLocalCart,
+  useLocalCartProvide
 }

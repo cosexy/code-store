@@ -162,6 +162,7 @@ type Query {
     order(filter: OrderFilter!): Order!
     orders(filter: OrdersFilter!): [Order!]!
     ordersCount: Float!
+    parseProducts(filter: ParseProductsFilter!): [Product!]!
     post(filter: PostFilter!): Post!
     posts(filter: PostsFilter!): [Post!]!
     product(filter: GetProductFilter!): Product!
@@ -331,6 +332,10 @@ input OrdersFilter {
     limit: Int!
     offset: Int!
     sort: String!
+}
+
+input ParseProductsFilter {
+    products: [ID!]!
 }
 
 input PostFilter {

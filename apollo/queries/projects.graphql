@@ -89,3 +89,18 @@ query StudioProducts($filter: GetProductsStudioFilter!) {
 query StudioProductsCount($filter: GetCountProductsStudioFilter!) {
     studioProductsCount(filter: $filter)
 }
+
+
+query ParseProducts($filter: ParseProductsFilter!) {
+    parseProducts(filter: $filter) {
+        id
+        name
+        slug
+        avatar {
+            id
+            path
+        }
+        price
+        sale
+    }
+}
