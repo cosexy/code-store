@@ -171,7 +171,9 @@ type Query {
     product(filter: GetProductFilter!): Product!
     products(filter: GetProductsFilter!): [Product!]!
     productsCount(filter: GetCountProductsFilter!): Float!
+    reviewAverage(filter: GetReviewAverageReviewFilter!): Float!
     reviewCount(filter: GetCountReviewFilter!): Float!
+    reviews(filter: GetReviewsFilter!): [Review!]!
     studioProduct(filter: GetProductStudioFilter!): Product!
     studioProducts(filter: GetProductsStudioFilter!): [Product!]!
     studioProductsCount(filter: GetCountProductsStudioFilter!): Float!
@@ -296,7 +298,7 @@ input CreateProductInput {
 input CreateReviewInput {
     content: String!
     product: ID!
-    rate: Int!
+    rate: Float!
 }
 
 input CreateTagInput {
@@ -352,6 +354,18 @@ input GetProductsStudioFilter {
     offset: Int!
     sort: String!
     tags: [ID!]
+}
+
+input GetReviewAverageReviewFilter {
+    product: ID!
+}
+
+input GetReviewsFilter {
+    limit: Int!
+    offset: Int!
+    product: ID
+    sort: String!
+    user: ID
 }
 
 input OrderFilter {

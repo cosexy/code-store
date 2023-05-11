@@ -1,3 +1,30 @@
 query CountReview($filter: GetCountReviewFilter!) {
     reviewCount(filter: $filter)
 }
+
+query ReviewAverage($filter: GetReviewAverageReviewFilter!) {
+    reviewAverage(filter: $filter)
+}
+
+query ReviewInformation($product: ID!) {
+    reviewCount(filter: {product: $product})
+    reviewAverage(filter: {product: $product})
+}
+
+
+query Reviews($filter: GetReviewsFilter!) {
+    reviews(filter: $filter) {
+        id
+        rate
+        content
+        createdAt
+        user {
+            id
+            slug
+            avatar {
+                id
+                path
+            }
+        }
+    }
+}

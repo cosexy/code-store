@@ -1,34 +1,32 @@
 <template>
   <div>
-    <div v-for="(review, reviewIdx) in reviews.featured" :key="review.id" class="flex space-x-4 text-sm text-gray-500">
-      <div class="flex-none py-10">
-        <img :src="review.avatarSrc" alt="" class="h-10 w-10 rounded-full bg-gray-100">
-      </div>
-      <div :class="[reviewIdx === 0 ? '' : 'border-t border-gray-200', 'py-10']">
-        <h3 class="font-medium text-gray-900">
-          {{ review.author }}
-        </h3>
-        <p>
-          <time :datetime="review.datetime">{{ review.date }}</time>
-        </p>
-
-        <div class="mt-4 flex items-center">
-          <Icon v-for="rating in [0, 1, 2, 3, 4]" :key="rating" name="ic:round-star-rate" :class="[review.rating > rating ? 'text-yellow-400' : 'text-gray-300', 'h-5 w-5 shrink-0']" aria-hidden="true" />
-        </div>
-        <p class="sr-only">
-          {{ review.rating }} out of 5 stars
-        </p>
-
-        <div class="prose prose-sm mt-4 max-w-none text-gray-500" v-html="review.content" />
-      </div>
-    </div>
+    <product-review-item v-for="review in reviews" :key="review.id" :review="review" />
 
     <includes-pagination :total="100" :page="10" />
   </div>
 </template>
 
 <script setup lang="ts">
-const reviews = {
+import { ReviewsQueryVariables } from '~/apollo/__generated__/graphql'
+
+const props = defineProps<{
+  count: number
+  productId: string
+}>()
+
+const vars = ref<ReviewsQueryVariables>({
+  filter: {
+    limit: 10,
+    offset: 0,
+    product: props.productId,
+    sort: 'createdAt'
+  }
+})
+
+const { result } = useQuery(ReviewsDocument, vars)
+const reviews = computed(() => result.value?.reviews || [])
+
+const reviews2 = {
   average: 4,
   featured: [
     {
