@@ -1,6 +1,6 @@
 <template>
-  <div v-auto-animate class="bg-white">
-    <checkout-empty v-if="current === 'empty'" />
+  <div class="min-h-screen bg-white">
+    <checkout-empty v-if="current === 'loading'" />
 
     <div v-else-if="current === 'purchasing'">
       <div class="fixed left-0 top-0 hidden h-full w-1/2 bg-white lg:block" aria-hidden="true" />

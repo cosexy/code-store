@@ -9,8 +9,28 @@
         :spinning="loading"
       >
         <div class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
-          <!-- Cart items -->
-          <cart-products :products="products" />
+          <div class="lg:col-span-7">
+            <!-- Cart items -->
+            <cart-products
+              v-if="current === 'showing'"
+              :products="products"
+            />
+            <div v-if="current === 'empty'" class="flex flex-col items-center">
+              <vue-lottie-player
+                path="https://assets2.lottiefiles.com/packages/lf20_CWcCII.json"
+                loop
+                height="300px"
+                width="300px"
+              />
+              <p class="text-sm text-gray-500">
+                Your cart is empty.
+                <nuxt-link to="/" class="text-indigo-600">
+                  Discovery now.
+                </nuxt-link>
+              </p>
+            </div>
+            <div />
+          </div>
 
           <!-- Order summary -->
           <cart-summary :products="products" />
@@ -22,15 +42,30 @@
 
 <script setup lang="ts">
 import { MaybeRefOrGetter } from '@vueuse/core'
+import { VueLottiePlayer } from '@nguyenshort/vue-lottie'
 import { GetCartQuery, ParseProductsQueryVariables } from '~/apollo/__generated__/graphql'
 
 let products: MaybeRefOrGetter<GetCartQuery['cart']>
+
+const { current, goTo } = useStepper([
+  'loading',
+  'empty',
+  'showing'
+], 'loading')
 
 const auth = useAuth()
 if (auth.user) {
   const { result } = await useAsyncQuery(GetCartDocument)
 
   products = computed(() => result.value?.cart || [])
+
+  watch(products, (val) => {
+    if (!val.length) {
+      goTo('empty')
+    } else {
+      goTo('showing')
+    }
+  }, { immediate: true })
 } else {
   const { storage, isReady } = useLocalCart()!
   const vars = computed<ParseProductsQueryVariables>(() => ({
@@ -55,6 +90,16 @@ if (auth.user) {
       }
       return acc
     }, [] as GetCartQuery['cart'])
+  })
+
+  watch(products, (val) => {
+    if (!isReady.value) {
+      goTo('loading')
+    } else if (!val.length) {
+      goTo('empty')
+    } else {
+      goTo('showing')
+    }
   })
 }
 

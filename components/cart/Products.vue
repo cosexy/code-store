@@ -1,5 +1,5 @@
 <template>
-  <section aria-labelledby="cart-heading" class="lg:col-span-7">
+  <section aria-labelledby="cart-heading">
     <h2 id="cart-heading" class="sr-only">
       Items in your shopping cart
     </h2>

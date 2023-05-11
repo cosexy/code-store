@@ -1,5 +1,9 @@
 <template>
-  <section aria-labelledby="payment-and-shipping-heading" class="py-16 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:w-full lg:max-w-lg lg:pb-24 lg:pt-0">
+  <section
+    v-auto-animate
+    aria-labelledby="payment-and-shipping-heading"
+    class="py-16 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:w-full lg:max-w-lg lg:pb-24 lg:pt-0"
+  >
     <h2 id="payment-and-shipping-heading" class="sr-only">
       Payment and shipping details
     </h2>
@@ -8,6 +12,7 @@
       v-if="!auth.user"
       class="mb-6 flex items-center justify-center rounded-md bg-indigo-600 p-3 text-center text-sm font-semibold uppercase text-white shadow shadow-indigo-400"
       href="javascript:void(0)"
+      @click="openAuth()"
     >
       <icon size="20" name="material-symbols:arrow-forward-rounded" />
       <span class="ml-2">Login to checkout</span>
@@ -133,6 +138,8 @@ import { CreateOrderInput, CreateOrderMutation, GetCartQuery } from '~/apollo/__
 const props = defineProps<{
   cart: GetCartQuery['cart']
 }>()
+
+const { open: openAuth } = useDialog('auth')
 
 const auth = useAuth()
 
