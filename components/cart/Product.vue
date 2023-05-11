@@ -1,10 +1,10 @@
 <template>
   <li class="flex py-6 sm:py-10">
-    <div class="shadow-default h-32 w-48 shrink-0 overflow-hidden rounded-md">
+    <div class="shadow-default aspect-product h-28 shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-white">
       <nuxt-img
         :src="item.product.avatar.path"
         :alt="item.product.name"
-        class="h-full w-full object-cover object-center"
+        class="h-full w-full object-cover object-center transition duration-300 ease-in-out hover:scale-105"
         provider="backend"
       />
     </div>
@@ -21,7 +21,7 @@
           </div>
           <div class="flex text-sm">
             <p class="text-gray-500">
-              {{ item.license === Lisence_Type.Extended ? 'Extended' : 'Regular' }} License
+              {{ item.licenseType === Lisence_Type.Extended ? 'Extended' : 'Regular' }} License
             </p>
           </div>
           <p class="text-sm font-medium text-gray-900">
@@ -48,7 +48,7 @@
             <button
               type="button"
               class="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500"
-              @click="remove({ input: { id: item.id } })"
+              @click="remove()"
             >
               <span class="sr-only">Remove</span>
               <icon name="heroicons:x-mark-20-solid" class="h-5 w-5" aria-hidden="true" />
@@ -79,8 +79,11 @@ const finalPrice = computed(() => {
 })
 
 const { client } = useApolloClient()
+const auth = useAuth()
 
-const { mutate: remove, onDone: afterRemoved } = useMutation(RemoveFromCartDocument)
+const { changeQuanlity, remove: removeOnLocal } = useLocalCart()
+
+const { mutate: removeOnServer, onDone: afterRemoved } = useMutation(RemoveFromCartDocument)
 afterRemoved((result: SingleExecutionResult<RemoveFromCartMutation>) => {
   if (result.data?.remoreFromCart) {
     client.cache.evict({
@@ -89,8 +92,19 @@ afterRemoved((result: SingleExecutionResult<RemoveFromCartMutation>) => {
   }
 })
 
-const { mutate: changeQuantity } = useMutation(UpdateCartDocument)
+const remove = () => {
+  if (auth.user) {
+    removeOnServer({
+      input: {
+        id: props.item.id
+      }
+    })
+  } else {
+    removeOnLocal(props.item.id)
+  }
+}
 
+const { mutate: changeQuantity } = useMutation(UpdateCartDocument)
 /**
  * Change quantity
  * @param event event
@@ -101,13 +115,16 @@ const onChangeQuantity = (event: Event) => {
   const target = event.target as HTMLSelectElement
   const quantity = parseInt(target.value, 10)
 
-  // call mutation
-  changeQuantity({
-    input: {
-      id: props.item.id,
-      quantity
-    }
-  })
+  if (auth.user) {
+    changeQuantity({
+      input: {
+        id: props.item.id,
+        quantity
+      }
+    })
+  } else {
+    changeQuanlity(props.item.id, quantity)
+  }
 }
 </script>
 

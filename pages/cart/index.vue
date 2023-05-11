@@ -21,17 +21,16 @@
 </template>
 
 <script setup lang="ts">
-import { Ref } from 'vue'
+import { MaybeRefOrGetter } from '@vueuse/core'
 import { GetCartQuery, ParseProductsQueryVariables } from '~/apollo/__generated__/graphql'
 
-const products: Ref<GetCartQuery['cart']> = ref([])
+let products: MaybeRefOrGetter<GetCartQuery['cart']>
 
 const auth = useAuth()
 if (auth.user) {
-  const { onResult } = await useAsyncQuery(GetCartDocument)
-  onResult((res) => {
-    products.value = res.data?.cart || []
-  })
+  const { result } = await useAsyncQuery(GetCartDocument)
+
+  products = computed(() => result.value?.cart || [])
 } else {
   const { storage, isReady } = useLocalCart()!
   const vars = computed<ParseProductsQueryVariables>(() => ({
@@ -40,13 +39,14 @@ if (auth.user) {
     }
   }))
 
-  const { load, onResult } = useLazyQuery(ParseProductsDocument, vars)
+  const { load, result } = useLazyQuery(ParseProductsDocument, vars)
 
   whenever(isReady, () => load())
 
-  onResult((res) => {
-    products.value = storage.value.reduce((acc, item) => {
-      const product = res.data?.parseProducts.find((p) => p.id === item.product.id)
+  products = computed(() => {
+    const products = result.value?.parseProducts || []
+    return storage.value.reduce((acc, item) => {
+      const product = products.find((p) => p.id === item.product.id)
       if (product) {
         acc.push({
           ...item,

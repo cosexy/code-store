@@ -6,7 +6,7 @@
 
     <a
       v-if="!auth.user"
-      class="mb-4 flex items-center justify-center rounded-md bg-indigo-600 p-3 text-center text-sm font-semibold uppercase text-white shadow shadow-indigo-400"
+      class="mb-6 flex items-center justify-center rounded-md bg-indigo-600 p-3 text-center text-sm font-semibold uppercase text-white shadow shadow-indigo-400"
       href="javascript:void(0)"
     >
       <icon size="20" name="material-symbols:arrow-forward-rounded" />

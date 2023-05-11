@@ -32,6 +32,14 @@ export const useLocalCart = () => {
     storage.value[index].quantity = quanlity
   }
 
+  const remove = (id: string) => {
+    const index = storage.value.findIndex((i) => i.id === id)
+    if (index === -1) {
+      return
+    }
+    storage.value.splice(index, 1)
+  }
+
   onMounted(() => nextTick(() => isReady.value = true))
 
   return {
@@ -39,6 +47,7 @@ export const useLocalCart = () => {
     count,
     addOrInc,
     changeQuanlity,
-    isReady
+    isReady,
+    remove
   }
 }
