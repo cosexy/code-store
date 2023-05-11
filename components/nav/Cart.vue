@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import { SingleExecutionResult } from '@apollo/client'
 import { Ref } from 'vue'
-import { GetCartQuery, UpdatedInCartSubscription } from '~/apollo/__generated__/graphql'
+import { Cart, GetCartQuery, UpdatedInCartSubscription } from '~/apollo/__generated__/graphql'
 
 const cart: Ref<GetCartQuery['cart']> = ref([])
 
@@ -30,21 +30,32 @@ if (authStore.user) {
   addedToCart((res: SingleExecutionResult<UpdatedInCartSubscription>) => {
     const item = res.data?.updatedInCart
     if (item) {
-      // check if item already exists
-      const exists = cart.value.find((_e) => _e.id === item.id)
-      if (exists) {
-        // update quantity
-        client.cache.modify({
-          id: client.cache.identify(exists),
-          fields: {
-            quantity: () => item.quantity
-          }
-        })
+      if (item.quantity) {
+        // check if item already existed
+        const existed = cart.value.find((_e) => _e.id === item.id)
+        if (existed) {
+          // update quantity
+          client.cache.modify({
+            id: client.cache.identify(existed),
+            fields: {
+              quantity: () => item.quantity
+            }
+          })
+        } else {
+          client.writeQuery({
+            query: GetCartDocument,
+            data: {
+              cart: [...cart.value, item]
+            }
+          })
+        }
       } else {
-        client.writeQuery({
-          query: GetCartDocument,
-          data: {
-            cart: [...cart.value, item]
+        // remove item
+        client.cache.modify({
+          fields: {
+            cart: (existing: any, { readField }) => {
+              return existing.filter((e: Cart) => item.id !== readField('id', e))
+            }
           }
         })
       }
@@ -52,8 +63,8 @@ if (authStore.user) {
   })
 
   // replace cart
-  const { onResult: syncEdCart } = useSubscription(SyncedCartDocument)
-  syncEdCart(res => {
+  const { onResult: syncedCart } = useSubscription(SyncedCartDocument)
+  syncedCart(res => {
     const products = res.data?.syncedCart.carts || []
     // write to cache
     client.cache.writeQuery({
