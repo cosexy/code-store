@@ -14,9 +14,13 @@
         </dd>
       </dl>
 
-      <ul role="list" class="divide-y divide-white divide-opacity-10 text-sm font-medium">
+      <ul v-if="status === 'purchasing'" role="list" class="divide-y divide-white divide-opacity-10 text-sm font-medium">
         <checkout-product-item v-for="item in cart" :key="item.id" :item="item" />
       </ul>
+
+      <div v-else class="pb-7 pt-6">
+        ---
+      </div>
 
       <dl class="space-y-6 border-t border-white border-opacity-10 pt-6 text-sm font-medium">
         <div class="flex items-center justify-between">
@@ -54,6 +58,7 @@ import { GetCartQuery } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
   cart: GetCartQuery['cart']
+  status: 'loading' | 'empty' | 'purchasing'
 }>()
 
 const emits = defineEmits<{

@@ -24,8 +24,9 @@
               />
               <p class="text-sm text-gray-500">
                 Your cart is empty.
-                <nuxt-link to="/" class="text-indigo-600">
-                  Discovery now.
+                <nuxt-link to="/" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                  Go to discovery page
+                  <span aria-hidden="true"> &rarr;</span>
                 </nuxt-link>
               </p>
             </div>

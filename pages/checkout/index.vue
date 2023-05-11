@@ -1,21 +1,15 @@
 <template>
   <div class="min-h-screen bg-white">
-    <checkout-empty v-if="current === 'loading'" />
+    <div class="fixed left-0 top-0 hidden h-full w-1/2 bg-white lg:block" aria-hidden="true" />
+    <div class="fixed right-0 top-0 hidden h-full w-1/2 bg-indigo-900 lg:block" aria-hidden="true" />
 
-    <div v-else-if="current === 'purchasing'">
-      <div class="fixed left-0 top-0 hidden h-full w-1/2 bg-white lg:block" aria-hidden="true" />
-      <div class="fixed right-0 top-0 hidden h-full w-1/2 bg-indigo-900 lg:block" aria-hidden="true" />
-
-      <div class="relative mx-auto grid max-w-7xl grid-cols-1 gap-x-16 lg:grid-cols-2 lg:px-8 lg:pt-16">
-        <h1 class="sr-only">
-          Checkout
-        </h1>
-        <checkout-sumary :cart="cart" />
-        <checkout-form :cart="cart" />
-      </div>
+    <div class="relative mx-auto grid max-w-7xl grid-cols-1 gap-x-16 lg:grid-cols-2 lg:px-8 lg:pt-16">
+      <h1 class="sr-only">
+        Checkout
+      </h1>
+      <checkout-sumary :cart="cart" :status="current" />
+      <checkout-form :cart="cart" :status="current" />
     </div>
-
-    <checkout-thankyou v-else-if="current === 'thankyou'" />
   </div>
 </template>
 
@@ -35,10 +29,16 @@ const auth = useAuth()
 const { client } = useApolloClient()
 
 if (auth.user) {
-  const { onResult } = await useAsyncQuery(GetCartDocument)
-  onResult((res) => {
-    cart.value = res.data?.cart || []
+  const res = await client.query({
+    query: GetCartDocument
   })
+  cart.value = res.data.cart || []
+
+  if (cart.value.length) {
+    goTo('purchasing')
+  } else {
+    goTo('empty')
+  }
 } else {
   const { storage, isReady } = useLocalCart()!
   const vars = computed<ParseProductsQueryVariables>(() => ({
