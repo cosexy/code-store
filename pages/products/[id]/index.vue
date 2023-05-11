@@ -45,6 +45,7 @@
       </div>
     </div>
     <modal-order-preview />
+    <modal-add-review />
   </div>
 </template>
 

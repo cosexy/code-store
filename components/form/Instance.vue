@@ -9,7 +9,7 @@ import Schema, { Rules } from 'async-validator'
 import { ValidateFieldsError } from 'async-validator/dist-types/interface'
 import { FormContext } from '~/entities/form.entity'
 interface FormProps {
-  value: Record<string, any>
+  value: Record<string, any> | any
   rules: Rules
 }
 const props = defineProps<FormProps>()

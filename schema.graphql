@@ -81,6 +81,7 @@ type Mutation {
     createOrder(input: CreateOrderInput!): Order!
     createPost(input: CreatePostInput!): Post!
     createProduct(input: CreateProductInput!): Product!
+    createReview(input: CreateReviewInput!): Review!
     createTag(input: CreateTagInput!): Tag!
     remoreFromCart(input: RemoreFromCartInput!): Cart!
     removeCategory(input: RemoveCategoryInput!): Category!
@@ -170,10 +171,21 @@ type Query {
     product(filter: GetProductFilter!): Product!
     products(filter: GetProductsFilter!): [Product!]!
     productsCount(filter: GetCountProductsFilter!): Float!
+    reviewCount(filter: GetCountReviewFilter!): Float!
     studioProduct(filter: GetProductStudioFilter!): Product!
     studioProducts(filter: GetProductsStudioFilter!): [Product!]!
     studioProductsCount(filter: GetCountProductsStudioFilter!): Float!
     tags(filter: GetCategoriesFilter!): [Tag!]!
+}
+
+type Review {
+    content: String!
+    createdAt: Float!
+    id: ID!
+    product: Product!
+    rate: Float!
+    updatedAt: Float!
+    user: User!
 }
 
 type Subscription {
@@ -281,6 +293,12 @@ input CreateProductInput {
     version: String!
 }
 
+input CreateReviewInput {
+    content: String!
+    product: ID!
+    rate: Int!
+}
+
 input CreateTagInput {
     description: String = ""
     name: String!
@@ -304,6 +322,10 @@ input GetCountProductsStudioFilter {
     category: ID
     name: String
     tags: [ID!]
+}
+
+input GetCountReviewFilter {
+    product: ID!
 }
 
 input GetProductFilter {

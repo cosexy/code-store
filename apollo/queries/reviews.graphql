@@ -1,0 +1,3 @@
+query CountReview($filter: GetCountReviewFilter!) {
+    reviewCount(filter: $filter)
+}
