@@ -20,17 +20,43 @@
 </template>
 
 <script setup async lang="ts">
-import { GetCartDocument, GetCartQuery } from '~/apollo/__generated__/graphql'
+import { MaybeRefOrGetter } from '@vueuse/core'
+import { GetCartDocument, GetCartQuery, ParseProductsQueryVariables } from '~/apollo/__generated__/graphql'
 
 const { current, goTo } = useStepper([
   'empty',
   'purchase'
 ], 'empty')
 
-const { result } = await useAsyncQuery(GetCartDocument)
-const cart = ref<GetCartQuery['cart']>(result.value?.cart || [])
+const cart = ref<GetCartQuery['cart']>([])
 if (cart.value.length) {
   goTo('purchase')
+}
+
+let products: MaybeRefOrGetter<GetCartQuery['cart']>
+const loading: MaybeRefOrGetter<boolean> = ref(false)
+
+const auth = useAuth()
+if (auth.user) {
+  const { result } = await useAsyncQuery(GetCartDocument)
+  products = computed(() => result.value?.cart || [])
+} else {
+  const { storage } = useLocalCart()!
+  const vars = computed<ParseProductsQueryVariables>(() => ({
+    filter: {
+      products: Array.from(new Set(storage.value.map((item) => item.product.id))) || []
+    }
+  }))
+
+  const { result, loading: getting } = await useQuery(ParseProductsDocument, vars)
+  products = computed(() => {
+    const products = result.value?.parseProducts || []
+    return storage.value.map((item) => ({
+      ...item,
+      product: products.find((product) => product.id === item.product.id)!
+    }))
+  })
+  syncRef(loading, getting, { direction: 'ltr' })
 }
 
 </script>

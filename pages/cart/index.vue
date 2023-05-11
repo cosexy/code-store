@@ -4,13 +4,18 @@
       <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
         Shopping Cart
       </h1>
-      <div class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
-        <!-- Cart items -->
-        <cart-products :products="products" />
 
-        <!-- Order summary -->
-        <cart-summary :products="products" />
-      </div>
+      <includes-spinner
+        :spinning="loading"
+      >
+        <div class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+          <!-- Cart items -->
+          <cart-products :products="products" />
+
+          <!-- Order summary -->
+          <cart-summary :products="products" />
+        </div>
+      </includes-spinner>
     </div>
   </div>
 </template>
@@ -19,7 +24,8 @@
 import { MaybeRefOrGetter } from '@vueuse/core'
 import { GetCartQuery, ParseProductsQueryVariables } from '~/apollo/__generated__/graphql'
 
-let products: MaybeRefOrGetter<GetCartQuery['cart']> = ref([])
+let products: MaybeRefOrGetter<GetCartQuery['cart']>
+const loading: MaybeRefOrGetter<boolean> = ref(false)
 
 const auth = useAuth()
 if (auth.user) {
@@ -33,7 +39,7 @@ if (auth.user) {
     }
   }))
 
-  const { result } = await useQuery(ParseProductsDocument, vars)
+  const { result, loading: getting } = await useQuery(ParseProductsDocument, vars)
   products = computed(() => {
     const products = result.value?.parseProducts || []
     return storage.value.map((item) => ({
@@ -41,5 +47,6 @@ if (auth.user) {
       product: products.find((product) => product.id === item.product.id)!
     }))
   })
+  syncRef(loading, getting, { direction: 'ltr' })
 }
 </script>

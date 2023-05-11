@@ -16,8 +16,10 @@
 </template>
 
 <script setup lang="ts">
+import { MaybeRefOrGetter } from '@vueuse/core'
+
 const props = withDefaults(defineProps<{
-  spinning?: boolean
+  spinning?: boolean | MaybeRefOrGetter<boolean>
   type?: 'elastic' | 'pulse' | 'flashing' | 'collision' | 'revolution' | 'carousel' | 'typing' | 'windmill' | 'bricks' | 'floating' | 'fire' | 'spin' | 'falling' | 'stretching'
 }>(), {
   spinning: true,
