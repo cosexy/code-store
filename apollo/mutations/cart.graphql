@@ -22,3 +22,10 @@ mutation UpdateCart($input: UpdateCartInput!) {
         quantity
     }
 }
+
+mutation SyncCart($input: SyncToCartInput!) {
+    syncToCart(input: $input) {
+        id
+        quantity
+    }
+}

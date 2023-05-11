@@ -17,3 +17,27 @@ subscription UpdatedInCart {
         quantity
     }
 }
+
+
+subscription SyncedCart {
+    syncedCart {
+        id
+        carts {
+            id
+            product {
+                id
+                name
+                slug
+                avatar {
+                    id
+                    path
+                }
+                price
+                sale
+
+            }
+            licenseType
+            quantity
+        }
+    }
+}

@@ -177,8 +177,14 @@ type Query {
 
 type Subscription {
     notifyFired: Notify!
-    ordering: Cart!
+    syncedCart: SyncedCart!
     updatedInCart: Cart!
+}
+
+type SyncedCart {
+    carts: [Cart!]!
+    id: String!
+    user: User!
 }
 
 type Tag {

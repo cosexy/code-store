@@ -49,6 +49,19 @@ if (authStore.user) {
       }
     }
   })
+
+  // replace cart
+  const { onResult: syncEdCart } = useSubscription(SyncedCartDocument)
+  syncEdCart(res => {
+    const products = res.data?.syncedCart.carts || []
+    // write to cache
+    client.cache.writeQuery({
+      query: GetCartDocument,
+      data: {
+        cart: products
+      }
+    })
+  })
 } else {
   const { storage } = useLocalCart()
   syncRef(storage, cart, { direction: 'ltr' })
