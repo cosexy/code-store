@@ -41,9 +41,10 @@ if (authStore.user) {
           }
         })
       } else {
-        client.cache.modify({
-          fields: {
-            cart: (existing) => [...existing, item]
+        client.writeQuery({
+          query: GetCartDocument,
+          data: {
+            cart: [...cart.value, item]
           }
         })
       }
