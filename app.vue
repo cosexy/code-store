@@ -5,8 +5,10 @@
 </template>
 
 <script setup lang="ts">
-useColorMode()
+const color = useColorMode()
 useProvideModalStore()
+
+color.value = 'light'
 </script>
 <style>
 button, html, input, select, textarea {

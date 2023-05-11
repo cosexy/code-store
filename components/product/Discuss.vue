@@ -9,7 +9,7 @@
       />
     </div>
 
-    <includes-pagination :total="100" :page="10" />
+    <includes-pagination :total="count" :page="1" />
   </div>
 </template>
 

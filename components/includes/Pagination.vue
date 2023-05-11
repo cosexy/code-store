@@ -25,7 +25,7 @@
       <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
         <a
           href="javascript:void(0)"
-          class="relative inline-flex items-center rounded-l-md p-2 text-gray-400 ring-1 ring-inset ring-gray-700 hover:bg-indigo-600 hover:text-white focus:z-20 focus:outline-offset-0"
+          class="relative inline-flex items-center rounded-l-md p-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-indigo-600 dark:hover:text-white"
           :class="[isFirstPage ? 'pointer-events-none' : '']"
           @click="prev"
         >
@@ -37,10 +37,10 @@
           v-for="(item, index) in pages"
           :key="index"
           href="javascript:void(0)"
-          class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400 ring-1 ring-inset ring-gray-700 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+          class="relative inline-flex items-center px-4 py-2 text-sm font-semibold"
           :class="{
-            'pointer-events-none bg-indigo-600 text-white': item === currentPage,
-            'hover:bg-indigo-600 hover:text-white': item !== currentPage
+            'z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600': item === currentPage,
+            'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0': item !== currentPage
           }"
           @click="currentPage = item"
         >
@@ -49,7 +49,7 @@
 
         <a
           href="javascript:void(0)"
-          class="relative inline-flex items-center rounded-r-md p-2 text-gray-400 ring-1 ring-inset ring-gray-700 hover:bg-indigo-600 hover:text-white focus:z-20 focus:outline-offset-0"
+          class="relative inline-flex items-center rounded-r-md p-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-indigo-600 dark:hover:text-white"
           :class="[isLastPage ? 'pointer-events-none' : '']"
           @click="next"
         >
