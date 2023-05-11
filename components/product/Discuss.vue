@@ -1,6 +1,13 @@
 <template>
-  <div>
-    <product-review-item v-for="review in reviews" :key="review.id" :review="review" />
+  <div class="space-y-5">
+    <div id="list-reviews">
+      <product-review-item
+        v-for="review in reviews"
+        :key="review.id"
+        class="review-item"
+        :review="review"
+      />
+    </div>
 
     <includes-pagination :total="100" :page="10" />
   </div>
@@ -59,5 +66,7 @@ const reviews2 = {
 </script>
 
 <style scoped>
-
+#list-reviews:deep(.review-item:not(:first-child) ._content) {
+    @apply border-t border-gray-200;
+}
 </style>

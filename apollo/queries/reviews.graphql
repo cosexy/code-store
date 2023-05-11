@@ -21,6 +21,7 @@ query Reviews($filter: GetReviewsFilter!) {
         user {
             id
             slug
+            name
             avatar {
                 id
                 path

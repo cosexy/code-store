@@ -38,7 +38,11 @@
       </div>
     </div>
 
-    <product-discuss v-if="count" :count="count" :product-id="productId" />
+    <product-discuss
+      v-if="count"
+      :count="count"
+      :product-id="productId"
+    />
   </div>
 </template>
 
