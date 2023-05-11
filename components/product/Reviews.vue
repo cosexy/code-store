@@ -4,6 +4,18 @@
       Customer Reviews
     </h3>
 
+    <div>
+      <h4 class="sr-only">
+        Reviews Data
+      </h4>
+
+      <div>
+        <div>
+          ...
+        </div>
+      </div>
+    </div>
+
     <div v-for="(review, reviewIdx) in reviews.featured" :key="review.id" class="flex space-x-4 text-sm text-gray-500">
       <div class="flex-none py-10">
         <img :src="review.avatarSrc" alt="" class="h-10 w-10 rounded-full bg-gray-100">
@@ -30,6 +42,10 @@
 </template>
 
 <script lang="ts" setup>
+const props = defineProps<{
+  productId: string
+}>()
+
 const reviews = {
   average: 4,
   featured: [

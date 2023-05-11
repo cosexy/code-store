@@ -31,7 +31,7 @@
 
             <headless-tab-panels as="template">
               <headless-tab-panel>
-                <product-reviews />
+                <product-reviews :product-id="product.id" />
               </headless-tab-panel>
               <headless-tab-panel>
                 <product-description :description="product.description" />
