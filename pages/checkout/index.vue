@@ -2,7 +2,7 @@
   <div v-auto-animate class="bg-white">
     <checkout-empty v-if="current === 'empty'" />
 
-    <div v-else-if="current === 'purchase'">
+    <div v-else-if="current === 'purchasing'">
       <div class="fixed left-0 top-0 hidden h-full w-1/2 bg-white lg:block" aria-hidden="true" />
       <div class="fixed right-0 top-0 hidden h-full w-1/2 bg-indigo-900 lg:block" aria-hidden="true" />
 
@@ -20,43 +20,64 @@
 </template>
 
 <script setup async lang="ts">
-import { MaybeRefOrGetter } from '@vueuse/core'
+import { Ref } from 'vue'
 import { GetCartDocument, GetCartQuery, ParseProductsQueryVariables } from '~/apollo/__generated__/graphql'
 
 const { current, goTo } = useStepper([
+  'loading',
   'empty',
-  'purchase'
-], 'empty')
+  'purchasing'
+], 'loading')
 
-const cart = ref<GetCartQuery['cart']>([])
-if (cart.value.length) {
-  goTo('purchase')
-}
-
-let products: MaybeRefOrGetter<GetCartQuery['cart']>
-const loading: MaybeRefOrGetter<boolean> = ref(false)
+const cart: Ref<GetCartQuery['cart']> = ref([])
 
 const auth = useAuth()
+const { client } = useApolloClient()
+
 if (auth.user) {
-  const { result } = await useAsyncQuery(GetCartDocument)
-  products = computed(() => result.value?.cart || [])
+  const { onResult } = await useAsyncQuery(GetCartDocument)
+  onResult((res) => {
+    cart.value = res.data?.cart || []
+  })
 } else {
-  const { storage } = useLocalCart()!
+  const { storage, isReady } = useLocalCart()!
   const vars = computed<ParseProductsQueryVariables>(() => ({
     filter: {
       products: Array.from(new Set(storage.value.map((item) => item.product.id))) || []
     }
   }))
 
-  const { result, loading: getting } = await useQuery(ParseProductsDocument, vars)
-  products = computed(() => {
-    const products = result.value?.parseProducts || []
-    return storage.value.map((item) => ({
-      ...item,
-      product: products.find((product) => product.id === item.product.id)!
-    }))
-  })
-  syncRef(loading, getting, { direction: 'ltr' })
+  const parseProducts = async () => {
+    try {
+      const res = await client.query({
+        query: ParseProductsDocument,
+        variables: vars.value
+      })
+      const products = res.data?.parseProducts || []
+
+      if (!products.length) {
+        goTo('empty')
+      } else {
+        cart.value = storage.value.reduce((acc, item) => {
+          const product = products.find((p) => p.id === item.product.id)
+          if (product) {
+            acc.push({
+              ...item,
+              product
+            })
+          }
+          return acc
+        }, [] as GetCartQuery['cart'])
+
+        goTo('purchasing')
+      }
+    } catch (e) {
+      //
+    }
+  }
+  watchOnce(isReady, () => parseProducts())
 }
+
+const loading = useQueryLoading()
 
 </script>
