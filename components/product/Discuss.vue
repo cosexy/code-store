@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { AddedReviewDocument, CountReviewDocument, ReviewsQueryVariables } from '~/apollo/__generated__/graphql'
+import { ReviewsQueryVariables } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
   count: number
