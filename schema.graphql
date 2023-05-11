@@ -146,6 +146,7 @@ type Product {
     id: ID!
     license: String
     name: String!
+    preview: String
     price: Float!
     sale: Float
     slug: String!

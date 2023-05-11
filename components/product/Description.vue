@@ -4,7 +4,7 @@
       Lisence
     </h3>
 
-    <div class="prose prose-sm max-w-none text-gray-500" v-html="lisence" />
+    <div class="prose prose-sm max-w-none text-gray-500" v-html="description" />
   </div>
 </template>
 
@@ -12,7 +12,7 @@
 import { GetProductQuery } from '~/apollo/__generated__/graphql'
 
 defineProps<{
-  lisence: GetProductQuery['product']['license']
+  description: GetProductQuery['product']['description']
 }>()
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <headless-tab-panel class="-mb-10">
+  <div class="-mb-10">
     <h3 class="sr-only">
       Customer Reviews
     </h3>
@@ -26,7 +26,7 @@
         <div class="prose prose-sm mt-4 max-w-none text-gray-500" v-html="review.content" />
       </div>
     </div>
-  </headless-tab-panel>
+  </div>
 </template>
 
 <script lang="ts" setup>

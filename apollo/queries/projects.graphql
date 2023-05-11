@@ -36,6 +36,15 @@ query GetProduct($filter: GetProductFilter!) {
             id
             path
         }
+        version
+        category {
+            id
+            slug
+        }
+        highlights
+        license
+        preview
+        updatedAt
         createdAt
     }
 }

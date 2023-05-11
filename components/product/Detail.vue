@@ -10,9 +10,9 @@
           Product information
         </h2>
         <p class="mt-2 text-sm text-gray-500">
-          Version 1.0 (Updated
-          <includes-time-tag :timestamp="product.createdAt">
-            {{ $dayjs(product.createdAt).format('MMMM D, YYYY') }}
+          Version {{ product.version }} (Updated
+          <includes-time-tag :timestamp="product.updatedAt">
+            {{ $dayjs(product.updatedAt).format('MMMM D, YYYY') }}
           </includes-time-tag>)
         </p>
       </div>
@@ -39,9 +39,13 @@
         class="bg-primary-600 flex w-full items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
         @click="open(product)"
       >
-        Pay ${{ product.price }}
+        Pay ${{ product.sale || product.price }}
       </button>
-      <button type="button" class="bg-primary-50 text-primary-700 hover:bg-primary-100 flex w-full items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">
+      <button
+        v-if="product.preview"
+        type="button"
+        class="bg-primary-50 text-primary-700 hover:bg-primary-100 flex w-full items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+      >
         Preview
       </button>
     </div>
@@ -52,7 +56,7 @@
       </h3>
       <div class="prose prose-sm mt-4 text-gray-500">
         <ul role="list">
-          <li v-for="highlight in highlights" :key="highlight">
+          <li v-for="highlight in product.highlights" :key="highlight">
             {{ highlight }}
           </li>
         </ul>
@@ -105,17 +109,13 @@
 
 <script lang="ts" setup>
 
+import { GetProductQuery } from '~/apollo/__generated__/graphql'
+
 defineProps<{
-  product: any
+  product: GetProductQuery['product']
 }>()
 
 const { open } = useDialog('over-overview')
-
-const highlights = [
-  '200+ SVG icons in 3 unique styles',
-  'Compatible with Figma, Sketch, and Adobe XD',
-  'Drawn on 24 x 24 pixel grid'
-]
 
 const reviews = {
   average: 4,
