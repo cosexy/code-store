@@ -49,6 +49,7 @@
     "@pinia/nuxt": "^0.4.9",
     "@tinymce/tinymce-vue": "^5.1.0",
     "@vue/apollo-composable": "^4.0.0-beta.4",
+    "@vueuse/integrations": "^10.1.2",
     "@vueuse/math": "^10.1.0",
     "@vueuse/router": "^10.1.2",
     "animejs": "^3.2.1",
@@ -57,6 +58,7 @@
     "country-list": "^2.3.0",
     "dayjs": "^1.11.7",
     "pinia": "^2.0.35",
+    "qrcode": "^1.5.3",
     "three-dots": "^0.3.2",
     "vue-chart-3": "^3.1.8"
   }

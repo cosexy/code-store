@@ -26,17 +26,12 @@
         <option :value="null">
           Tất Cả
         </option>
-        <option :value="'ProjectStatus.PREPARE'">
-          On Broad
-        </option>
-        <option :value="'ProjectStatus.RUNNING'">
-          Running
-        </option>
-        <option :value="'ProjectStatus.DONE'">
-          Done
-        </option>
-        <option :value="'ProjectStatus.STUCK'">
-          Stuck
+        <option
+          v-for="item in sorts"
+          :key="item.value"
+          :value="item.value"
+        >
+          {{ item.name }}
         </option>
       </select>
     </div>
@@ -56,6 +51,21 @@ const emit = defineEmits<{
 
 const keyword = useVModel(props, 'value', emit)
 const order = useVModel(props, 'sort', emit)
+
+const sorts = computed(() => [
+  {
+    name: 'Created At',
+    value: 'createdAt'
+  },
+  {
+    name: 'Updated At',
+    value: 'updatedAt'
+  },
+  {
+    name: 'Name',
+    value: 'name'
+  }
+])
 </script>
 
 <style scoped></style>
