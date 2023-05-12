@@ -45,14 +45,20 @@ const reviews = computed(
 
 const changePage = async (value: UnwrapNestedRefs<UseOffsetPaginationReturn>) => {
   const offset = filter.value.limit * (value.currentPage - 1)
-  await fetchMore({
-    variables: {
-      filter: {
-        ...filter.value,
-        offset
+
+  // try to range in review first. If exist and dont have null value, return else fetch more
+  const _reviews = (result.value?.reviews || []).slice(offset, offset + filter.value.limit)
+
+  if (!_reviews.length) {
+    await fetchMore({
+      variables: {
+        filter: {
+          ...filter.value,
+          offset
+        }
       }
-    }
-  })
+    })
+  }
   filter.value.offset = offset
 }
 
