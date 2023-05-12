@@ -5,11 +5,11 @@
         Categories
       </h4>
 
-      <div ref="categoriesRef">
+      <div>
         <div
           v-for="(category, index) in categories"
           :key="index"
-          class="item my-5 opacity-0"
+          class="item my-5"
         >
           <div
             class="hover:text-primary-600 flex cursor-pointer items-center space-x-2"
@@ -59,20 +59,6 @@ const toggleSelected = (id: string) => {
     selected.value = id
   }
 }
-
-const categoriesRef = ref<HTMLUListElement>()
-const $anime = useAnime()
-onMounted(async () => {
-  await nextTick()
-  $anime({
-    targets: categoriesRef.value?.querySelectorAll('.item'),
-    translateY: [-30, 0],
-    opacity: [0, 1],
-    // duration: 300,
-    // easing: 'easeOutQuad',
-    delay: (el: any, i: number) => 100 + 30 * i
-  })
-})
 </script>
 
 <style scoped>

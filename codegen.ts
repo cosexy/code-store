@@ -1,7 +1,7 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
-  schema: 'https://codestore-server.guen.dev/graphql',
+  schema: 'http://localhost:3002/graphql',
   documents: 'apollo/**/*.graphql',
   generates: {
     './apollo/__generated__/': {
