@@ -15,7 +15,11 @@
 
     <!-- Search -->
     <div class="flex lg:ml-6">
-      <a href="#" class="p-2 text-gray-400 hover:text-gray-500">
+      <a
+        href="javascript:void(0)"
+        class="p-2 text-gray-400 hover:text-gray-500"
+        @click="openSpotlight()"
+      >
         <span class="sr-only">Search</span>
         <icon name="ph:magnifying-glass" class="h-6 w-6" aria-hidden="true" />
       </a>
@@ -28,6 +32,7 @@
 
 <script setup lang="ts">
 const { open: openAuth } = useDialog('auth')
+const { open: openSpotlight } = useDialog('spotlight')
 const authStore = useAuth()
 </script>
 

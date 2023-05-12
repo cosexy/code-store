@@ -178,6 +178,7 @@ type Query {
     studioProducts(filter: GetProductsStudioFilter!): [Product!]!
     studioProductsCount(filter: GetCountProductsStudioFilter!): Float!
     tags(filter: GetCategoriesFilter!): [Tag!]!
+    users(filter: GetUsersFilter!): [User!]!
 }
 
 type Review {
@@ -214,7 +215,10 @@ type Tag {
 
 type User {
     avatar: Image
+    countProduct: Int!
+    countReview: Int!
     createdAt: Float!
+    description: String
     email: String!
     id: ID!
     name: String!
@@ -371,6 +375,13 @@ input GetReviewsFilter {
     product: ID
     sort: String!
     user: ID
+}
+
+input GetUsersFilter {
+    limit: Int!
+    name: String
+    offset: Int!
+    sort: String!
 }
 
 input OrderFilter {

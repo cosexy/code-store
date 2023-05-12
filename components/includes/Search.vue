@@ -1,6 +1,6 @@
 <template>
   <headless-transition-root
-    :show="open"
+    :show="modal.actived"
     as="template"
     appear
     @after-leave="query = ''"
@@ -8,7 +8,7 @@
     <headless-dialog
       as="div"
       class="relative z-40"
-      @close="open = false"
+      @close="close()"
     >
       <headless-transition-child
         as="template"
@@ -19,7 +19,7 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity" />
+        <div class="fixed inset-0 bg-black/25 bg-gray-500 transition-opacity" />
       </headless-transition-child>
 
       <div class="fixed inset-0 z-40 overflow-y-auto p-4 sm:p-6 md:p-20">
@@ -32,14 +32,21 @@
           leave-from="opacity-100 scale-100"
           leave-to="opacity-0 scale-95"
         >
-          <headless-dialog-panel class="mx-auto max-w-3xl divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
+          <headless-dialog-panel class="mx-auto max-w-3xl divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-black/5 transition-all">
             <headless-combobox v-slot="{ activeOption }" @update:modelValue="onSelect">
               <div class="relative">
                 <icon name="ph:magnifying-glass-bold" class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-gray-400" aria-hidden="true" />
                 <headless-combobox-input class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." @change="query = $event.target.value" />
               </div>
 
-              <headless-combobox-options v-if="query === '' || filteredPeople.length > 0" class="flex divide-x divide-gray-100" as="div" static hold>
+              <headless-combobox-options
+                v-if="query === '' || filteredPeople.length > 0"
+                v-auto-animate
+                class="flex divide-x divide-gray-100"
+                as="div"
+                static
+                hold
+              >
                 <div :class="['max-h-96 min-w-0 flex-auto scroll-py-4 overflow-y-auto px-6 py-4', activeOption && 'sm:h-96']">
                   <h2 v-if="query === ''" class="mb-4 mt-2 text-xs font-semibold text-gray-500">
                     Recent searches
@@ -101,7 +108,7 @@
               </headless-combobox-options>
 
               <div v-if="query !== '' && filteredPeople.length === 0" class="px-6 py-14 text-center text-sm sm:px-14">
-                <!--                <UsersIcon class="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />-->
+                <icon name="material-symbols:person-2-outline-rounded" class="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
                 <p class="mt-4 font-semibold text-gray-900">
                   No people found
                 </p>
@@ -118,6 +125,8 @@
 </template>
 
 <script setup lang="ts">
+
+const { modal, close } = useDialog('spotlight')
 
 const people = Array(20).fill({
   id: 1,
@@ -139,7 +148,7 @@ const people = Array(20).fill({
 
 const recent = [people[5], people[4], people[2], people[10], people[16]]
 
-const open = ref(false)
+const open = ref(true)
 const query = ref('')
 const filteredPeople = computed(() =>
   query.value === ''
