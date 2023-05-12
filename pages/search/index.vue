@@ -13,15 +13,24 @@
 <script lang="ts" setup>
 import { SearchProductsQueryVariables } from '~/apollo/__generated__/graphql'
 
+const route = useRoute()
+const router = useRouter()
+
 const vars = ref<SearchProductsQueryVariables>({
   filter: {
     category: '',
     limit: 10,
-    name: '',
+    name: route.query.keyword as string,
     offset: 0,
     sort: 'createdAt'
   }
 })
+
+watchDebounced(
+  () => vars.value.filter.name,
+  () => router.replace({ query: { ...route.query, keyword: vars.value.filter.name } }),
+  { debounce: 500, maxWait: 1000 }
+)
 </script>
 
 <style scoped></style>

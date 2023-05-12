@@ -21,29 +21,7 @@ export default defineNuxtPlugin(() => {
   ;(client.cache as InMemoryCache).policies.addTypePolicies({
     Query: {
       fields: {
-        reviews: {
-          keyArgs: ['filter', ['sort', 'product', 'user']],
-          merge: (existing: Reference[] = [], incoming: Reference[], { variables }) => {
-            const merged = existing ? existing.slice(0) : []
-            const offset = variables?.filter?.offset || 0
-            for (let i = 0; i < incoming.length; ++i) {
-              merged[offset + i] = incoming[i]
-            }
-
-            return merged
-          },
-          read (existing, { canRead }) {
-            if (!existing) {
-              return
-            }
-            const edges = []
-
-            for (let i = 0; i < existing.length; ++i) {
-              edges[i] = canRead(existing[i]) ? existing[i] : null
-            }
-            return edges
-          }
-        }
+        reviews: useOffsetLimitPagination(['filter', ['sort', 'product', 'user']])
       }
     }
   })
