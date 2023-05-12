@@ -21,7 +21,7 @@ export default defineNuxtPlugin(() => {
   ;(client.cache as InMemoryCache).policies.addTypePolicies({
     Query: {
       fields: {
-        reviews: useOffsetLimitPagination(['filter', ['sort', 'product', 'user']])
+        reviews: useOffsetLimitPagination(['filter', ['product', 'user']])
       }
     }
   })

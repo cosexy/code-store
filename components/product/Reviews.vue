@@ -47,6 +47,8 @@
 </template>
 
 <script lang="ts" setup>
+import { InMemoryCache } from '@apollo/client'
+
 const props = defineProps<{
   productId: string
 }>()
@@ -59,6 +61,60 @@ const count = computed(() => result.value?.reviewCount || 0)
 const average = computed(() => result.value?.reviewAverage || 0)
 
 const { open } = useDialog<string>('add-review')
+
+// realtime
+const { onResult } = useSubscription(AddedReviewDocument, {
+  filter: {
+    product: props.productId
+  }
+})
+const { client } = useApolloClient<InMemoryCache>()
+onResult((result) => {
+  const _review = result.data?.addedReview
+  if (_review) {
+    // update reviews
+    if (count.value) {
+      const _vars = {
+        filter: {
+          limit: 10,
+          offset: 0,
+          product: props.productId,
+          sort: 'createdAt'
+        }
+      }
+      const cache = client.readQuery({
+        query: ReviewsDocument,
+        variables: _vars
+      })
+      if (cache?.reviews) {
+        client.writeQuery({
+          query: ReviewsDocument,
+          variables: _vars,
+          data: {
+            reviews: [
+              _review,
+              ...cache.reviews
+            ]
+          }
+        })
+      }
+    }
+
+    // update average rate
+    const reviewCount = count.value + 1
+    const reviewAverage = Number(((average.value * count.value + _review.rate) / reviewCount).toFixed(1))
+    client.writeQuery({
+      query: ReviewInformationDocument,
+      variables: {
+        product: props.productId
+      },
+      data: {
+        reviewAverage,
+        reviewCount
+      }
+    })
+  }
+})
 </script>
 
 <style scoped></style>

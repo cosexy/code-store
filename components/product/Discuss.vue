@@ -14,8 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import { InMemoryCache } from '@apollo/client'
-
 const props = defineProps<{
   count: number
   productId: string
@@ -52,47 +50,6 @@ onLoad(async (offset) => {
     behavior: 'smooth',
     block: 'start'
   })
-})
-
-// realtime
-const { onResult } = useSubscription(AddedReviewDocument, {
-  filter: {
-    product: props.productId
-  }
-})
-const { client } = useApolloClient<InMemoryCache>()
-onResult((result) => {
-  const _review = result.data?.addedReview
-  if (_review) {
-    client.cache.modify({
-      fields: {
-        reviews (existingReviews = []) {
-          return [_review, ...existingReviews]
-        }
-      }
-    })
-    // update average rate
-    const reviewInformation = client.readQuery({
-      query: ReviewInformationDocument,
-      variables: {
-        product: props.productId
-      }
-    })
-    if (reviewInformation) {
-      const reviewCount = reviewInformation.reviewCount + 1
-      const reviewAverage = Number(((reviewInformation.reviewAverage * reviewInformation.reviewCount + _review.rate) / reviewCount).toFixed(1))
-      client.writeQuery({
-        query: ReviewInformationDocument,
-        variables: {
-          product: props.productId
-        },
-        data: {
-          reviewAverage,
-          reviewCount
-        }
-      })
-    }
-  }
 })
 </script>
 
