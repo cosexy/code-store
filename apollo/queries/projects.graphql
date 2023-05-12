@@ -113,3 +113,18 @@ query ParseProducts($filter: ParseProductsFilter!) {
         sale
     }
 }
+
+
+query SearchProducts($filter: GetProductsFilter!) {
+    products(filter: $filter) {
+        id
+        name
+        slug
+        avatar {
+            id
+            path
+        }
+        price
+        sale
+    }
+}

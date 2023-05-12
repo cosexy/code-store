@@ -4,3 +4,12 @@ query StudioCategories {
         name
     }
 }
+
+
+query Categories {
+    categories {
+        id
+        name
+        slug
+    }
+}

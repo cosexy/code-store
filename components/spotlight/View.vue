@@ -64,8 +64,7 @@
 <script setup lang="ts">
 const { modal, close } = useDialog('spotlight')
 
-const input = ref('')
-const keyword = refDebounced(input, 500)
+const keyword = ref('')
 
 const router = useRouter()
 const toSearch = (_keyword: string) => {
@@ -75,6 +74,10 @@ const toSearch = (_keyword: string) => {
       path: '/search',
       query: { keyword: _keyword }
     })
+
+    setTimeout(() => {
+      keyword.value = ''
+    }, 1000)
   }
 }
 </script>
