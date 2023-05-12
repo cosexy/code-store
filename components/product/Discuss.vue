@@ -9,29 +9,52 @@
       />
     </div>
 
-    <includes-pagination :total="count" :page="1" />
+    <includes-pagination :total="count" :page="1" @change="changePage" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ReviewsQueryVariables } from '~/apollo/__generated__/graphql'
+import { UnwrapNestedRefs } from 'vue-demi'
+import { UseOffsetPaginationReturn } from '@vueuse/core'
+import { InMemoryCache } from '@apollo/client'
+import { GetReviewsFilter } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
   count: number
   productId: string
 }>()
-
-const vars = ref<ReviewsQueryVariables>({
-  filter: {
-    limit: 10,
-    offset: 0,
-    product: props.productId,
-    sort: 'createdAt'
-  }
+/**
+ * Query
+ */
+const filter = ref<GetReviewsFilter>({
+  limit: 10,
+  offset: 0,
+  product: props.productId,
+  sort: 'createdAt'
 })
 
-const { result } = useQuery(ReviewsDocument, vars)
-const reviews = computed(() => result.value?.reviews || [])
+const { result, fetchMore } = useQuery(ReviewsDocument, {
+  filter: filter.value
+})
+
+const reviews = computed(
+  () => (result.value?.reviews || [])
+    .slice(filter.value.offset, filter.value.offset + filter.value.limit)
+    .filter((review) => review)
+)
+
+const changePage = async (value: UnwrapNestedRefs<UseOffsetPaginationReturn>) => {
+  const offset = filter.value.limit * (value.currentPage - 1)
+  await fetchMore({
+    variables: {
+      filter: {
+        ...filter.value,
+        offset
+      }
+    }
+  })
+  filter.value.offset = offset
+}
 
 // realtime
 const { onResult } = useSubscription(AddedReviewDocument, {
@@ -39,12 +62,17 @@ const { onResult } = useSubscription(AddedReviewDocument, {
     product: props.productId
   }
 })
-
-const { client } = useApolloClient()
+const { client } = useApolloClient<InMemoryCache>()
 onResult((result) => {
   const _review = result.data?.addedReview
   if (_review) {
-    // TODO: add review to cache
+    client.cache.modify({
+      fields: {
+        reviews (existingReviews = []) {
+          return [_review, ...existingReviews]
+        }
+      }
+    })
     // update average rate
     const reviewInformation = client.readQuery({
       query: ReviewInformationDocument,
@@ -68,7 +96,6 @@ onResult((result) => {
     }
   }
 })
-
 </script>
 
 <style scoped>
