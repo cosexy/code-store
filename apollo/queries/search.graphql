@@ -1,0 +1,30 @@
+query Spotlight($users: GetUsersFilter!, $products: GetProductsFilter!) {
+    users(filter: $users) {
+        id
+        name
+        slug
+        description
+        avatar {
+            id
+            path
+        }
+        countProduct
+        countReview
+        occupation
+        role
+    }
+    products(filter: $products) {
+        id
+        name
+        description
+        avatar {
+            id
+            path
+        }
+        category {
+            id
+            name
+            slug
+        }
+    }
+}

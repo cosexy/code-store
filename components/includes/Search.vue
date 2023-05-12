@@ -3,7 +3,7 @@
     :show="modal.actived"
     as="template"
     appear
-    @after-leave="query = ''"
+    @after-leave="keyword = ''"
   >
     <headless-dialog
       as="div"
@@ -19,7 +19,7 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-black/25 bg-gray-500 transition-opacity" />
+        <div class="fixed inset-0 bg-black/25 transition-opacity" />
       </headless-transition-child>
 
       <div class="fixed inset-0 z-40 overflow-y-auto p-4 sm:p-6 md:p-20">
@@ -32,27 +32,70 @@
           leave-from="opacity-100 scale-100"
           leave-to="opacity-0 scale-95"
         >
-          <headless-dialog-panel class="mx-auto max-w-3xl divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-black/5 transition-all">
-            <headless-combobox v-slot="{ activeOption }" @update:modelValue="onSelect">
+          <headless-dialog-panel
+            class="mx-auto max-w-3xl divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-black/5 transition-all"
+          >
+            <headless-combobox
+              v-slot="{ activeOption }"
+              @update:model-value="onSelect"
+            >
+              <!-- Search Input -->
               <div class="relative">
-                <icon name="ph:magnifying-glass-bold" class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-                <headless-combobox-input class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." @change="query = $event.target.value" />
+                <icon
+                  name="ph:magnifying-glass-bold"
+                  class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+                <headless-combobox-input
+                  class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
+                  placeholder="Search..."
+                  @change="keyword = $event.target.value"
+                />
+              </div>
+
+              <div
+                v-if="current === 'waiting'"
+                class="px-6 py-14 text-center text-sm sm:px-14"
+              >
+                <div>
+                  <vue-lottie-player
+                    path="https://assets7.lottiefiles.com/private_files/lf30_rn8hog3p.json"
+                    loop
+                    width="300px"
+                    height="300px"
+                  />
+                </div>
+
+                <p class="mt-2 text-gray-500">
+                  Search for everything you need to know about your team.
+                </p>
               </div>
 
               <headless-combobox-options
-                v-if="query === '' || filteredPeople.length > 0"
+                v-if="keyword === '' || filteredPeople.length > 0"
                 v-auto-animate
                 class="flex divide-x divide-gray-100"
                 as="div"
                 static
                 hold
               >
-                <div :class="['max-h-96 min-w-0 flex-auto scroll-py-4 overflow-y-auto px-6 py-4', activeOption && 'sm:h-96']">
-                  <h2 v-if="query === ''" class="mb-4 mt-2 text-xs font-semibold text-gray-500">
+                <div
+                  :class="['max-h-96 min-w-0 flex-auto scroll-py-4 overflow-y-auto px-6 py-4', activeOption && 'sm:h-96']"
+                >
+                  <h2
+                    v-if="keyword === ''"
+                    class="mb-4 mt-2 text-xs font-semibold text-gray-500"
+                  >
                     Recent searches
                   </h2>
-                  <div hold class="-mx-2 text-sm text-gray-700">
-                    <headless-combobox-option v-for="person in query === '' ? recent : filteredPeople" :key="person.id" v-slot="{ active }" :value="person" as="template">
+                  <div class="-mx-2 text-sm text-gray-700">
+                    <headless-combobox-option
+                      v-for="person in keyword === '' ? recent : filteredPeople"
+                      :key="person.id"
+                      v-slot="{ active }"
+                      :value="person"
+                      as="template"
+                    >
                       <div :class="['group flex cursor-default select-none items-center rounded-md p-2', active && 'bg-gray-100 text-gray-900']">
                         <img :src="person.imageUrl" alt="" class="h-6 w-6 flex-none rounded-full">
                         <span class="ml-3 flex-auto truncate">{{ person.name }}</span>
@@ -106,16 +149,6 @@
                   </div>
                 </div>
               </headless-combobox-options>
-
-              <div v-if="query !== '' && filteredPeople.length === 0" class="px-6 py-14 text-center text-sm sm:px-14">
-                <icon name="material-symbols:person-2-outline-rounded" class="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
-                <p class="mt-4 font-semibold text-gray-900">
-                  No people found
-                </p>
-                <p class="mt-2 text-gray-500">
-                  We couldn’t find anything with that term. Please try again.
-                </p>
-              </div>
             </headless-combobox>
           </headless-dialog-panel>
         </headless-transition-child>
@@ -125,8 +158,19 @@
 </template>
 
 <script setup lang="ts">
+import { VueLottiePlayer } from '@nguyenshort/vue-lottie'
+import { SpotlightDocument, SpotlightQueryVariables } from '~/apollo/__generated__/graphql'
+import { reactive } from '#imports'
 
-const { modal, close } = useDialog('spotlight')
+const { modal, close } = useDialog('spotlight', { actived: true })
+
+const {
+  current,
+  goTo
+} = useStepper([
+  'waiting',
+  'searching'
+], 'waiting')
 
 const people = Array(20).fill({
   id: 1,
@@ -148,17 +192,39 @@ const people = Array(20).fill({
 
 const recent = [people[5], people[4], people[2], people[10], people[16]]
 
-const open = ref(true)
-const query = ref('')
+const keyword = ref('')
+
 const filteredPeople = computed(() =>
-  query.value === ''
+  keyword.value === ''
     ? []
     : people.filter((person) => {
-      return person.name.toLowerCase().includes(query.value.toLowerCase())
+      return person.name.toLowerCase().includes(keyword.value.toLowerCase())
     })
 )
 
 function onSelect (person) {
   window.location = person.url
 }
+
+/**
+ * Apollo Query
+ */
+const filter = reactive<SpotlightQueryVariables>({
+  users: {
+    offset: 0,
+    limit: 3,
+    sort: 'createdAt',
+    name: ''
+  },
+  products: {
+    offset: 0,
+    limit: 3,
+    sort: 'createdAt',
+    name: ''
+  }
+})
+
+const { result } = useQuery(SpotlightDocument, filter, {
+  enabled: false
+})
 </script>
