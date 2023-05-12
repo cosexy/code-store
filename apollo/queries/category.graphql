@@ -13,3 +13,14 @@ query Categories {
         slug
     }
 }
+
+
+query Category($filter: GetCategoryFilter!) {
+    category(filter: $filter) {
+        id
+        name
+        description
+        slug
+        createdAt
+    }
+}

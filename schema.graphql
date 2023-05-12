@@ -161,6 +161,7 @@ type Query {
     cart: [Cart!]!
     categories: [Category!]!
     categoriesCount: Float!
+    category(filter: GetCategoryFilter!): Category!
     me: User!
     order(filter: OrderFilter!): Order!
     orders(filter: OrdersFilter!): [Order!]!
@@ -321,6 +322,10 @@ input GetCategoriesFilter {
     name: String
     offset: Int!
     sort: String!
+}
+
+input GetCategoryFilter {
+    slug: String!
 }
 
 input GetCountProductsFilter {

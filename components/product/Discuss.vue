@@ -2,72 +2,57 @@
   <div class="space-y-5">
     <div id="list-reviews">
       <product-review-item
-        v-for="review in reviews"
+        v-for="review in items"
         :key="review.id"
         class="review-item"
         :review="review"
       />
     </div>
 
-    <includes-pagination :total="count" :page="1" @change="changePage" />
+    <includes-pagination :total="count" :page="1" @change="value => toPage(value.currentPage)" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { UnwrapNestedRefs } from 'vue-demi'
-import { UseOffsetPaginationReturn } from '@vueuse/core'
 import { InMemoryCache } from '@apollo/client'
-import { GetReviewsFilter } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
   count: number
   productId: string
 }>()
+
+const countRef = toRef(props, 'count')
+
 /**
  * Query
  */
-const filter = ref<GetReviewsFilter>({
-  limit: 10,
-  offset: 0,
-  product: props.productId,
-  sort: 'createdAt'
-})
-
 const { result, fetchMore } = useQuery(ReviewsDocument, {
-  filter: filter.value
-})
-
-const reviews = computed(
-  () => (result.value?.reviews || [])
-    .slice(filter.value.offset, filter.value.offset + filter.value.limit)
-    .filter((review) => review)
-)
-
-const changePage = async (value: UnwrapNestedRefs<UseOffsetPaginationReturn>) => {
-  const offset = filter.value.limit * (value.currentPage - 1)
-
-  // try to range in review first. If exist and dont have null value, return else fetch more
-  const _reviews = (result.value?.reviews || []).slice(offset, offset + filter.value.limit)
-
-  if (!_reviews.length) {
-    await fetchMore({
-      variables: {
-        filter: {
-          ...filter.value,
-          offset
-        }
-      }
-    })
+  filter: {
+    limit: 10,
+    offset: 0,
+    product: props.productId,
+    sort: 'createdAt'
   }
+})
+const reviews = computed(() => result.value?.reviews || [])
+const { items, options, toPage, onLoad } = useAutoPagination(reviews, countRef)
 
-  // scroll to project-tabs smoothly
+onLoad(async (offset) => {
+  await fetchMore({
+    variables: {
+      filter: {
+        ...options,
+        sort: 'createdAt',
+        product: props.productId,
+        offset
+      }
+    }
+  })
   document.getElementById('project-tabs')?.scrollIntoView({
     behavior: 'smooth',
     block: 'start'
   })
-
-  filter.value.offset = offset
-}
+})
 
 // realtime
 const { onResult } = useSubscription(AddedReviewDocument, {
