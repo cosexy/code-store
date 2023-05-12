@@ -10,7 +10,8 @@
         <div
           v-if="!isEmpty"
           v-auto-animate
-          :class="['max-h-96 min-w-0 flex-auto scroll-py-4 overflow-y-auto px-6 py-4', activeOption && 'sm:h-96']"
+          class="max-h-96 min-w-0 flex-auto scroll-py-4 overflow-y-auto px-6 py-4"
+          :class="[activeOption && 'sm:h-96']"
         >
           <template v-if="users.length">
             <h2
@@ -50,7 +51,7 @@
           <template v-if="products.length">
             <h2
               class="mb-4 text-xs font-semibold text-gray-500"
-              :class="[users.length && 'mt-6']"
+              :class="[users.length && 'mt-5']"
             >
               Products
             </h2>

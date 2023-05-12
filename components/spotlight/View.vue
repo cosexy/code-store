@@ -1,12 +1,10 @@
 <template>
   <headless-transition-root
     :show="modal.actived"
-    as="template"
+    as="div"
     appear
-    @after-leave="keyword = ''"
   >
     <headless-dialog
-      as="div"
       class="relative z-40"
       @close="close()"
     >
@@ -37,8 +35,6 @@
           >
             <headless-combobox
               v-slot="{ activeOption }"
-              v-auto-animate
-              @update:model-value="onSelect"
             >
               <!-- Search Input -->
               <div class="relative">
@@ -51,6 +47,7 @@
                   class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
                   placeholder="Search..."
                   @change="keyword = $event.target.value"
+                  @keydown.enter="toSearch(keyword as string)"
                 />
               </div>
               <spotlight-search v-if="keyword" :active-option="activeOption" :keyword="keyword" />
@@ -65,20 +62,19 @@
 </template>
 
 <script setup lang="ts">
-const { modal, close } = useDialog('spotlight', { actived: true })
-
-const {
-  current,
-  goTo
-} = useStepper([
-  'waiting',
-  'searching'
-], 'waiting')
+const { modal, close } = useDialog('spotlight')
 
 const input = ref('')
 const keyword = refDebounced(input, 500)
 
-function onSelect (person) {
-  window.location = person.url
+const router = useRouter()
+const toSearch = (_keyword: string) => {
+  if (_keyword) {
+    close()
+    router.push({
+      path: '/search',
+      query: { keyword: _keyword }
+    })
+  }
 }
 </script>
