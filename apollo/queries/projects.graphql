@@ -1,3 +1,8 @@
+query ProductsCount($filter: GetCountProductsFilter!) {
+    productsCount(filter: $filter)
+}
+
+
 query GetProducts($filter: GetProductsFilter!) {
     products(filter: $filter) {
         id
