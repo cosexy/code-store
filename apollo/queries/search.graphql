@@ -3,7 +3,7 @@ query Spotlight($users: GetUsersFilter!, $products: GetProductsFilter!) {
         id
         name
         slug
-        description
+        email
         avatar {
             id
             path

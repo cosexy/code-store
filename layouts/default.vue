@@ -6,7 +6,7 @@
     <modal-auth />
     <client-only>
       <includes-notify />
-      <includes-search />
+      <spotlight-view />
     </client-only>
     <modal-sync-cart v-if="auth.user" />
   </div>
