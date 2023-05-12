@@ -59,6 +59,13 @@ const changePage = async (value: UnwrapNestedRefs<UseOffsetPaginationReturn>) =>
       }
     })
   }
+
+  // scroll to project-tabs smoothly
+  document.getElementById('project-tabs')?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  })
+
   filter.value.offset = offset
 }
 
