@@ -1,7 +1,8 @@
 import { MaybeRefOrGetter, toRef } from '@vueuse/core'
+import { Ref } from 'vue'
 interface Config {
-    offset: number
-    limit: number
+    offset?: number
+    limit?: number
 }
 
 type Maybe<T> = T | null
@@ -9,34 +10,39 @@ type Maybe<T> = T | null
 export const useAutoPagination = <T>(
   source: MaybeRefOrGetter<T[]>,
   _count: MaybeRefOrGetter<number>,
-  initValue: MaybeRefOrGetter<Config>
+  initOptions?: Ref<Config> | Partial<Config>
 ) => {
-  const options = toRef(initValue)
+  const options = toRef(initOptions)
+  const offset = computed(() => options.value?.offset ?? 0)
+  const limit = computed(() => options.value?.limit ?? 10)
 
   const count = toRef(_count)
-  const array = toRef(source)
 
+  const array = toRef(source)
   const data = computed<Maybe<T>[]>(
     () => Array(count.value).fill(null).map((_, i) => array.value[i])
   )
 
   const items = computed<T[]>(
     () => data.value
-      .slice(options.value.offset, options.value.offset + options.value.limit)
+      .slice(offset.value, offset.value + limit.value)
       .filter((item) => item) as T[]
   )
 
   const onLoad = createEventHook<number>()
 
   const toOffset = async (offset: number) => {
-    const _items = data.value.slice(offset, offset + options.value.limit)
+    const _items = data.value.slice(offset, offset + limit.value)
     if (_items.some((item) => !item)) {
       await onLoad.trigger(offset)
     }
-    options.value.offset = offset
+    options.value = {
+      ...options.value,
+      offset
+    }
   }
 
-  const toPage = async (page: number) => toOffset(options.value.limit * (page - 1))
+  const toPage = async (page: number) => toOffset(limit.value * (page - 1))
 
   return {
     data,
