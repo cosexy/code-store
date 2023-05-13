@@ -16,10 +16,12 @@ import { CategoriesQuery, GetProductsFilter } from '~/apollo/__generated__/graph
 const route = useRoute()
 const router = useRouter()
 
-const vars = ref<Pick<GetProductsFilter, 'category' | 'name' | 'sort'>>({
+const vars = ref<GetProductsFilter>({
   category: '',
   name: route.query.keyword as string,
-  sort: 'createdAt'
+  sort: 'createdAt',
+  offset: 0,
+  limit: 8
 })
 
 const { result } = useQuery(CategoriesDocument)

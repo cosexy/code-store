@@ -45,6 +45,7 @@
 </template>
 
 <script setup lang="ts">
+import { toRef } from '@vueuse/core'
 import { VueLottiePlayer } from '@nguyenshort/vue-lottie'
 import {
   GetProductsFilter,
@@ -54,50 +55,33 @@ import {
 } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
-    filter: Pick<GetProductsFilter, 'category' | 'name' | 'sort'> | any
+    filter: GetProductsFilter
 }>()
 
-const name = toRef(props.filter, 'name')
-const category = toRef(props.filter, 'category')
-const sort = toRef(props.filter, 'sort')
-const offsetVars = ref<Pick<GetProductsFilter, 'limit' | 'offset'>>({
-  limit: 3,
-  offset: 0
-})
+const offsetVars = toRef(props.filter)
 
 const { result, loading, fetchMore, refetch } = useQuery(SearchProductsDocument, {
-  filter: {
-    name: name.value,
-    category: category.value,
-    sort: sort.value,
-    limit: offsetVars.value.limit,
-    offset: offsetVars.value.offset
-  }
+  filter: offsetVars.value
 }, {
   debounce: 500
 })
 const products = computed<SearchProductsQuery['products']>(() => result.value?.products ?? [])
 
-watch([name, category, sort], () => {
+watch(() => [props.filter.name, props.filter.sort, props.filter.category], () => {
   offsetVars.value = {
+    ...offsetVars.value,
     limit: 8,
     offset: 0
   }
   refetch({
-    filter: {
-      name: name.value,
-      category: category.value,
-      sort: sort.value,
-      limit: offsetVars.value.limit,
-      offset: offsetVars.value.offset
-    }
+    filter: offsetVars.value
   })
 })
 
 const countFilter = computed<ProductsCountQueryVariables>(() => ({
   filter: {
-    name: name.value,
-    category: category.value
+    name: props.filter.name,
+    category: props.filter.category
   }
 }))
 
@@ -112,10 +96,7 @@ onLoad(async (offset) => {
   await fetchMore({
     variables: {
       filter: {
-        name: name.value,
-        category: category.value,
-        sort: sort.value,
-        limit: offsetVars.value.limit,
+        ...offsetVars.value,
         offset
       }
     }
