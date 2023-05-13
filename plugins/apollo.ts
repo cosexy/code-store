@@ -3,11 +3,18 @@ import { InMemoryCache } from '@apollo/client'
 
 export default defineNuxtPlugin(() => {
   const { client } = useApolloClient()
-
+  const authStore = useAuth()
   // add RoundTrip
   const roundTripLink = new ApolloLink((operation, forward) => {
     // Called before operation is sent to server
     operation.setContext({ start: Date.now() })
+
+    operation.setContext({
+      headers: {
+        authorization: authStore.token ? `Bearer ${authStore.token}` : ''
+      }
+    })
+
     return forward(operation).map((data) => {
       // Called after server responds
       const time = Date.now() - operation.getContext().start
