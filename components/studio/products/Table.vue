@@ -1,8 +1,8 @@
 <template>
   <includes-spinner :spinning="loading">
-    <table class="w-full whitespace-nowrap text-left" :count="count">
+    <table class="w-full whitespace-nowrap text-left" :count="total">
       <colgroup>
-        <col class="w-full sm:w-4/12">
+        <col class="w-full sm:w-3/12">
         <col class="lg:w-4/12">
         <col class="lg:w-2/12">
         <col class="lg:w-1/12">
@@ -41,7 +41,7 @@
       </thead>
       <tbody class="divide-y divide-white/5">
         <studio-products-item
-          v-for="product in products"
+          v-for="product in items"
           :key="product.id"
           :product="product"
           @deleted="afterDeleted"
@@ -50,51 +50,64 @@
     </table>
 
     <div class="border-t border-white/10 px-8 py-4">
-      <includes-pagination class="hidden" :total="count" @change="value => page = value.currentPage" />
+      <includes-pagination
+        class="hidden"
+        :total="count"
+        :page-size="filter.limit"
+        @change="value => toPage(value.currentPage)"
+      />
     </div>
   </includes-spinner>
 </template>
 
 <script setup lang="ts">
 import { useRouteQuery } from '@vueuse/router'
-import { StudioProductsQueryVariables } from '~/apollo/__generated__/graphql'
+import { GetProductsStudioFilter, StudioProductsQueryVariables } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
   count: number
 }>()
 
-const name = useRouteQuery<string>('name', '')
-const sort = useRouteQuery<string>('sort', 'createdAt')
-const page = useRouteQuery('page', '1', {
-  transform: (val) => Math.abs(Number(val))
+const total = toRef(props, 'count')
+
+const filter = ref<GetProductsStudioFilter>({
+  name: '',
+  limit: 2,
+  offset: 0,
+  sort: 'createdAt'
 })
 
-const filter = computed<StudioProductsQueryVariables>(() => ({
-  filter: {
-    name: name.value,
-    limit: 10,
-    offset: page.value * 10 - 10,
-    sort: sort.value
-  }
-}))
-
-const { result, loading } = useQuery(StudioProductsDocument, filter)
+const { result, loading, fetchMore } = useQuery(StudioProductsDocument, {
+  filter: filter.value
+})
 const products = computed(() => result.value?.studioProducts || [])
+
+const { items, toPage, onLoad } = useAutoPagination(products, total, filter)
+
+onLoad((offset) => fetchMore({
+  variables: {
+    filter: {
+      ...filter.value,
+      offset
+    }
+  }
+})
+)
 
 const { client } = useApolloClient()
 const afterDeleted = () => {
   // decrise the value of query StudioProductsDocument
-  client.writeQuery({
-    query: StudioProductsCountDocument,
-    variables: {
-      filter: {
-        name: name.value
-      }
-    },
-    data: {
-      studioProductsCount: props.count - 1
-    }
-  })
+  // client.writeQuery({
+  //   query: StudioProductsCountDocument,
+  //   variables: {
+  //     filter: {
+  //       name: name.value
+  //     }
+  //   },
+  //   data: {
+  //     studioProductsCount: props.count - 1
+  //   }
+  // })
 }
 </script>
 

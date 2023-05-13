@@ -92,16 +92,15 @@ const count = computed<number>(() => countResult.value?.productsCount ?? 0)
 
 const { items, data, toPage, onLoad, options } = useAutoPagination(products, count, offsetVars)
 
-onLoad(async (offset) => {
-  await fetchMore({
-    variables: {
-      filter: {
-        ...offsetVars.value,
-        offset
-      }
+onLoad((offset) => fetchMore({
+  variables: {
+    filter: {
+      ...offsetVars.value,
+      offset
     }
-  })
+  }
 })
+)
 </script>
 
 <style scoped>
