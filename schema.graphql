@@ -83,6 +83,7 @@ type Mutation {
     createProduct(input: CreateProductInput!): Product!
     createReview(input: CreateReviewInput!): Review!
     createTag(input: CreateTagInput!): Tag!
+    logoutSessions(input: LogoutSessionsInput!): User!
     remoreFromCart(input: RemoreFromCartInput!): Cart!
     removeCategory(input: RemoveCategoryInput!): Category!
     removePost(input: RemovePostInput!): Post!
@@ -388,6 +389,10 @@ input GetUsersFilter {
     name: String
     offset: Int!
     sort: String!
+}
+
+input LogoutSessionsInput {
+    password: String!
 }
 
 input OrderFilter {

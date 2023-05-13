@@ -26,3 +26,9 @@ mutation UpdatePassword($input: UpdatePasswordInput!) {
         id
     }
 }
+
+mutation LogoutSessions($input: LogoutSessionsInput!) {
+    logoutSessions(input: $input) {
+        id
+    }
+}
