@@ -51,7 +51,6 @@
 
     <div class="border-t border-white/10 px-8 py-4">
       <includes-pagination
-        class="hidden"
         :total="count"
         :page-size="filter.limit"
         @change="value => toPage(value.currentPage)"
