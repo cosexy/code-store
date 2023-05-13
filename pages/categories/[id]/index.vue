@@ -33,6 +33,7 @@
                     href="javascript:void(0)"
                     :class="[active ? 'bg-gray-100' : '']"
                     class="block px-4 py-2 text-sm text-gray-600"
+                    @click="vars.sort = option.value"
                   >
                     {{ option.name }}
                   </a>
@@ -43,12 +44,19 @@
         </headless-menu>
       </div>
 
-      <!-- Filters -->
+      <div>
+        <div class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+          <search-categories v-model:value="vars.category" :categories="categories" :nullable="true" class="lg:col-span-3" />
+          <search-result v-model:filter="vars" class="lg:col-span-9" />
+        </div>
+      </div>
     </div>
   </includes-page-session>
 </template>
 
 <script setup lang="ts" async>
+import { GetProductsFilter } from '~/apollo/__generated__/graphql'
+
 const route = useRoute()
 
 const { result } = await useAsyncQuery(CategoryDocument, {
@@ -76,6 +84,27 @@ const sorts = computed(() => [
 
 const { result: categoriesResult } = await useAsyncQuery(CategoriesDocument)
 const categories = computed(() => categoriesResult.value!.categories)
+
+const vars = ref<Pick<GetProductsFilter, 'category' | 'name' | 'sort'>>({
+  category: category.value.id,
+  name: '',
+  sort: 'createdAt'
+})
+
+const router = useRouter()
+watch(() => vars.value.category, (val) => {
+  if (val) {
+    const _category = categories.value.find((category) => category.id === val)
+    if (_category) {
+      router.push({
+        name: 'categories-id',
+        params: {
+          id: _category.slug
+        }
+      })
+    }
+  }
+})
 </script>
 
 <style scoped>

@@ -54,14 +54,14 @@ import {
 } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
-    filter: Pick<GetProductsFilter, 'category' | 'name' | 'sort'>
+    filter: Pick<GetProductsFilter, 'category' | 'name' | 'sort'> | any
 }>()
 
 const name = toRef(props.filter, 'name')
 const category = toRef(props.filter, 'category')
 const sort = toRef(props.filter, 'sort')
 const offsetVars = ref<Pick<GetProductsFilter, 'limit' | 'offset'>>({
-  limit: 4,
+  limit: 8,
   offset: 0
 })
 
@@ -80,7 +80,7 @@ const products = computed<SearchProductsQuery['products']>(() => result.value?.p
 
 watch([name, category, sort], () => {
   offsetVars.value = {
-    limit: 4,
+    limit: 8,
     offset: 0
   }
   refetch({

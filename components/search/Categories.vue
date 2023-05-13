@@ -47,6 +47,8 @@ import { CategoriesQuery } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
     value: string
+    categories: CategoriesQuery['categories']
+    nullable?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -55,12 +57,11 @@ const emit = defineEmits<{
 
 const selected = useVModel(props, 'value', emit)
 
-const { result } = useQuery(CategoriesDocument)
-const categories = computed<CategoriesQuery['categories']>(() => result.value?.categories || [])
-
 const toggleSelected = (id: string) => {
   if (selected.value === id) {
-    selected.value = ''
+    if (props.nullable) {
+      selected.value = ''
+    }
   } else {
     selected.value = id
   }
