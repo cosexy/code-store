@@ -39,7 +39,7 @@ onLoad(async (offset) => {
   await fetchMore({
     variables: {
       filter: {
-        ...options,
+        ...options.value,
         sort: 'createdAt',
         product: props.productId,
         offset

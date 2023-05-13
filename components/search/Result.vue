@@ -14,7 +14,11 @@
         </div>
       </div>
 
-      <includes-pagination :total="count" :page-size="options.limit" />
+      <includes-pagination
+        :total="count"
+        :page-size="offsetVars.limit"
+        @change="value => toPage(value.currentPage)"
+      />
     </template>
 
     <div v-else-if="loading" class="flex flex-col items-center justify-center">
@@ -46,43 +50,38 @@ import {
   GetProductsFilter,
   ProductsCountQueryVariables,
   SearchProductsDocument,
-  SearchProductsQuery,
-  SearchProductsQueryVariables
+  SearchProductsQuery
 } from '~/apollo/__generated__/graphql'
 
 const props = defineProps<{
     filter: Pick<GetProductsFilter, 'category' | 'name' | 'sort'>
 }>()
 
-const emit = defineEmits<{
-    (event: 'update:filter', value: SearchProductsQueryVariables): void
-}>()
-
-const vars = toRefs(props.filter)
-const vars2 = ref<Pick<GetProductsFilter, 'limit' | 'offset'>>({
+const name = toRef(props.filter, 'name')
+const category = toRef(props.filter, 'category')
+const sort = toRef(props.filter, 'sort')
+const offsetVars = ref<Pick<GetProductsFilter, 'limit' | 'offset'>>({
   limit: 4,
   offset: 0
 })
 
-const queryVars = computed<SearchProductsQueryVariables>(() => ({
+const { result, loading, fetchMore } = useQuery(SearchProductsDocument, {
   filter: {
-    name: vars.name?.value,
-    category: vars.category?.value,
-    sort: vars.sort.value,
-    limit: vars2.value.limit,
-    offset: vars2.value.offset
+    name: name.value,
+    category: category.value,
+    sort: sort.value,
+    limit: offsetVars.value.limit,
+    offset: offsetVars.value.offset
   }
-}))
-
-const { result, loading } = useQuery(SearchProductsDocument, queryVars, {
+}, {
   debounce: 500
 })
 const products = computed<SearchProductsQuery['products']>(() => result.value?.products ?? [])
 
 const countFilter = computed<ProductsCountQueryVariables>(() => ({
   filter: {
-    name: vars.name?.value,
-    category: vars.category?.value
+    name: name.value,
+    category: category.value
   }
 }))
 
@@ -91,9 +90,20 @@ const { result: countResult } = useQuery(ProductsCountDocument, countFilter, {
 })
 const count = computed<number>(() => countResult.value?.productsCount ?? 0)
 
-const { items, data, options } = useAutoPagination(products, count, {
-  limit: vars2.value.limit,
-  offset: vars2.value.offset
+const { items, data, toPage, onLoad, options } = useAutoPagination(products, count, offsetVars)
+
+onLoad(async (offset) => {
+  await fetchMore({
+    variables: {
+      filter: {
+        name: name.value,
+        category: category.value,
+        sort: sort.value,
+        limit: offsetVars.value.limit,
+        offset
+      }
+    }
+  })
 })
 </script>
 
