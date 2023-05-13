@@ -2,7 +2,7 @@
   <div>
     <nav-main />
     <nuxt-page />
-    <includes-footer />
+    <includes-footer class="mt-12" />
     <modal-auth />
     <client-only>
       <includes-notify />
