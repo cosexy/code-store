@@ -1,6 +1,5 @@
 import { MaybeRefOrGetter, toRef } from '@vueuse/core'
-import { Ref } from 'vue'
-interface Config {
+interface Config extends Record<string, any>{
     offset?: number
     limit?: number
 }
@@ -10,7 +9,7 @@ type Maybe<T> = T | null
 export const useAutoPagination = <T>(
   source: MaybeRefOrGetter<T[]>,
   _count: MaybeRefOrGetter<number>,
-  initOptions?: Ref<Config> | Partial<Config>
+  initOptions?: MaybeRefOrGetter<Config> | Config
 ) => {
   const options = toRef(initOptions)
   const offset = computed(() => options.value?.offset ?? 0)

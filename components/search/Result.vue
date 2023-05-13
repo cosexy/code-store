@@ -61,7 +61,7 @@ const name = toRef(props.filter, 'name')
 const category = toRef(props.filter, 'category')
 const sort = toRef(props.filter, 'sort')
 const offsetVars = ref<Pick<GetProductsFilter, 'limit' | 'offset'>>({
-  limit: 8,
+  limit: 3,
   offset: 0
 })
 

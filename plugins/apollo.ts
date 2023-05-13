@@ -1,29 +1,15 @@
-import { ApolloLink, Reference } from '@apollo/client/core'
 import { InMemoryCache } from '@apollo/client'
+import { useApolloClient } from '@vue/apollo-composable'
 
-export default defineNuxtPlugin(() => {
+export default defineNuxtPlugin((nuxtApp) => {
   const { client } = useApolloClient()
   const authStore = useAuth()
-  // add RoundTrip
-  const roundTripLink = new ApolloLink((operation, forward) => {
-    // Called before operation is sent to server
-    operation.setContext({ start: Date.now() })
 
-    operation.setContext({
-      headers: {
-        authorization: authStore.token ? `Bearer ${authStore.token}` : ''
-      }
-    })
-
-    return forward(operation).map((data) => {
-      // Called after server responds
-      const time = Date.now() - operation.getContext().start
-      console.log(`💥 Operation: ${operation.operationName} took ${time} to complete`)
-      return data
-    })
+  nuxtApp.hook('apollo:auth', ({ client, token }) => {
+    if (authStore.token && client === 'default') {
+      token.value = authStore.token
+    }
   })
-  client.setLink(roundTripLink.concat(client.link))
-
   // setup cache
   ;(client.cache as InMemoryCache).policies.addTypePolicies({
     Query: {
