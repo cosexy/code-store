@@ -1,17 +1,17 @@
 <template>
   <div
-    class="shadow-default flex w-full overflow-hidden rounded-xl bg-white px-5 transition"
+    class="shadow-default flex w-full overflow-hidden rounded-lg bg-white px-5 transition"
     @submit.prevent
   >
     <div class="flex h-[50px] w-full items-center">
       <Icon
         name="ri:search-line"
-        class="shrink-0 text-[24px] text-gray-500"
+        class="shrink-0 text-[22px] text-gray-400"
       />
       <input
         v-model="keyword"
         type="text"
-        class="ml-1 h-full w-full border-0 pl-2 text-[18px] font-medium text-gray-600 ring-0 focus:outline-0 focus:ring-0"
+        class="ml-1 h-full w-full border-0 pl-2 text-[16px] font-medium text-gray-600 ring-0 focus:outline-0 focus:ring-0"
         placeholder="Tìm kiếm"
       >
     </div>

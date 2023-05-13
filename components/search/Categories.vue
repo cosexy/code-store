@@ -12,23 +12,29 @@
           class="item my-5"
         >
           <div
-            class="hover:text-primary-600 flex cursor-pointer items-center space-x-2"
+            class="flex cursor-pointer items-center space-x-2 hover:text-indigo-600"
             :class="{
-              'text-primary-600': selected === category.id
+              'text-indigo-600': selected === category.id
             }"
             @click="toggleSelected(category.id)"
           >
             <div
-              class="border-primary-500 flex h-6 w-6 items-center justify-center rounded-lg border-2"
+              class="flex h-6 w-6 items-center justify-center rounded-md border-2"
+              :class="[selected === category.id ? 'border-indigo-600' : 'border-gray-200']"
             >
-              <div
-                class="bg-primary-500 shadow-default shadow-primary-200 h-4 w-4 rounded-lg transition"
+              <icon
+                name="material-symbols:check-small-rounded"
+                class="transition duration-300"
                 :class="{
                   'scale-0': selected !== category.id
                 }"
+                size="30"
               />
             </div>
-            <span class="font-semibold">{{ category.name }}</span>
+            <span
+              class="text-sm"
+              :class="[selected === category.id ? 'font-semibold' : 'font-medium']"
+            >{{ category.name }}</span>
           </div>
         </div>
       </div>
