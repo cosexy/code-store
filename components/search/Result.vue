@@ -65,7 +65,7 @@ const offsetVars = ref<Pick<GetProductsFilter, 'limit' | 'offset'>>({
   offset: 0
 })
 
-const { result, loading, fetchMore } = useQuery(SearchProductsDocument, {
+const { result, loading, fetchMore, refetch } = useQuery(SearchProductsDocument, {
   filter: {
     name: name.value,
     category: category.value,
@@ -77,6 +77,22 @@ const { result, loading, fetchMore } = useQuery(SearchProductsDocument, {
   debounce: 500
 })
 const products = computed<SearchProductsQuery['products']>(() => result.value?.products ?? [])
+
+watch([name, category, sort], () => {
+  offsetVars.value = {
+    limit: 4,
+    offset: 0
+  }
+  refetch({
+    filter: {
+      name: name.value,
+      category: category.value,
+      sort: sort.value,
+      limit: offsetVars.value.limit,
+      offset: offsetVars.value.offset
+    }
+  })
+})
 
 const countFilter = computed<ProductsCountQueryVariables>(() => ({
   filter: {

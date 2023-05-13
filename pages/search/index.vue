@@ -24,7 +24,7 @@ const vars = ref<Pick<GetProductsFilter, 'category' | 'name' | 'sort'>>({
 
 watchDebounced(
   () => vars.value.name,
-  () => router.replace({ query: { ...route.query, keyword: vars.value.filter.name } }),
+  () => router.replace({ query: { ...route.query, keyword: vars.value.name } }),
   { debounce: 500, maxWait: 1000 }
 )
 </script>
