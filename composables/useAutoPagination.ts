@@ -51,6 +51,8 @@ export const useAutoPagination = <T>(
     toPage,
     count,
     options,
-    onLoad: onLoad.on
+    onLoad: onLoad.on,
+    limit,
+    offset
   }
 }

@@ -24,25 +24,26 @@ const countRef = toRef(props, 'count')
 /**
  * Query
  */
+const offsetVars = ref({
+  limit: 10,
+  offset: 0
+})
+
 const { result, fetchMore } = useQuery(ReviewsDocument, {
   filter: {
-    limit: 10,
-    offset: 0,
+    ...offsetVars.value,
     product: props.productId,
     sort: 'createdAt'
   }
 })
 const reviews = computed(() => result.value?.reviews || [])
-const { items, options, toPage, onLoad } = useAutoPagination(reviews, countRef, {
-  limit: 10,
-  offset: 0
-})
+const { items, options, toPage, onLoad } = useAutoPagination(reviews, countRef, offsetVars)
 
 onLoad(async (offset) => {
   await fetchMore({
     variables: {
       filter: {
-        ...options.value,
+        ...offsetVars.value,
         sort: 'createdAt',
         product: props.productId,
         offset
