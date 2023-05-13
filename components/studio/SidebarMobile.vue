@@ -36,7 +36,7 @@
               <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
                 <button type="button" class="-m-2.5 p-2.5" @click="_open = false">
                   <span class="sr-only">Close sidebar</span>
-                  <XMarkIcon class="h-6 w-6 text-white" aria-hidden="true" />
+                  <icon name="heroicons:x-mark-20-solid" class="h-6 w-6 text-white" aria-hidden="true" />
                 </button>
               </div>
             </headless-transition-child>

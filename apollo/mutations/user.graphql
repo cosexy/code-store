@@ -20,3 +20,9 @@ mutation UpdateMe($input: UpdateUserInput!) {
         slug
     }
 }
+
+mutation UpdatePassword($input: UpdatePasswordInput!) {
+    updatePassword(input: $input) {
+        id
+    }
+}

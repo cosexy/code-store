@@ -93,6 +93,7 @@ type Mutation {
     updateCart(input: UpdateCartInput!): Cart!
     updateCategory(input: UpdateCategoryInput!): Category!
     updateMe(input: UpdateUserInput!): User!
+    updatePassword(input: UpdatePasswordInput!): User!
     updatePost(input: UpdatePostInput!): Post!
     updateProduct(input: UpdateProductInput!): Product!
 }
@@ -457,6 +458,11 @@ input UpdateCategoryInput {
     description: String = ""
     id: ID!
     name: String
+}
+
+input UpdatePasswordInput {
+    newPassword: String!
+    password: String!
 }
 
 input UpdatePostInput {

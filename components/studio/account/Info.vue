@@ -10,32 +10,36 @@
       @on-ok="submitForm"
     >
       <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-        <form-image
-          v-model:value="input.avatar"
-          class="col-span-full flex items-center gap-x-8"
+        <form-file
+          v-model:value="imageInput"
+          type="images"
+          class="col-span-full"
         >
-          <template #default="{ src, provider, open }">
-            <nuxt-img
-              :src="src"
-              alt=""
-              class="h-24 w-24 flex-none cursor-pointer rounded-lg bg-gray-800 object-cover"
-              :provider="provider"
-              @click="open"
-            />
-            <div>
-              <button
-                type="button"
-                class="rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+          <template #default="{ provider, open }">
+            <div v-auto-animate class="flex items-center gap-x-8">
+              <nuxt-img
+                v-if="imageInput.path"
+                :src="imageInput.path"
+                alt=""
+                class="h-24 w-24 flex-none cursor-pointer rounded-lg bg-gray-800 object-cover"
+                :provider="provider"
                 @click="open"
-              >
-                Change avatar
-              </button>
-              <p class="mt-2 text-xs leading-5 text-gray-400">
-                JPG, GIF or PNG. 10MB max.
-              </p>
+              />
+              <div>
+                <button
+                  type="button"
+                  class="rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+                  @click="open"
+                >
+                  Change avatar
+                </button>
+                <p class="mt-2 text-xs leading-5 text-gray-400">
+                  JPG, GIF or PNG. 10MB max.
+                </p>
+              </div>
             </div>
           </template>
-        </form-image>
+        </form-file>
 
         <form-item
           v-slot="{ message }"
@@ -138,35 +142,34 @@
 <script setup lang="ts">
 import { Ref } from 'vue'
 import { Rules } from 'async-validator'
-import { ImageItemFragment, UpdateUserInput } from '~/apollo/__generated__/graphql'
+import { Image, ImageItemFragment, UpdateUserInput } from '~/apollo/__generated__/graphql'
 
 const authStore = useAuth()
 
-interface CustomInputType extends Omit<UpdateUserInput, 'avatar'> {
-  avatar: Pick<ImageItemFragment, 'id' | 'path'>
-}
-
-const input: Ref<CustomInputType> = ref({
-  avatar: {
-    id: '',
-    path: ''
-  },
+const input: Ref<UpdateUserInput> = ref({
+  avatar: '',
   email: '',
   name: '',
   occupation: '',
   slug: ''
 })
 
+const imageInput: Ref<Pick<Image, 'id' | 'path'>> = ref({
+  id: '',
+  path: ''
+})
+
 const insertForm = () => {
   input.value = {
-    avatar: authStore.user?.avatar || {
-      id: '',
-      path: ''
-    },
+    avatar: authStore.user?.avatar?.id || '',
     email: authStore.user?.email || '',
     name: authStore.user?.name || '',
     occupation: authStore.user?.occupation || '',
     slug: authStore.user?.slug || ''
+  }
+  imageInput.value = {
+    id: authStore.user?.avatar?.id || '',
+    path: authStore.user?.avatar?.path || ''
   }
 }
 insertForm()
@@ -198,7 +201,7 @@ const { mutate, loading } = useMutation(UpdateMeDocument)
 const submitForm = () => mutate({
   input: {
     ...input.value,
-    avatar: input.value.avatar ? input.value.avatar.id : undefined
+    avatar: imageInput.value.id || undefined
   }
 })
 </script>

@@ -43,7 +43,7 @@
 
               <button type="button" class="absolute right-4 top-4 text-gray-400 outline-0 hover:text-gray-500 sm:right-5 sm:top-5" @click="close">
                 <span class="sr-only">Close</span>
-                <Icon name="heroicons-solid:x-mark" class="h-5 w-5" aria-hidden="true" />
+                <Icon name="heroicons:x-mark-20-solid" class="h-5 w-5" aria-hidden="true" />
               </button>
 
               <slot :data="modal.data" :actived="modal.actived" />
