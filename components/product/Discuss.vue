@@ -33,7 +33,10 @@ const { result, fetchMore } = useQuery(ReviewsDocument, {
   }
 })
 const reviews = computed(() => result.value?.reviews || [])
-const { items, options, toPage, onLoad } = useAutoPagination(reviews, countRef)
+const { items, options, toPage, onLoad } = useAutoPagination(reviews, countRef, {
+  limit: 10,
+  offset: 0
+})
 
 onLoad(async (offset) => {
   await fetchMore({
