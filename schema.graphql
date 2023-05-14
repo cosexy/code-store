@@ -301,6 +301,7 @@ input CreateProductInput {
     highlights: [String!]
     lisence: String
     name: String!
+    preview: String
     price: Int!
     sale: Int
     tags: [String!]!
@@ -488,6 +489,7 @@ input UpdateProductInput {
     id: ID!
     lisence: String
     name: String
+    preview: String
     price: Int
     sale: Int
     tags: [String!]

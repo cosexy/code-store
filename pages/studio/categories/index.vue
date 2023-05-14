@@ -66,7 +66,9 @@
     </client-only>
 
     <includes-teleport to="#page-title">
-      <studio-search v-model:keyword="filter.name" />
+      <h2 class="text-lg font-medium text-gray-200">
+        Categories
+      </h2>
     </includes-teleport>
   </div>
 </template>

@@ -10,3 +10,9 @@ mutation RemoveProduct($input: RemoveProductStudioInput!) {
         id
     }
 }
+
+mutation UpdateProduct($input: UpdateProductInput!) {
+    updateProduct(input: $input) {
+        id
+    }
+}

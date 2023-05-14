@@ -16,7 +16,7 @@
 
     <!-- Name -->
     <th scope="col" class="hidden py-2 pl-0 pr-8 font-normal sm:table-cell">
-      <nuxt-link :to="{ name: 'studio-products-id', params: { id: product.id } }">
+      <nuxt-link :to="{ name: 'studio-products-id', params: { id: product.id } }" class="line-clamp-2 whitespace-pre-line">
         {{ product.name }}
       </nuxt-link>
     </th>

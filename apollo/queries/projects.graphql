@@ -74,6 +74,7 @@ query ProductInformation($filter: GetProductStudioFilter!) {
             id
             path
         }
+        preview
     }
 }
 

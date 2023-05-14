@@ -115,7 +115,7 @@
               :key="tag"
               type="button"
               class="mb-3 mr-3 rounded bg-indigo-500 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-              @click="removeTagBy(index)"
+              @click="removeTagBy(index as number)"
             >
               {{ tag }}
               <icon name="ic:outline-close" class="-mr-1 ml-1 inline-block h-3 w-3" />
@@ -153,6 +153,7 @@
 
       <studio-creator-product-section
         title="Pricing"
+        description=""
       >
         <template #description>
           <p class="mt-1 text-sm leading-6 text-gray-400">
@@ -199,7 +200,7 @@
       </studio-creator-product-section>
 
       <studio-creator-product-section
-        title="Reources"
+        title="Resources"
         description="Upload your product files. You can upload multiple files at once."
       >
         <form-file
@@ -248,6 +249,23 @@
         </form-item>
 
         <form-item
+          name="preview"
+          label="Preview"
+          class="sm:col-span-full"
+          extra="Provide a preview for your product. It will be shown on the product page."
+        >
+          <input
+            id="preview"
+            v-model="value.preview"
+            type="text"
+            name="preview-version"
+            autocomplete="product-version"
+            placeholder="https://example.com/preview"
+            class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+          >
+        </form-item>
+
+        <form-item
           label="Lisence"
           name="lisence"
           class="sm:col-span-full"
@@ -287,7 +305,7 @@ const props = defineProps<{
     image?: Pick<Image, 'id' | 'path'>
     document?: Pick<Document, 'id' | 'path'>
     highlights?: string
-  }
+  } | any
 }>()
 
 /**
@@ -349,6 +367,12 @@ const rules: Rules = {
     {
       required: true,
       message: 'Please select product document'
+    }
+  ],
+  preview: [
+    {
+      pattern: /^(http|https):\/\/[^ "]+$/,
+      message: 'Product preview must be a valid url'
     }
   ]
 }

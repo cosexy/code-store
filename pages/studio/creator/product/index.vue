@@ -40,7 +40,8 @@ const input = ref<CreateProductInput>({
   sale: undefined,
   tags: [],
   document: '',
-  version: ''
+  version: '',
+  preview: ''
 })
 
 const { mutate, loading } = useMutation(CreateProductDocument)
