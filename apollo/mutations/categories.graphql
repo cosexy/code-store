@@ -1,0 +1,11 @@
+mutation CreateCategory($input: CreateCategoryInput!) {
+    createCategory(input: $input) {
+        id
+        name
+        avatar {
+            id
+            path
+        }
+        description
+    }
+}

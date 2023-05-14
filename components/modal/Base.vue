@@ -25,11 +25,13 @@
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95"
           >
-            <HeadlessDialogPanel class="border-primary relative w-full max-w-md overflow-hidden border-t-4 bg-white p-6 text-left align-middle shadow-xl transition-all">
+            <HeadlessDialogPanel
+              class="border-primary relative w-full max-w-md overflow-hidden border-t-4 bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-gray-800"
+            >
               <HeadlessDialogTitle
                 v-if="title"
                 as="h3"
-                class="mb-3 text-xl font-semibold leading-6 text-gray-900"
+                class="mb-3 text-xl font-semibold leading-6 text-gray-900 dark:text-white"
               >
                 {{ title }}
               </HeadlessDialogTitle>
@@ -41,7 +43,11 @@
                 <slot name="title" />
               </HeadlessDialogTitle>
 
-              <button type="button" class="absolute right-4 top-4 text-gray-400 outline-0 hover:text-gray-500 sm:right-5 sm:top-5" @click="close">
+              <button
+                type="button"
+                class="absolute right-4 top-4 text-gray-400 outline-0 hover:text-gray-500 dark:text-gray-200 sm:right-5 sm:top-5"
+                @click="close"
+              >
                 <span class="sr-only">Close</span>
                 <Icon name="heroicons:x-mark-20-solid" class="h-5 w-5" aria-hidden="true" />
               </button>

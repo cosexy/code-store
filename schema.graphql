@@ -17,6 +17,7 @@ type Cart {
 }
 
 type Category {
+    avatar: Image!
     createdAt: Float!
     description: String!
     id: ID!
@@ -257,6 +258,7 @@ input AddedReviewFilter {
 }
 
 input CreateCategoryInput {
+    avatar: ID!
     description: String = ""
     name: String!
 }
@@ -461,6 +463,7 @@ input UpdateCartInput {
 }
 
 input UpdateCategoryInput {
+    avatar: ID
     description: String = ""
     id: ID!
     name: String
