@@ -7,7 +7,7 @@
 
     <div class="xl:pl-72">
       <!-- Sticky search header -->
-      <studio-sticky-search v-model:open="open" />
+      <studio-sticky-header v-model:open="open" />
 
       <main>
         <nuxt-page />

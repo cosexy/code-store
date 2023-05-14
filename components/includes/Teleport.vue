@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 defineProps<{
-  to: '#actions' | string
+  to: '#actions' | '#page-title' | string
 }>()
 const show = ref(false)
 

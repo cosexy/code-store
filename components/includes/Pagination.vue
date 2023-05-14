@@ -78,7 +78,7 @@ const emit = defineEmits<{
   (event: 'change', value: UnwrapNestedRefs<UseOffsetPaginationReturn>): void
 }>()
 
-const _total = ref(props.total)
+const _total = toRef(props, 'total')
 const _page = ref(props.page)
 const _pageSize = ref(props.pageSize)
 

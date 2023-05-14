@@ -2,18 +2,23 @@
   <tr class="text-sm text-gray-400">
     <!-- Avatar -->
     <th scope="col" class="py-2 pl-4 pr-8 sm:pl-6 lg:pl-8">
-      <div class="aspect-product h-[100px] overflow-hidden rounded-md">
+      <nuxt-link
+        :to="{ name: 'studio-products-id', params: { id: product.id } }"
+        class="aspect-product block h-[100px] overflow-hidden rounded-md"
+      >
         <nuxt-img
           :src="product.avatar.path"
           provider="backend"
           class="h-full w-full object-cover transition hover:scale-105"
         />
-      </div>
+      </nuxt-link>
     </th>
 
     <!-- Name -->
     <th scope="col" class="hidden py-2 pl-0 pr-8 font-normal sm:table-cell">
-      {{ product.name }}
+      <nuxt-link :to="{ name: 'studio-products-id', params: { id: product.id } }">
+        {{ product.name }}
+      </nuxt-link>
     </th>
 
     <!-- Version -->
