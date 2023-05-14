@@ -24,7 +24,7 @@ const { result } = await useAsyncQuery(ProductInformationDocument, {
   }
 })
 
-const product = computed(() => result.value?.studioProduct)
+const product = computed(() => result.value!.studioProduct)
 </script>
 
 <style scoped>
