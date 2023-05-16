@@ -3,7 +3,7 @@
     <!-- Avatar -->
     <th scope="col" class="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
       <nuxt-link
-        :to="{ name: 'studio-products-id', params: { id: user.id } }"
+        :to="{ name: 'studio-account-id', params: { id: user.id } }"
         class="block h-10 w-10 overflow-hidden rounded-full"
       >
         <nuxt-img
@@ -16,7 +16,7 @@
 
     <!-- Name -->
     <th scope="col" class="hidden py-4 pl-0 pr-8 font-normal sm:table-cell">
-      <nuxt-link :to="{ name: 'studio-products-id', params: { id: user.id } }" class="line-clamp-2 whitespace-pre-line">
+      <nuxt-link :to="{ name: 'studio-account-id', params: { id: user.id } }" class="line-clamp-2 whitespace-pre-line">
         {{ user.name }}
       </nuxt-link>
     </th>

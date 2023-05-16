@@ -64,6 +64,14 @@ export default defineNuxtConfig({
             ...page.meta,
             layout: 'studio'
           }
+
+          if (page.name === 'studio-account') {
+            pages.push({
+              ...page,
+              path: '/studio/account/:id',
+              name: 'studio-account-id'
+            })
+          }
         }
       })
     }
