@@ -8,7 +8,6 @@
       <headless-tab-panel>
         <studio-account-password />
         <studio-account-sessions />
-        <studio-account-delete />
       </headless-tab-panel>
     </studio-tabs>
 

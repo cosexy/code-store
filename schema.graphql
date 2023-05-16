@@ -90,8 +90,10 @@ type Mutation {
     removePost(input: RemovePostInput!): Post!
     signIn(input: SignInInput!): String!
     signUp(input: SignUpInput!): String!
+    studioLogoutSessions(input: LogoutSessionsStudioInput!): User!
     studioRemoveProduct(input: RemoveProductStudioInput!): Product!
     studioRemoveUser(input: StudioRemoveUserInput!): User!
+    studioUpdatePassword(input: UpdatePasswordStudioInput!): User!
     studioUpdateUser(input: UpdateUserStudioInput!): User!
     syncToCart(input: SyncToCartInput!): [Cart!]!
     updateCart(input: UpdateCartInput!): Cart!
@@ -414,6 +416,10 @@ input LogoutSessionsInput {
     password: String!
 }
 
+input LogoutSessionsStudioInput {
+    id: ID!
+}
+
 input OrderFilter {
     id: ID!
 }
@@ -496,6 +502,11 @@ input UpdateCategoryInput {
 input UpdatePasswordInput {
     newPassword: String!
     password: String!
+}
+
+input UpdatePasswordStudioInput {
+    id: ID!
+    newPassword: String!
 }
 
 input UpdatePostInput {
