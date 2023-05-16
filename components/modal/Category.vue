@@ -1,7 +1,7 @@
 <template>
   <modal-base
     name="category"
-    title="Modify category"
+    :title="categoryID ? 'Edit category' : 'Create category'"
   >
     <form-instance
       :rules="rules"
@@ -93,7 +93,7 @@
           type="submit"
           class="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
-          Add New
+          {{ categoryID ? 'Save' : 'Create' }}
         </button>
       </div>
     </form-instance>
@@ -141,6 +141,8 @@ watch(input, (value) => {
   form.value.description = value
 })
 
+const categoryID = ref('')
+
 const imageInput: Ref<Pick<Image, 'id' | 'path'>> = ref({
   id: '',
   path: ''
@@ -156,6 +158,7 @@ const { close, onReceive, onClosed } = useDialog('category', {
 })
 onReceive((category) => {
   if (category) {
+    categoryID.value = category.id
     form.value = {
       avatar: category.avatar?.id ?? '',
       description: category.description ?? '',
@@ -167,6 +170,7 @@ onReceive((category) => {
       path: category.avatar?.path ?? ''
     }
   } else {
+    categoryID.value = ''
     form.value = {
       avatar: '',
       description: '',
@@ -181,10 +185,21 @@ onReceive((category) => {
 })
 
 const { mutate: createCategory } = useMutation(CreateCategoryDocument)
+const { mutate: updateCategory } = useMutation(UpdateCategoryDocument)
+
 const submitForm = () => {
-  createCategory({
-    input: form.value
-  })
+  if (categoryID.value) {
+    updateCategory({
+      input: {
+        ...form.value,
+        id: categoryID.value
+      }
+    })
+  } else {
+    createCategory({
+      input: form.value
+    })
+  }
   close()
 }
 

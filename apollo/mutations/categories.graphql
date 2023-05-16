@@ -9,3 +9,16 @@ mutation CreateCategory($input: CreateCategoryInput!) {
         description
     }
 }
+
+
+mutation UpdateCategory($input: UpdateCategoryInput!) {
+    updateCategory(input: $input) {
+        id
+        name
+        avatar {
+            id
+            path
+        }
+        description
+    }
+}

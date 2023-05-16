@@ -12,3 +12,24 @@ query Me {
         slug
     }
 }
+
+
+query StudioGetUsers($filter: GetUsersStudioFilter!) {
+    studioUsers(filter: $filter) {
+        id
+        name
+        email
+        role
+        avatar {
+            id
+            path
+        }
+        countProduct
+        countReview
+        createdAt
+    }
+}
+
+query StudioCountUsers($filter: GetCountUsersStudioFilter!) {
+    studioUsersCount(filter: $filter)
+}
