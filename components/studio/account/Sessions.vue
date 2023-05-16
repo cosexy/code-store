@@ -36,9 +36,9 @@
             <div class="space-x-3">
               <button
                 class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400"
-                @click="mutate({ input: { password: input.password } })"
+                @click="submitForm"
               >
-                Arrrgh, log me out!
+                Ok, I got it!
               </button>
 
               <button
@@ -85,9 +85,21 @@ const rules = computed<Rules>(() => ({
 const openConfirm = refAutoReset(false, 10000)
 
 const { mutate, loading, onDone } = useMutation(LogoutSessionsDocument)
+const { mutate: logoutForUser } = useMutation(StudioLogoutSessionsDocument)
+
+const route = useRoute()
+const submitForm = () => {
+  if (route.name === 'studio-account-id') {
+    logoutForUser({ input: { id: route.params.id as string } })
+  } else {
+    mutate({ input: { password: input.value.password } })
+  }
+}
 
 onDone(() => {
-  window.location.href = '/'
+  if (route.name !== 'studio-account-id') {
+    window.location.href = '/'
+  }
 })
 </script>
 
