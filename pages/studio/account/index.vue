@@ -29,18 +29,24 @@ const form = ref<UserInformationFragment>()
 const authStore = useAuth()
 
 const route = useRoute()
+const router = useRouter()
 
 if (route.name === 'studio-account-id') {
-  const { result } = await useAsyncQuery(StudioUserDocument, {
-    filter: {
-      id: route.params.id as string
+  if (authStore.user?.id === route.params.id) {
+    form.value = authStore.user
+    router.replace('/studio/account')
+  } else {
+    const { result } = await useAsyncQuery(StudioUserDocument, {
+      filter: {
+        id: route.params.id as string
+      }
+    })
+    if (result.value?.studioUser) {
+      form.value = useFragment(UserInformationFragmentDoc, result.value?.studioUser)
     }
-  })
-  if (result.value?.studioUser) {
-    form.value = useFragment(UserInformationFragmentDoc, result.value?.studioUser)
   }
 } else {
-  form.value = useFragment(UserInformationFragmentDoc, authStore.user)!
+  form.value = authStore.user
 }
 </script>
 

@@ -54,3 +54,16 @@ mutation StudioRemoveUser($input: StudioRemoveUserInput!) {
         id
     }
 }
+
+mutation StudioUpdatePassword($input: UpdatePasswordStudioInput!) {
+    studioUpdatePassword(input: $input) {
+        id
+    }
+}
+
+
+mutation StudioLogoutSessions($input: LogoutSessionsStudioInput!) {
+    studioLogoutSessions(input: $input) {
+        id
+    }
+}
