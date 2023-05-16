@@ -182,6 +182,7 @@ type Query {
     studioProduct(filter: GetProductStudioFilter!): Product!
     studioProducts(filter: GetProductsStudioFilter!): [Product!]!
     studioProductsCount(filter: GetCountProductsStudioFilter!): Float!
+    studioUser(filter: StudioGetUserFilter!): User!
     studioUsers(filter: GetUsersStudioFilter!): [User!]!
     studioUsersCount(filter: GetCountUsersStudioFilter!): Int!
     tags(filter: GetCategoriesFilter!): [Tag!]!
@@ -463,6 +464,10 @@ input SignUpInput {
     email: String!
     name: String!
     password: String!
+}
+
+input StudioGetUserFilter {
+    id: ID!
 }
 
 input StudioRemoveUserInput {
