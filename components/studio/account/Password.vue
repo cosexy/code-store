@@ -11,6 +11,7 @@
     >
       <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
         <form-item
+          v-if="$route.name !== 'studio-account-id'"
           v-slot="{ message }"
           name="password"
           label="Current password"
