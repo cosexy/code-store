@@ -32,3 +32,9 @@ mutation LogoutSessions($input: LogoutSessionsInput!) {
         id
     }
 }
+
+mutation StudioRemoveUser($input: StudioRemoveUserInput!) {
+    studioRemoveUser(input: $input) {
+        id
+    }
+}

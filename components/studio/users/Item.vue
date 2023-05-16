@@ -67,6 +67,7 @@
       <div class="space-x-2">
         <includes-confirm
           message="Are you sure ?"
+          @ok="() => mutate({ input: { id: user.id } })"
         >
           <button
             type="button"
@@ -92,6 +93,15 @@ import { StudioGetUsersQuery, User_Role_Enum } from '~/apollo/__generated__/grap
 const props = defineProps<{
     user: StudioGetUsersQuery['studioUsers'][0]
 }>()
+
+const { mutate, onDone } = useMutation(StudioRemoveUserDocument)
+
+const { client } = useApolloClient()
+onDone(() => {
+  client.cache.evict({
+    id: client.cache.identify(props.user)
+  })
+})
 </script>
 
 <style scoped>
