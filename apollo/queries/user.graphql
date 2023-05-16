@@ -1,15 +1,20 @@
+fragment UserInformation on User {
+    id
+    name
+    email
+    role
+    avatar {
+        id
+        path
+    }
+    occupation
+    description
+    slug
+}
+
 query Me {
     me {
-        id
-        name
-        email
-        role
-        avatar {
-            id
-            path
-        }
-        occupation
-        slug
+        ...UserInformation
     }
 }
 
@@ -32,4 +37,10 @@ query StudioGetUsers($filter: GetUsersStudioFilter!) {
 
 query StudioCountUsers($filter: GetCountUsersStudioFilter!) {
     studioUsersCount(filter: $filter)
+}
+
+query StudioUser($filter: StudioGetUserFilter!) {
+    studioUser(filter: $filter) {
+        ...UserInformation
+    }
 }

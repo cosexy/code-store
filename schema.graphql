@@ -524,6 +524,7 @@ input UpdateProductInput {
 
 input UpdateUserInput {
     avatar: ID
+    description: String
     email: String
     name: String
     occupation: String

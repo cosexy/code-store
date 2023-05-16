@@ -142,9 +142,11 @@
 <script setup lang="ts">
 import { Ref } from 'vue'
 import { Rules } from 'async-validator'
-import { Image, ImageItemFragment, UpdateUserInput } from '~/apollo/__generated__/graphql'
+import { Image, UpdateUserInput, UserInformationFragment } from '~/apollo/__generated__/graphql'
 
-const authStore = useAuth()
+const props = defineProps<{
+    form: UserInformationFragment
+}>()
 
 const input: Ref<UpdateUserInput> = ref({
   avatar: '',
@@ -161,15 +163,15 @@ const imageInput: Ref<Pick<Image, 'id' | 'path'>> = ref({
 
 const insertForm = () => {
   input.value = {
-    avatar: authStore.user?.avatar?.id || '',
-    email: authStore.user?.email || '',
-    name: authStore.user?.name || '',
-    occupation: authStore.user?.occupation || '',
-    slug: authStore.user?.slug || ''
+    avatar: props.form.avatar?.id || '',
+    email: props.form?.email || '',
+    name: props.form?.name || '',
+    occupation: props.form?.occupation || '',
+    slug: props.form.slug || ''
   }
   imageInput.value = {
-    id: authStore.user?.avatar?.id || '',
-    path: authStore.user?.avatar?.path || ''
+    id: props.form.avatar?.id || '',
+    path: props.form.avatar?.path || ''
   }
 }
 insertForm()
