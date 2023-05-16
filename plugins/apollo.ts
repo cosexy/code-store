@@ -16,7 +16,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       fields: {
         reviews: useOffsetLimitPagination(['filter', ['product', 'user']]),
         products: useOffsetLimitPagination(['filter', ['category', 'user']]),
-        studioProducts: useOffsetLimitPagination(['filter', ['sort']])
+        studioProducts: useOffsetLimitPagination(['filter', ['sort']]),
+        studioUsers: useOffsetLimitPagination(['filter', ['sort', 'name']])
       }
     }
   })
