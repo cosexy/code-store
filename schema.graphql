@@ -92,6 +92,7 @@ type Mutation {
     signUp(input: SignUpInput!): String!
     studioRemoveProduct(input: RemoveProductStudioInput!): Product!
     studioRemoveUser(input: StudioRemoveUserInput!): User!
+    studioUpdateUser(input: UpdateUserStudioInput!): User!
     syncToCart(input: SyncToCartInput!): [Cart!]!
     updateCart(input: UpdateCartInput!): Cart!
     updateCategory(input: UpdateCategoryInput!): Category!
@@ -526,6 +527,16 @@ input UpdateUserInput {
     avatar: ID
     description: String
     email: String
+    name: String
+    occupation: String
+    slug: String
+}
+
+input UpdateUserStudioInput {
+    avatar: ID
+    description: String
+    email: String
+    id: ID!
     name: String
     occupation: String
     slug: String

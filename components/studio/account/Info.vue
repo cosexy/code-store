@@ -123,6 +123,26 @@
             </select>
           </div>
         </div>
+
+        <div class="col-span-full">
+          <label
+            for="description"
+            class="block text-sm font-medium leading-6 text-white"
+          >
+            Description
+          </label>
+          <div class="mt-2">
+            <textarea
+              id="description"
+              ref="textarea"
+              v-model="description"
+              type="text"
+              name="description"
+              autocomplete="description"
+              class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+            />
+          </div>
+        </div>
       </div>
 
       <div class="mt-8 flex">
@@ -161,14 +181,21 @@ const imageInput: Ref<Pick<Image, 'id' | 'path'>> = ref({
   path: ''
 })
 
+const { textarea, input: description } = useTextareaAutosize()
+watch(description, () => {
+  input.value.description = description.value
+})
+
 const insertForm = () => {
   input.value = {
     avatar: props.form.avatar?.id || '',
     email: props.form?.email || '',
     name: props.form?.name || '',
     occupation: props.form?.occupation || '',
-    slug: props.form.slug || ''
+    slug: props.form.slug || '',
+    description: props.form.description || ''
   }
+  description.value = props.form.description || ''
   imageInput.value = {
     id: props.form.avatar?.id || '',
     path: props.form.avatar?.path || ''
@@ -189,8 +216,9 @@ const rules = computed<Rules>(() => ({
     { required: true, message: 'Please enter your username' },
     { min: 3, message: 'Username must be at least 3 characters' },
     {
-      message: 'Username must be lowercase and can only contain alphanumeric characters and dashes',
-      pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+      // regex formart nguyen-se8-53J0g
+      message: 'Username must be lowercase letters and numbers, and can contain dashes',
+      pattern: /^[a-z0-9]+(?:-[a-z0-9]\w+)*$/
     }
   ]
 }))
@@ -199,13 +227,29 @@ const rules = computed<Rules>(() => ({
 const occupations = computed(() => ['Designer', 'Developer', 'Product Manager', 'Data Scientist', 'Other'])
 
 // submit form
-const { mutate, loading } = useMutation(UpdateMeDocument)
-const submitForm = () => mutate({
-  input: {
-    ...input.value,
-    avatar: imageInput.value.id || undefined
+const route = useRoute()
+const { mutate: updateMe } = useMutation(UpdateMeDocument)
+const { mutate: updateUser } = useMutation(StudioUpdateUserDocument)
+const submitForm = () => {
+  if (route.name === 'studio-account-id') {
+    updateUser({
+      input: {
+        ...input.value,
+        avatar: imageInput.value.id || undefined,
+        id: props.form.id
+      }
+    })
+  } else {
+    updateMe({
+      input: {
+        ...input.value,
+        avatar: imageInput.value.id || undefined
+      }
+    })
   }
-})
+}
+
+const loading = useMutationLoading()
 </script>
 
 <style scoped>

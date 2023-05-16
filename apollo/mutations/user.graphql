@@ -18,6 +18,22 @@ mutation UpdateMe($input: UpdateUserInput!) {
         email
         occupation
         slug
+        description
+    }
+}
+
+mutation StudioUpdateUser($input: UpdateUserStudioInput!) {
+    studioUpdateUser(input: $input) {
+        id
+        avatar {
+            id
+            path
+        }
+        name
+        email
+        occupation
+        slug
+        description
     }
 }
 
