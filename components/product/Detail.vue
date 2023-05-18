@@ -45,6 +45,7 @@
         v-if="product.preview"
         type="button"
         class="bg-primary-50 text-primary-700 hover:bg-primary-100 flex w-full items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+        @click="openPreview"
       >
         Preview
       </button>
@@ -111,7 +112,7 @@
 
 import { GetProductQuery } from '~/apollo/__generated__/graphql'
 
-defineProps<{
+const props = defineProps<{
   product: GetProductQuery['product']
 }>()
 
@@ -145,6 +146,10 @@ const reviews = {
         'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80'
     }
   ]
+}
+
+const openPreview = () => {
+  window.open(props.product.preview!, '_blank')
 }
 </script>
 

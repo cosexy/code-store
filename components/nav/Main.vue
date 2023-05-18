@@ -96,7 +96,7 @@ const navigation = {
   categories: [
     {
       id: 'women',
-      name: 'Women',
+      name: 'Wordpress',
       featured: [
         {
           name: 'New Arrivals',
@@ -154,7 +154,7 @@ const navigation = {
     },
     {
       id: 'men',
-      name: 'Men',
+      name: 'Google Cloud',
       featured: [
         {
           name: 'New Arrivals',
@@ -211,7 +211,7 @@ const navigation = {
   ],
   pages: [
     { name: 'Company', href: '#' },
-    { name: 'Stores', href: '#' }
+    { name: 'Stores', href: 'http://localhost:3003/studio/account?tab=account' }
   ]
 }
 const products = [

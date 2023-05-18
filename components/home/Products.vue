@@ -10,7 +10,12 @@
       </a>
     </div>
     <div class="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
-      <products-item v-for="product in products" :key="product.id" :product="product" class="group relative" />
+      <products-item
+        v-for="product in products"
+        :key="product.id"
+        :product="product"
+        class="group relative"
+      />
     </div>
   </div>
 </template>

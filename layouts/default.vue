@@ -14,6 +14,9 @@
 
 <script lang="ts" setup>
 const auth = useAuth()
+
+const color = useColorMode()
+color.value = 'light'
 </script>
 
 <style scoped></style>

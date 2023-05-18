@@ -218,7 +218,7 @@ const rules = computed<Rules>(() => ({
     {
       // regex formart nguyen-se8-53J0g
       message: 'Username must be lowercase letters and numbers, and can contain dashes',
-      pattern: /^[a-z0-9]+(?:-[a-z0-9]\w+)*$/
+      pattern: /^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]\w+)*$/
     }
   ]
 }))

@@ -1,4 +1,4 @@
-import { getCookie } from 'h3'
+import { getCookie, deleteCookie } from 'h3'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const authStore = useAuth()
@@ -12,11 +12,12 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       })
 
       if (data.me) {
+        // @ts-ignore
         authStore.user = data.me
         authStore.token = token
       }
     } catch (e) {
-      // console.log(e)
+      deleteCookie(useRequestEvent(), 'apollo:codestore.token')
     }
   }
 

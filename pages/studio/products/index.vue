@@ -76,7 +76,7 @@ import { GetProductsStudioFilter } from '~/apollo/__generated__/graphql'
 
 const filter = ref<GetProductsStudioFilter>({
   name: '',
-  limit: 10,
+  limit: 5,
   offset: 0,
   sort: 'createdAt'
 })

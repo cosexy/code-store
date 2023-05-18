@@ -16,8 +16,8 @@
                 as="li"
               >
                 <headless-disclosure-button as="template">
-                  <a
-                    href="javascript:void(0)"
+                  <nuxt-link
+                    :to="item.to"
                     :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white']"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
                   >
@@ -32,8 +32,7 @@
                       }"
                       name="material-symbols:keyboard-arrow-down-rounded"
                     />
-
-                  </a>
+                  </nuxt-link>
                 </headless-disclosure-button>
                 <transition
                   v-if="item.children"

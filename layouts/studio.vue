@@ -19,6 +19,9 @@
 <script setup lang="ts">
 import { StudioNavigation, StudioTeam } from '~/entities/studio.entity'
 
+const color = useColorMode()
+color.value = 'dark'
+
 const [open] = useToggle(false)
 
 const navigation = computed<StudioNavigation[]>(() => [
@@ -43,26 +46,26 @@ const navigation = computed<StudioNavigation[]>(() => [
     ]
   },
   {
-    name: 'Licenses',
-    to: '/',
+    name: 'Orders',
+    to: '/studio/orders',
     icon: 'ic:round-vpn-key',
     current: false
   },
   {
-    name: 'Plans',
-    to: '/',
+    name: 'Categories',
+    to: '/studio/categories',
     icon: 'carbon:chart-bubble-packed',
     current: false
   },
   {
-    name: 'API Key',
-    to: '/',
+    name: 'Users',
+    to: '/studio/users',
     icon: 'ant-design:api-outlined',
     current: false
   },
   {
     name: 'Settings',
-    to: '/',
+    to: '/studio/account',
     icon: 'material-symbols:fingerprint',
     current: false
   }
